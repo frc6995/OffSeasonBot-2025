@@ -1,0 +1,1558 @@
+[
+    {
+        "messageType": 2,
+        "timestamp": -0.000030517578125,
+        "seqNumber": 1365,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.033721923828125,
+        "seqNumber": 1366,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "timestamp": 1.78857421875,
+        "seqNumber": 1367,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (62 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 1.790374755859375,
+        "seqNumber": 1368,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger Started (Network: D847451A463847532020204B1B3B0DFF)",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 1.810546875,
+        "seqNumber": 1369,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger Started (Network: rio)",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 2.27398681640625,
+        "seqNumber": 1370,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] CANbus Connected: Swerve (can0, D847451A463847532020204B1B3B0DFF)",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 2.27459716796875,
+        "seqNumber": 1371,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] CANbus Network Up: Swerve (can0, D847451A463847532020204B1B3B0DFF)",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 3.612518310546875,
+        "seqNumber": 1372,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.613555908203125,
+        "seqNumber": 1373,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.840484619140625,
+        "seqNumber": 1374,
+        "line": "********** Robot program startup complete **********"
+    },
+    {
+        "timestamp": 3.878997802734375,
+        "seqNumber": 1375,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Loop time of 0.02s overrun\n",
+        "location": "edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.880828857421875,
+        "seqNumber": 1376,
+        "line": "Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436): Loop time of 0.02s overrun"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.881805419921875,
+        "seqNumber": 1377,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.922576904296875,
+        "seqNumber": 1378,
+        "line": "CommandScheduler loop overrun"
+    },
+    {
+        "timestamp": 4.469451904296875,
+        "seqNumber": 1379,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tCommandSwerveDrivetrain.periodic(): 0.013653s\n\tbuttons.run(): 0.034020s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.47021484375,
+        "seqNumber": 1380,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tCommandSwerveDrivetrain.periodic(): 0.013653s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.4737548828125,
+        "seqNumber": 1381,
+        "line": "\tbuttons.run(): 0.034020s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.47467041015625,
+        "seqNumber": 1382,
+        "line": ""
+    },
+    {
+        "timestamp": 4.49798583984375,
+        "seqNumber": 1383,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Library initialization is complete.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 4.52325439453125,
+        "seqNumber": 1384,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tSmartDashboard.updateValues(): 0.002820s\n\tdisabledInit(): 0.003691s\n\trobotPeriodic(): 0.630830s\n\tLiveWindow.updateValues(): 0.000093s\n\tShuffleboard.update(): 0.007364s\n\tdisabledPeriodic(): 0.001224s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.524017333984375,
+        "seqNumber": 1385,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tSmartDashboard.updateValues(): 0.002820s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.527801513671875,
+        "seqNumber": 1386,
+        "line": "\tdisabledInit(): 0.003691s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.528594970703125,
+        "seqNumber": 1387,
+        "line": "\trobotPeriodic(): 0.630830s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.529876708984375,
+        "seqNumber": 1388,
+        "line": "\tLiveWindow.updateValues(): 0.000093s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.5302734375,
+        "seqNumber": 1389,
+        "line": "\tShuffleboard.update(): 0.007364s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.53057861328125,
+        "seqNumber": 1390,
+        "line": "\tdisabledPeriodic(): 0.001224s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.530853271484375,
+        "seqNumber": 1391,
+        "line": ""
+    },
+    {
+        "timestamp": 4.614532470703125,
+        "seqNumber": 1392,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 4.61529541015625,
+        "seqNumber": 1393,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 4.79400634765625,
+        "seqNumber": 1394,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (62 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 5.6297607421875,
+        "seqNumber": 1395,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 5.630859375,
+        "seqNumber": 1396,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 6.422515869140625,
+        "seqNumber": 1397,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix-diagnostics] Server 2025.4.0 (Apr 30 2025, 18:02:20) running on port: 1250",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 6.63043212890625,
+        "seqNumber": 1398,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 6.631103515625,
+        "seqNumber": 1399,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 7.6500244140625,
+        "seqNumber": 1400,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 7.651123046875,
+        "seqNumber": 1401,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 7.80572509765625,
+        "seqNumber": 1402,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (61 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 8.551177978515625,
+        "seqNumber": 1403,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Loop time of 0.02s overrun\n",
+        "location": "edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.552032470703125,
+        "seqNumber": 1404,
+        "line": "Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436): Loop time of 0.02s overrun"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.554718017578125,
+        "seqNumber": 1405,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.5587158203125,
+        "seqNumber": 1406,
+        "line": "CommandScheduler loop overrun"
+    },
+    {
+        "timestamp": 8.575347900390625,
+        "seqNumber": 1407,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tCommandSwerveDrivetrain.periodic(): 0.000167s\n\tbuttons.run(): 0.029068s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.5775146484375,
+        "seqNumber": 1408,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tCommandSwerveDrivetrain.periodic(): 0.000167s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.5780029296875,
+        "seqNumber": 1409,
+        "line": "\tbuttons.run(): 0.029068s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.5782470703125,
+        "seqNumber": 1410,
+        "line": ""
+    },
+    {
+        "timestamp": 8.610687255859375,
+        "seqNumber": 1411,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tSmartDashboard.updateValues(): 0.000129s\n\trobotPeriodic(): 0.049380s\n\tLiveWindow.updateValues(): 0.000019s\n\tShuffleboard.update(): 0.000019s\n\tdisabledPeriodic(): 0.000149s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.6112060546875,
+        "seqNumber": 1412,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tSmartDashboard.updateValues(): 0.000129s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.611480712890625,
+        "seqNumber": 1413,
+        "line": "\trobotPeriodic(): 0.049380s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.61181640625,
+        "seqNumber": 1414,
+        "line": "\tLiveWindow.updateValues(): 0.000019s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.61346435546875,
+        "seqNumber": 1415,
+        "line": "\tShuffleboard.update(): 0.000019s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.613739013671875,
+        "seqNumber": 1416,
+        "line": "\tdisabledPeriodic(): 0.000149s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.61395263671875,
+        "seqNumber": 1417,
+        "line": ""
+    },
+    {
+        "timestamp": 8.651214599609375,
+        "seqNumber": 1418,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 8.65179443359375,
+        "seqNumber": 1419,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 9.67529296875,
+        "seqNumber": 1420,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 9.67803955078125,
+        "seqNumber": 1421,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 10.6900634765625,
+        "seqNumber": 1422,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 10.6907958984375,
+        "seqNumber": 1423,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 10.81170654296875,
+        "seqNumber": 1424,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (61 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 11.69012451171875,
+        "seqNumber": 1425,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 7 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.69097900390625,
+        "seqNumber": 1426,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 7 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 12.709991455078125,
+        "seqNumber": 1427,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 12.711029052734375,
+        "seqNumber": 1428,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 13.813629150390625,
+        "seqNumber": 1429,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (61 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 14.730224609375,
+        "seqNumber": 1430,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 14.731292724609375,
+        "seqNumber": 1431,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 15.750091552734375,
+        "seqNumber": 1432,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 15.751312255859375,
+        "seqNumber": 1433,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 16.77099609375,
+        "seqNumber": 1434,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 16.77203369140625,
+        "seqNumber": 1435,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 16.826202392578125,
+        "seqNumber": 1436,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (61 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 18.770355224609375,
+        "seqNumber": 1437,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 18.771087646484375,
+        "seqNumber": 1438,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 19.789794921875,
+        "seqNumber": 1439,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 19.790557861328125,
+        "seqNumber": 1440,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 19.828369140625,
+        "seqNumber": 1441,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (60 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 20.81011962890625,
+        "seqNumber": 1442,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 20.811126708984375,
+        "seqNumber": 1443,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 22.810699462890625,
+        "seqNumber": 1444,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 22.81195068359375,
+        "seqNumber": 1445,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 22.83935546875,
+        "seqNumber": 1446,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (60 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 23.830596923828125,
+        "seqNumber": 1447,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 23.831298828125,
+        "seqNumber": 1448,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 24.84912109375,
+        "seqNumber": 1449,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 24.850830078125,
+        "seqNumber": 1450,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 25.84344482421875,
+        "seqNumber": 1451,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (60 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 25.85028076171875,
+        "seqNumber": 1452,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 25.851104736328125,
+        "seqNumber": 1453,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 26.869171142578125,
+        "seqNumber": 1454,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 26.87078857421875,
+        "seqNumber": 1455,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 27.889129638671875,
+        "seqNumber": 1456,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 27.89031982421875,
+        "seqNumber": 1457,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 28.84442138671875,
+        "seqNumber": 1458,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (60 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 28.889373779296875,
+        "seqNumber": 1459,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 28.8909912109375,
+        "seqNumber": 1460,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 29.911102294921875,
+        "seqNumber": 1461,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 29.912017822265625,
+        "seqNumber": 1462,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 30.929779052734375,
+        "seqNumber": 1463,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 30.931182861328125,
+        "seqNumber": 1464,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 31.845123291015625,
+        "seqNumber": 1465,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (59 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 31.92950439453125,
+        "seqNumber": 1466,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.9312744140625,
+        "seqNumber": 1467,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 32.949493408203125,
+        "seqNumber": 1468,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 32.95135498046875,
+        "seqNumber": 1469,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 33.969970703125,
+        "seqNumber": 1470,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 33.97064208984375,
+        "seqNumber": 1471,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 34.855255126953125,
+        "seqNumber": 1472,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (59 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 35.98895263671875,
+        "seqNumber": 1473,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 35.9908447265625,
+        "seqNumber": 1474,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 37.008941650390625,
+        "seqNumber": 1475,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 37.009796142578125,
+        "seqNumber": 1476,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 37.866302490234375,
+        "seqNumber": 1477,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (59 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 38.009033203125,
+        "seqNumber": 1478,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 38.011016845703125,
+        "seqNumber": 1479,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 39.009368896484375,
+        "seqNumber": 1480,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 39.01129150390625,
+        "seqNumber": 1481,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 40.029388427734375,
+        "seqNumber": 1482,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 40.031494140625,
+        "seqNumber": 1483,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 40.88299560546875,
+        "seqNumber": 1484,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (59 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 41.0491943359375,
+        "seqNumber": 1485,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 41.05029296875,
+        "seqNumber": 1486,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 42.04937744140625,
+        "seqNumber": 1487,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 42.050506591796875,
+        "seqNumber": 1488,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 43.04986572265625,
+        "seqNumber": 1489,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 43.051025390625,
+        "seqNumber": 1490,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 43.887176513671875,
+        "seqNumber": 1491,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (58 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 44.069183349609375,
+        "seqNumber": 1492,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 1 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 44.069854736328125,
+        "seqNumber": 1493,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 1 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 46.891143798828125,
+        "seqNumber": 1494,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (58 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 49.910919189453125,
+        "seqNumber": 1495,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (58 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 52.91473388671875,
+        "seqNumber": 1496,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (57 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 55.918212890625,
+        "seqNumber": 1497,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (57 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 58.925323486328125,
+        "seqNumber": 1498,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (57 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 61.946533203125,
+        "seqNumber": 1499,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (57 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 64.95132446289062,
+        "seqNumber": 1500,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (56 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 67.95196533203125,
+        "seqNumber": 1501,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (56 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 70.95843505859375,
+        "seqNumber": 1502,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (56 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 73.9630126953125,
+        "seqNumber": 1503,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (55 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 76.96551513671875,
+        "seqNumber": 1504,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (55 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 79.98123168945312,
+        "seqNumber": 1505,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (55 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 82.99639892578125,
+        "seqNumber": 1506,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (55 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 85.99765014648438,
+        "seqNumber": 1507,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (54 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 88.9981689453125,
+        "seqNumber": 1508,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (55 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 91.99859619140625,
+        "seqNumber": 1509,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (55 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 95.00433349609375,
+        "seqNumber": 1510,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (55 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 98.00457763671875,
+        "seqNumber": 1511,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (54 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 101.0107421875,
+        "seqNumber": 1512,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (54 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 104.01284790039062,
+        "seqNumber": 1513,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (54 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 107.02133178710938,
+        "seqNumber": 1514,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (54 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 110.04324340820312,
+        "seqNumber": 1515,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (53 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 113.04931640625,
+        "seqNumber": 1516,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (53 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 116.05029296875,
+        "seqNumber": 1517,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (53 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 119.05349731445312,
+        "seqNumber": 1518,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (52 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 122.06591796875,
+        "seqNumber": 1519,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (52 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 125.0682373046875,
+        "seqNumber": 1520,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (52 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 128.08819580078125,
+        "seqNumber": 1521,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (52 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 131.095947265625,
+        "seqNumber": 1522,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (51 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 134.107177734375,
+        "seqNumber": 1523,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (51 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 137.1234130859375,
+        "seqNumber": 1524,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (51 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 140.12698364257812,
+        "seqNumber": 1525,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (51 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 143.13079833984375,
+        "seqNumber": 1526,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 146.1378173828125,
+        "seqNumber": 1527,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 149.151611328125,
+        "seqNumber": 1528,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 151.69265747070312,
+        "seqNumber": 1529,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (49 MB) below 50 MB, deleted /home/lvuser/logs/rio_2025-01-22_17-48-52.hoot",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 151.70257568359375,
+        "seqNumber": 1530,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (49 MB) below 50 MB, deleted /home/lvuser/logs/D847451A463847532020204B1B3B0DFF_2025-01-22_17-54-57.hoot",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 152.1639404296875,
+        "seqNumber": 1531,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 155.17095947265625,
+        "seqNumber": 1532,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 158.18991088867188,
+        "seqNumber": 1533,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 161.19741821289062,
+        "seqNumber": 1534,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 170.88739013671875,
+        "seqNumber": 1535,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Signal Logger: Available disk space (50 MB) is low; at 50 MB, old hoot logs will be deleted. Use Tuner X to download and delete hoot logs.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    }
+]
