@@ -18,7 +18,7 @@ public class IntakePivotS extends SubsystemBase {
 
     public class IntakePivotConstants {
 
-       public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 4; 
+       public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 40; 
        public static final double INTAKE_PIVOT_UP_VOLTAGE = 0.5; // Voltage to move the intake pivot up
        public static final double INTAKE_PIVOT_DOWN_VOLTAGE = -0.5; // Voltage to move the intake pivot down
         
