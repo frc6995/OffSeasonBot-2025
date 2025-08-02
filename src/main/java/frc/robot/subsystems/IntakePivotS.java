@@ -40,10 +40,10 @@ public class IntakePivotS extends SubsystemBase {
     }
 
   public Command voltage(double voltage) {
-    return this.run(() -> inPivMotor.setVoltage(voltage));
+    return run(() -> inPivMotor.setVoltage(voltage));
  }
 
-   public Command slapDown() {
+  public Command slapDown() {
     return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE).until(() -> inPivMotor.getStatorCurrent().getValueAsDouble() > 50);
    }
 

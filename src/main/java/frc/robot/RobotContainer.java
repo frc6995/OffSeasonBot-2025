@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakePivotS;
+import frc.robot.subsystems.IntakeRollerS;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -38,6 +39,8 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public final IntakePivotS intakePivot = new IntakePivotS();
+
+    public final IntakeRollerS intakeRoller = new IntakeRollerS();
 
     public RobotContainer() {
         configureBindings();
@@ -80,6 +83,8 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         joystick.x().whileTrue(intakePivot.slapDown());
+
+        joystick.y().whileTrue(intakeRoller.startRollers());
     }
 
     public Command getAutonomousCommand() {
