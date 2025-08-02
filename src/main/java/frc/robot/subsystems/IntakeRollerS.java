@@ -33,6 +33,10 @@ public class IntakeRollerS extends SubsystemBase  {
     public Command startRollers() {
     return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE);
     }
+    
+    public Command stopRollers() {
+        return run(() -> intakeRollersMotor.setVoltage(0)); // Set voltage to 0 to stop the rollers
+    }
 
     @Override
     public void periodic() {

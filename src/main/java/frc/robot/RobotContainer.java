@@ -34,7 +34,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    public static final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -84,7 +84,9 @@ public class RobotContainer {
 
         joystick.x().whileTrue(intakePivot.slapDown());
 
-        joystick.y().whileTrue(intakeRoller.startRollers());
+        joystick.y()
+            .whileTrue(intakeRoller.startRollers()) // Start rollers while the button is pressed
+            .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released
     }
 
     public Command getAutonomousCommand() {
