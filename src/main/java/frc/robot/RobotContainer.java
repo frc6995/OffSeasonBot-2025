@@ -46,6 +46,11 @@ public class RobotContainer {
         configureBindings();
     }
 
+    public Command Intake() {
+        return parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
+                .until(intakeRoller.getCurrent() > 20).andThen(intakePivot.slap());
+    }
+
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -64,8 +69,8 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
-
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.b().whileTrue(Intake);
+        /*joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
@@ -86,7 +91,7 @@ public class RobotContainer {
 
         joystick.y()
             .whileTrue(intakeRoller.intakeRollers()) // Start rollers while the button is pressed
-            .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released
+            .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released/* */
     }
 
     public Command getAutonomousCommand() {

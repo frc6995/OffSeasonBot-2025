@@ -31,7 +31,7 @@ public class IntakePivotS extends SubsystemBase {
     public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40.0);
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40.0);
 
-    public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 20;
+    public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
 
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
       config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
@@ -67,6 +67,11 @@ public class IntakePivotS extends SubsystemBase {
 
   public Command slapDown() {
     return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
+        .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 50);
+  }
+
+  public Command slapUp() {
+    return voltage(IntakePivotConstants.INTAKE_PIVOT_UP_VOLTAGE)
         .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 50);
   }
 

@@ -41,6 +41,10 @@ public class IntakeRollerS extends SubsystemBase {
         return run(() -> intakeRollersMotor.setVoltage(0)); // Set voltage to 0 to stop the rollers
     }
 
+    public double getCurrent() {
+        return intakeRollersMotor.getStatorCurrent.getValueAsDouble();
+    }
+
     @Override
     public void periodic() {
         // runs once every update cycle
