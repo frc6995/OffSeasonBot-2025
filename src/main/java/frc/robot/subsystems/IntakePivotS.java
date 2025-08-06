@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.function.DoubleSupplier;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Degrees;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -15,6 +16,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -26,10 +28,10 @@ public class IntakePivotS extends SubsystemBase {
     public static final double INTAKE_PIVOT_UP_VOLTAGE = 2.0; // Voltage to move the intake pivot up
     public static final double INTAKE_PIVOT_DOWN_VOLTAGE = -2.0; // Voltage to move the intake pivot down
 
-    public static final double FORWARD_SOFT_LIMIT = Units.degreesToRotations(40.0);
-    public static final double REVERSE_SOFT_LIMIT = Units.degreesToRotations(-40.0);
+    public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40.0);
+    public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40.0);
 
-    public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 60;
+    public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 20;
 
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
       config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
