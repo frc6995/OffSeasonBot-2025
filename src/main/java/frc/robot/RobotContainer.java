@@ -85,7 +85,7 @@ public class RobotContainer {
         joystick.x().whileTrue(intakePivot.slapDown());
 
         joystick.y()
-            .whileTrue(intakeRoller.startRollers()) // Start rollers while the button is pressed
+            .whileTrue(intakeRoller.intakeRollers()) // Start rollers while the button is pressed
             .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released
     }
 
