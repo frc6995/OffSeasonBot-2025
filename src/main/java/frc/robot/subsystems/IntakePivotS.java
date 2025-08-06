@@ -32,7 +32,7 @@ public class IntakePivotS extends SubsystemBase {
   private final TalonFXConfiguration motorConfigs = new TalonFXConfiguration();
 
   public IntakePivotS() {
-    
+
     setMotorConfigs();
     IntakePivotMotor.getConfigurator().apply(motorConfigs);
   
@@ -43,6 +43,8 @@ public class IntakePivotS extends SubsystemBase {
   private void setMotorConfigs() {
     motorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = IntakePivotConstants.FORWARD_SOFT_LIMIT;
     motorConfigs.SoftwareLimitSwitch.ReverseSoftLimitThreshold = IntakePivotConstants.REVERSE_SOFT_LIMIT;
+    motorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    motorConfigs.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
   }
 
   public Command voltage(double voltage) {
