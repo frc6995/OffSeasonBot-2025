@@ -2,10 +2,13 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import static edu.wpi.first.units.Units.Amps;
+
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.StatusSignal;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -26,25 +29,34 @@ public class IntakePivotS extends SubsystemBase {
     public static final double FORWARD_SOFT_LIMIT = Units.degreesToRotations(40.0);
     public static final double REVERSE_SOFT_LIMIT = Units.degreesToRotations(-40.0);
 
+    public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 60;
+
+    private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
+      config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
+          .withInverted(InvertedValue.CounterClockwise_Positive);
+      config.SoftwareLimitSwitch
+          .withForwardSoftLimitEnable(true)
+          .withForwardSoftLimitThreshold(FORWARD_SOFT_LIMIT)
+          .withReverseSoftLimitEnable(true)
+          .withReverseSoftLimitThreshold(REVERSE_SOFT_LIMIT);
+      config.CurrentLimits.withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(Amps.of(50));
+      config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_PIVOT_ROTATION);
+
+      return config;
+    }
+
   }
 
   private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID);
-  private final TalonFXConfiguration motorConfigs = new TalonFXConfiguration();
 
   public IntakePivotS() {
 
-    setMotorConfigs();
-    IntakePivotMotor.getConfigurator().apply(motorConfigs);
-  
+    var config = new TalonFXConfiguration();
+    IntakePivotMotor.getConfigurator().refresh(config);
+    IntakePivotMotor.getConfigurator().apply(IntakePivotConstants.configureMotor(config));
+
     setDefaultCommand(stop());
 
-  }
-
-  private void setMotorConfigs() {
-    motorConfigs.SoftwareLimitSwitch.ForwardSoftLimitThreshold = IntakePivotConstants.FORWARD_SOFT_LIMIT;
-    motorConfigs.SoftwareLimitSwitch.ReverseSoftLimitThreshold = IntakePivotConstants.REVERSE_SOFT_LIMIT;
-    motorConfigs.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    motorConfigs.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
   }
 
   public Command voltage(double voltage) {
