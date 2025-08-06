@@ -65,7 +65,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.a().whileTrue(L1Score());
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
@@ -89,6 +89,9 @@ public class RobotContainer {
             .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released
     }
 
+    public Command L1Score() {
+        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
+    }
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
     }
