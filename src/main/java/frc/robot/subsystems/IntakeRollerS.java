@@ -1,7 +1,19 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.*;
+import com.ctre.phoenix6.hardware.*;
+import com.ctre.phoenix6.signals.*;
+import com.ctre.phoenix6.swerve.*;
+import com.ctre.phoenix6.swerve.SwerveModuleConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -9,10 +21,12 @@ import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 
 public class IntakeRollerS extends SubsystemBase  {
 
+
+
     public class IntakeRollersConstants {
 
-        public static final int INTAKE_ROLLER_MOTOR_CAN_ID = 41; 
-        public static final double INTAKE_ROLLER_IN_VOLTAGE = 0.5; // Voltage to move the intake rollers in
+        public static final int INTAKE_ROLLER_MOTOR_CAN_ID = 42; 
+        public static final double INTAKE_ROLLER_IN_VOLTAGE = 6; // Voltage to move the intake rollers in
         public static final double INTAKE_ROLLER_OUT_VOLTAGE = -0.5; // Voltage to move the intake rollers out
 
          
@@ -20,7 +34,8 @@ public class IntakeRollerS extends SubsystemBase  {
     // Define motors, sensors, and other components here
     // private final CANSparkMax rollerMotor = new CANSparkMax(Constants.ROLLER_MOTOR_ID, MotorType.kBrushless);
     // private final DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_ID);
-    private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID);
+    private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID, "Swerve");
+    
 
     public IntakeRollerS() {
         // Initialize motors and sensors
@@ -49,5 +64,5 @@ public class IntakeRollerS extends SubsystemBase  {
     }
 
     // Define methods to control the roller system, e.g., start, stop, check status, etc.
-    
+
 }
