@@ -18,6 +18,7 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstants.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
+import frc.robot.generated.TunerConstants; 
 
 public class IntakeRollerS extends SubsystemBase  {
 
@@ -32,9 +33,8 @@ public class IntakeRollerS extends SubsystemBase  {
          
      }
     // Define motors, sensors, and other components here
-    // private final CANSparkMax rollerMotor = new CANSparkMax(Constants.ROLLER_MOTOR_ID, MotorType.kBrushless);
-    // private final DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_ID);
-    private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID, "Swerve");
+
+    private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID, TunerConstants.kCANBus);
     
 
     public IntakeRollerS() {
