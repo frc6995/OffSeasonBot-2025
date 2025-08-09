@@ -46,11 +46,6 @@ public class RobotContainer {
         configureBindings();
     }
 
-    public Command Intake() {
-        return parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
-                .until(intakeRoller.getCurrent() > 20).andThen(intakePivot.slap());
-    }
-
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -72,7 +67,7 @@ public class RobotContainer {
 
         joystick.a().whileTrue(L1Score());
 
-        joystick.b().whileTrue(Intake);
+        joystick.b().whileTrue(Intake());
         /*joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         l1-score-and-intake-merge
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
@@ -101,6 +96,12 @@ public class RobotContainer {
     public Command L1Score() {
         return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
     }
+
+    public Command Intake() {
+        return Commands.parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
+                .until(()->intakeRoller.getCurrent() > 20).andThen(intakePivot.slapUp());
+    }
+
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
     }

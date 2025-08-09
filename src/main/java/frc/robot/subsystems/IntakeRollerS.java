@@ -15,7 +15,7 @@ public class IntakeRollerS extends SubsystemBase {
         public static final double INTAKE_ROLLER_IN_VOLTAGE = 0.5; // Voltage to move the intake rollers in
         public static final double INTAKE_ROLLER_OUT_VOLTAGE = -1.0;
 
-
+    }
     private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID);
 
     public IntakeRollerS() {
@@ -43,9 +43,10 @@ public class IntakeRollerS extends SubsystemBase {
 
     public Command ejectL1Coral() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
+    }
 
     public double getCurrent() {
-        return intakeRollersMotor.getStatorCurrent.getValueAsDouble();
+        return intakeRollersMotor.getStatorCurrent().getValueAsDouble();
 
     }
 
