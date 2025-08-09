@@ -66,8 +66,14 @@ public class IntakePivotS extends SubsystemBase {
   }
 
   public Command slapDown() {
+
     return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
         .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 50);
+   }
+  public Command dropTillStall() {
+    return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
+        .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 20);
+
   }
 
   public Command slapUp() {
