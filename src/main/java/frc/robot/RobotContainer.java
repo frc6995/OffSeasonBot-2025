@@ -47,8 +47,8 @@ public class RobotContainer {
     }
 
     public Command Intake() {
-        return parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
-                .until(intakeRoller.getCurrent() > 20).andThen(intakePivot.slap());
+        return Commands.parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
+                .until(() -> intakeRoller.getCurrent() > 40).andThen(intakePivot.slapUp());
     }
 
     private void configureBindings() {
@@ -69,7 +69,7 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
-        joystick.b().whileTrue(Intake);
+        joystick.b().whileTrue(Intake());
         /*joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
