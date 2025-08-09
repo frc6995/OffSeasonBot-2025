@@ -42,7 +42,7 @@ public class IntakeRollerS extends SubsystemBase {
     }
 
     public double getCurrent() {
-        return intakeRollersMotor.getStatorCurrent.getValueAsDouble();
+        return intakeRollersMotor.getStatorCurrent().getValueAsDouble();
     }
 
     @Override
