@@ -34,7 +34,7 @@ public class IntakeRollerS extends SubsystemBase  {
      }
     // Define motors, sensors, and other components here
 
-    private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID, TunerConstants.kCANBus);
+    private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID, TunerConstants.kCANBus2);
     
 
     public IntakeRollerS() {

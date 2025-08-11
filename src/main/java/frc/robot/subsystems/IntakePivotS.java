@@ -13,6 +13,7 @@ import com.ctre.phoenix6.controls.VoltageOut;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.generated.TunerConstants;
 
 public class IntakePivotS extends SubsystemBase {
 
@@ -27,7 +28,7 @@ public class IntakePivotS extends SubsystemBase {
     // private final CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
     // private final DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_ID);
 
-    private final TalonFX inPivMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID);
+    private final TalonFX inPivMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID, TunerConstants.kCANBus2);
 
 
     public IntakePivotS() {
