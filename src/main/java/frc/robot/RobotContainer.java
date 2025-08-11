@@ -95,7 +95,7 @@ public class RobotContainer {
     }
 
     public Command L1Score() {
-        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
+        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral(), intakePivot.slapUp());
     }
 
     public Command Intake() {
