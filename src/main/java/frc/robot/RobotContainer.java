@@ -45,8 +45,8 @@ public class RobotContainer {
     public RobotContainer() {
         configureBindings();
     }
-
-    private void configureBindings() {
+    
+       private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -65,7 +65,12 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.a().whileTrue(L1Score());
+
+
+        joystick.b().whileTrue(Intake());
+        /*joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        l1-score-and-intake-merge
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
@@ -85,8 +90,17 @@ public class RobotContainer {
         joystick.x().whileTrue(intakePivot.slapDown());
 
         joystick.y()
-            .whileTrue(intakeRoller.startRollers()) // Start rollers while the button is pressed
-            .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released
+            .whileTrue(intakeRoller.intakeRollers()) // Start rollers while the button is pressed
+            .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released/* */
+    }
+
+    public Command L1Score() {
+        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
+    }
+
+    public Command Intake() {
+        return Commands.parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
+                .until(()->intakeRoller.getCurrent() > 20).andThen(intakePivot.slapUp());
     }
 
     public Command getAutonomousCommand() {
