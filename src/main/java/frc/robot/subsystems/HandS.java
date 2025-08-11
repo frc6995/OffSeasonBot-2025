@@ -11,6 +11,7 @@ public class HandS extends SubsystemBase {
         // Initialize motors and sensors
         // handMotor.setIdleMode(IdleMode.kBrake);
     }
+    
 
     @Override
     public void periodic() {
