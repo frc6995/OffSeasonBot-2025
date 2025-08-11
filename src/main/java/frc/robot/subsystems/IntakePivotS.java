@@ -19,6 +19,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.generated.TunerConstants;
 
 public class IntakePivotS extends SubsystemBase {
 
@@ -32,6 +33,7 @@ public class IntakePivotS extends SubsystemBase {
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40.0);
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
+
 
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
       config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
@@ -49,7 +51,7 @@ public class IntakePivotS extends SubsystemBase {
 
   }
 
-  private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID);
+private final TalonFX inPivMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID, TunerConstants.kCANBus2);
 
   public IntakePivotS() {
 
