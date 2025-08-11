@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IntakePivotS;
+import frc.robot.subsystems.IntakeRollerS;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -32,15 +34,19 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    public static final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+    public final IntakePivotS intakePivot = new IntakePivotS();
+
+    public final IntakeRollerS intakeRoller = new IntakeRollerS();
 
     public RobotContainer() {
         configureBindings();
     }
-
-    private void configureBindings() {
+    
+       private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -59,7 +65,12 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.a().whileTrue(L1Score());
+
+
+        joystick.b().whileTrue(Intake());
+        /*joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        l1-score-and-intake-merge
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
@@ -75,6 +86,21 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        joystick.x().whileTrue(intakePivot.slapDown());
+
+        joystick.y()
+            .whileTrue(intakeRoller.intakeRollers()) // Start rollers while the button is pressed
+            .onFalse(intakeRoller.stopRollers());   // Stop rollers when the button is released/* */
+    }
+
+    public Command L1Score() {
+        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
+    }
+
+    public Command Intake() {
+        return Commands.parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
+                .until(()->intakeRoller.getCurrent() > 20).andThen(intakePivot.slapUp());
     }
 
     public Command getAutonomousCommand() {
