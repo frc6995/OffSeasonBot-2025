@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.StatusSignal;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 
 import edu.wpi.first.math.util.Units;
@@ -43,6 +44,10 @@ public class IntakePivotS extends SubsystemBase {
           .withReverseSoftLimitThreshold(REVERSE_SOFT_LIMIT);
       config.CurrentLimits.withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(Amps.of(50));
       config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_PIVOT_ROTATION);
+      config.Slot0
+        .withKP(2)
+        .withKI(0.001)
+        .withKD(0.05);
 
       return config;
     }
@@ -51,12 +56,15 @@ public class IntakePivotS extends SubsystemBase {
 
   private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID);
 
+  private final PositionVoltage positionRequest;
+
   public IntakePivotS() {
 
     var config = new TalonFXConfiguration();
     IntakePivotMotor.getConfigurator().refresh(config);
     IntakePivotMotor.getConfigurator().apply(IntakePivotConstants.configureMotor(config));
 
+    positionRequest = new PositionVoltage(0);
     setDefaultCommand(stop());
 
   }
@@ -70,6 +78,12 @@ public class IntakePivotS extends SubsystemBase {
     return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
         .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 50);
    }
+
+  public Command moveToPosition(double degrees) {
+    double rotations = Units.degreesToRotations(degrees);
+    return run(() -> IntakePivotMotor.setControl(positionRequest.withPosition(rotations)));
+
+  }
   public Command dropTillStall() {
     return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
         .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 20);

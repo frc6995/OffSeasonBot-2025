@@ -66,8 +66,6 @@ public class RobotContainer {
         );
 
         joystick.a().whileTrue(L1Score());
-
-
         joystick.b().whileTrue(Intake());
         /*joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         l1-score-and-intake-merge
