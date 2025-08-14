@@ -51,7 +51,7 @@ public class IntakePivotS extends SubsystemBase {
 
   }
 
-private final TalonFX inPivMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID, TunerConstants.kCANBus2);
+private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID, TunerConstants.kCANBus2);
 
   public IntakePivotS() {
 
