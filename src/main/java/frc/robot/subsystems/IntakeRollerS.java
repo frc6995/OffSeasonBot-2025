@@ -16,6 +16,7 @@ import com.ctre.phoenix6.swerve.*;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.generated.TunerConstants; 
@@ -48,18 +49,21 @@ public class IntakeRollerS extends SubsystemBase {
         return run(() -> intakeRollersMotor.setVoltage(voltage));
     }
 
-    public Command intakeRollers() {
-        return race(
-            setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE).until(
-            sequence(
-                wait(250),
-                intakeRollersMotor.getStatorCurrent().getValueAsDouble() > 30))
-        );
+    public Command intakeRollersStart() {
+        return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
+        .withTimeout(0.5);
  
-        
     }
 
+    public Command intakeRollersUntilStop() {
+        return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
+        .until(() -> intakeRollersMotor.getStatorCurrent().getValueAsDouble() > 30);
+    }
 
+    public Command coralIntake() {
+        return Commands.sequence(intakeRollersStart(), intakeRollersUntilStop());
+
+    }
 
     public Command outTakeRollers() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
