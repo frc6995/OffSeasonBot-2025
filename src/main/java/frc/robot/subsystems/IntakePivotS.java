@@ -26,11 +26,11 @@ public class IntakePivotS extends SubsystemBase {
   public class IntakePivotConstants {
 
     public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 40;
-    public static final double INTAKE_PIVOT_UP_VOLTAGE = 2.0; // Voltage to move the intake pivot up
-    public static final double INTAKE_PIVOT_DOWN_VOLTAGE = -2.0; // Voltage to move the intake pivot down
+    public static final double INTAKE_PIVOT_UP_VOLTAGE = -2.5; // Voltage to move the intake pivot up
+    public static final double INTAKE_PIVOT_DOWN_VOLTAGE = 2.5; // Voltage to move the intake pivot down
 
-    public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40.0);
-    public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40.0);
+    public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40000.0);
+    public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
 
@@ -44,7 +44,7 @@ public class IntakePivotS extends SubsystemBase {
           .withReverseSoftLimitEnable(true)
           .withReverseSoftLimitThreshold(REVERSE_SOFT_LIMIT);
       config.CurrentLimits.withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(Amps.of(50));
-      config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_PIVOT_ROTATION);
+    config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_PIVOT_ROTATION);
 
       return config;
     }

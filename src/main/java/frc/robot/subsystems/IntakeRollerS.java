@@ -27,8 +27,8 @@ public class IntakeRollerS extends SubsystemBase {
     public class IntakeRollersConstants {
 
         public static final int INTAKE_ROLLER_MOTOR_CAN_ID = 41; 
-        public static final double INTAKE_ROLLER_IN_VOLTAGE = 6; // Voltage to move the intake rollers in
-        public static final double INTAKE_ROLLER_OUT_VOLTAGE = -0.5; // Voltage to move the intake rollers out
+        public static final double INTAKE_ROLLER_IN_VOLTAGE = -6; // Voltage to move the intake rollers in
+        public static final double INTAKE_ROLLER_OUT_VOLTAGE = 6; // Voltage to move the intake rollers out
 
          
      }
@@ -49,8 +49,17 @@ public class IntakeRollerS extends SubsystemBase {
     }
 
     public Command intakeRollers() {
-        return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE);
+        return race(
+            setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE).until(
+            sequence(
+                wait(250),
+                intakeRollersMotor.getStatorCurrent().getValueAsDouble() > 30))
+        );
+ 
+        
     }
+
+
 
     public Command outTakeRollers() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);

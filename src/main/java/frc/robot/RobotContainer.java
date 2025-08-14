@@ -12,6 +12,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -65,10 +66,10 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        joystick.a().whileTrue(L1Score());
-
-
-        joystick.b().whileTrue(Intake());
+        joystick.a().onTrue(IntakeRollersCommand());
+        joystick.x().whileTrue(intakePivot.slapDown());
+        joystick.y().whileTrue(intakePivot.slapUp());
+        joystick.b().whileTrue(intakeRoller.outTakeRollers());
         /*joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         l1-score-and-intake-merge
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
@@ -100,7 +101,13 @@ public class RobotContainer {
 
     public Command Intake() {
         return Commands.parallel(intakePivot.slapDown(),intakeRoller.intakeRollers())
-                .until(()->intakeRoller.getCurrent() > 20).andThen(intakePivot.slapUp());
+                .until(()->intakeRoller.getCurrent() > 10).andThen(intakePivot.slapUp());
+    }
+
+    public Command IntakeRollersCommand() {
+        return(
+            new ScheduleCommand(intakeRoller.intakeRollers()));
+        
     }
 
     public Command getAutonomousCommand() {
