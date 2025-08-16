@@ -37,12 +37,29 @@ public class IntakeRollerS extends SubsystemBase {
 
     private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID, TunerConstants.kCANBus2);
     
+    private final CurrentLimitsConfigs currentLimits = new CurrentLimitsConfigs();
 
 
     public IntakeRollerS() {
         // Initialize motors and sensors
         intakeRollersMotor.getConfigurator().apply(new TalonFXConfiguration());
+         
+        TalonFXConfiguration toConfigure = new TalonFXConfiguration();
+          
+         currentLimits.withSupplyCurrentLimit(Amps.of(40))
+         .withSupplyCurrentLimitEnable(true); 
+         
+         currentLimits.withStatorCurrentLimit(Amps.of(40))
+         .withStatorCurrentLimitEnable(true); 
+
+         toConfigure.CurrentLimits = currentLimits;
+
+        intakeRollersMotor.getConfigurator().apply(toConfigure);
+
+
+
         setDefaultCommand(stopRollers());
+
     }
 
     public Command setRollerVoltage(double voltage) {
