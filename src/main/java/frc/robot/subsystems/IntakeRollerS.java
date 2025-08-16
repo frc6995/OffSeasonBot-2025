@@ -51,13 +51,13 @@ public class IntakeRollerS extends SubsystemBase {
 
     public Command intakeRollersStart() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
-        .withTimeout(0.5);
+        .withTimeout(0.15);
  
     }
 
     public Command intakeRollersUntilStop() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
-        .until(() -> intakeRollersMotor.getStatorCurrent().getValueAsDouble() > 30);
+        .until(() -> intakeRollersMotor.getStatorCurrent().getValueAsDouble() > 50);
     }
 
     public Command coralIntake() {
