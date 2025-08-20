@@ -99,6 +99,7 @@ public static final double targetAngle = 0.0; // Initialized to a default value 
     
       }
     
+
       public Command voltage(double voltage) {
         return run(() -> IntakePivotMotor.setVoltage(voltage));
       }
@@ -121,6 +122,13 @@ public static final double targetAngle = 0.0; // Initialized to a default value 
     
       public Command stop() {
         return voltage(0);
+      }
+
+      public Command moveToAngle(double angle) {
+        return run(() -> {
+          /// blah blah blah move arm logic
+          IntakePivotMotor.setArmTargetAngle(targetAngle);
+        });
       }
     
     
@@ -149,8 +157,9 @@ public static final double targetAngle = 0.0; // Initialized to a default value 
         positionRequest.withPosition(targetRotations);
         IntakePivotMotor.setControl(positionRequest);
       }
+    
 
-        public void setArmTargetAngle(double angleRadians) {
+      public void setArmTargetAngle(double angleRadians) {
           // Convert the target angle (radians) to TalonFX position units (rotations)
           double targetAngle = angleRadians;
       }
@@ -168,12 +177,17 @@ public static final double targetAngle = 0.0; // Initialized to a default value 
 
                     double targetPositionRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI) * IntakePivotConstants.kArmGearRatio;
           return Math.abs(currentPositionRotations - targetPositionRotations) < IntakePivotConstants.kArmPositionToleranceRotations;
+       
+     
       }
-  }
+    }
+    
+    
 
-       @Override
-        public void initialize() {
-          arm.setArmTargetAngle(targetAngle);
-  }
+    
 
-}
+  
+    
+
+      
+
