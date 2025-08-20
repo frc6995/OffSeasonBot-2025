@@ -57,11 +57,11 @@ public static final double targetAngle = 0.0; // Initialized to a default value 
 
 
 
-    private final static ArmFeedforward intakeFeedforward = new ArmFeedforward(
+    private static final ArmFeedforward intakeFeedforward = new ArmFeedforward(
                 kArmS, kArmG, kArmV, kArmA);
-        private final PositionTorqueCurrentFOC positionRequest = new PositionTorqueCurrentFOC(0); // Initialize with a target
+    public static final PositionTorqueCurrentFOC positionRequest = new PositionTorqueCurrentFOC(0); // Initialize with a target
     
-    
+
     
         private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
           config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
@@ -127,7 +127,7 @@ public static final double targetAngle = 0.0; // Initialized to a default value 
       public Command moveToAngle(double angle) {
         return run(() -> {
           /// blah blah blah move arm logic
-          IntakePivotMotor.setArmTargetAngle(targetAngle);
+          setArmTargetAngle(targetAngle);
         });
       }
     
@@ -148,20 +148,20 @@ public static final double targetAngle = 0.0; // Initialized to a default value 
                 armAngleRadians, 0.0, 0.0); // Desired velocity and acceleration are 0 for gravity comp
 
         // Update the arbitrary feedforward in the control request
-        PositionTorqueCurrentFOC positionRequest;
-        positionRequest.withFeedForward(feedforwardVoltage / IntakePivotConstants.kArmMaxVoltage); // Scale to [-1, 1]
+
+        IntakePivotConstants.positionRequest.withFeedForward(feedforwardVoltage / IntakePivotConstants.kArmMaxVoltage); // Scale to [-1, 1]
 
         // Set the control request with the target position and feedforward
         // Target position is in rotations, so convert from targetAngle (radians)
         double targetRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI) * IntakePivotConstants.kArmGearRatio;
-        positionRequest.withPosition(targetRotations);
-        IntakePivotMotor.setControl(positionRequest);
+        IntakePivotConstants.positionRequest.withPosition(targetRotations);
+        IntakePivotMotor.setControl(IntakePivotConstants.positionRequest);
       }
     
 
       public void setArmTargetAngle(double angleRadians) {
           // Convert the target angle (radians) to TalonFX position units (rotations)
-          double targetAngle = angleRadians;
+          targetAngle = angleRadians;
       }
   
       public double getArmAngleRadians() {
