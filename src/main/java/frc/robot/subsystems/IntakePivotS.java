@@ -28,6 +28,7 @@ import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 
 public class IntakePivotS extends SubsystemBase {
 
+  //Primary constants:
   public class IntakePivotConstants {
 
     public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 40;
@@ -81,6 +82,7 @@ public class IntakePivotS extends SubsystemBase {
     }
   }
 
+  //Other constants
   private double targetAngle = IntakePivotConstants.targetAngle; // Default target angle from constants
 
   double feedforwardVoltage;
@@ -88,6 +90,7 @@ public class IntakePivotS extends SubsystemBase {
   private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID,
       TunerConstants.kCANBus2);
 
+  //set initiall configurations/values
   public IntakePivotS() {
 
     var config = new TalonFXConfiguration();
@@ -100,6 +103,7 @@ public class IntakePivotS extends SubsystemBase {
 
   }
 
+  //Commands:
   public Command voltage(double voltage) {
     return run(() -> IntakePivotMotor.setVoltage(voltage));
   }
@@ -136,6 +140,7 @@ public class IntakePivotS extends SubsystemBase {
     });
   }
 
+  //Periodic:
   @Override
   public void periodic() {
 
@@ -165,6 +170,7 @@ public class IntakePivotS extends SubsystemBase {
     IntakePivotMotor.setControl(IntakePivotConstants.positionRequest);
   }
 
+  //Methods:
   public void setArmTargetAngle(double angleRadians) {
     // Convert the target angle (radians) to TalonFX position units (rotations)
     targetAngle = angleRadians;
