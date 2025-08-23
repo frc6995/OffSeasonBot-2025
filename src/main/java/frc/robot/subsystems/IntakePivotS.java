@@ -56,8 +56,6 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmPositionToleranceRotations = 0.01; // Tolerance for position control in rotations
     public static final double targetAngle = 0.0; // Initialized to a default value (e.g., 0 radians)
 
-    public static PositionVoltage m_profileReq = new PositionVoltage(0);
-
     private static final ArmFeedforward intakeFeedforward = new ArmFeedforward(
         kArmS, kArmG, kArmV, kArmA);
     public static final PositionTorqueCurrentFOC positionRequest = new PositionTorqueCurrentFOC(0); // Initialize with a target
