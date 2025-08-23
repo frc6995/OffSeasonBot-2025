@@ -17,6 +17,8 @@ import com.ctre.phoenix6.controls.VoltageOut;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.generated.TunerConstants;
@@ -53,6 +55,8 @@ public class IntakePivotS extends SubsystemBase {
 
 private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID, TunerConstants.kCANBus2);
 
+public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d("Intake", 1, 0); 
+
   public IntakePivotS() {
 
     var config = new TalonFXConfiguration();
@@ -75,7 +79,6 @@ private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE
   public Command dropTillStall() {
     return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
         .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 20);
-
   }
 
   public Command slapUp() {

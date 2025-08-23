@@ -10,6 +10,8 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -21,6 +23,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakeRollerS;
+
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -42,10 +45,16 @@ public class RobotContainer {
     public final IntakePivotS intakePivot = new IntakePivotS();
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
-
+    
+    private Mechanism2d VISUALIZER; 
+     
     public RobotContainer() {
+        VISUALIZER = logger.MECH_VISUALIZER; 
+        logger.addIntake(intakePivot.IntakePivotVisualizer);
         configureBindings();
+        SmartDashboard.putData("Visualzer", VISUALIZER);
     }
+   
     
        private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
