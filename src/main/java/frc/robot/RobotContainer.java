@@ -45,9 +45,8 @@ public class RobotContainer {
     public RobotContainer() {
         configureBindings();
     }
-
-
-    private void configureBindings() {
+    
+       private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -96,7 +95,7 @@ public class RobotContainer {
     }
 
     public Command L1Score() {
-        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
+        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral(), intakePivot.slapUp());
     }
 
     public Command Intake() {
