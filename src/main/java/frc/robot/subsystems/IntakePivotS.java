@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Radians;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -17,6 +18,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
@@ -50,7 +52,7 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmA = 0.0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
 
-    public static final double kArmOffset = Math.toRadians(90.0); // Offset to measure angle from horizontal
+    public static final double kArmOffset = Math.toRadians(-84.5);
     // Constants for the Kraken motor encoder
     public static final double kEncoderTicksPerRevolution = 2048.0; // Kraken X60 built-in encoder resolution
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
@@ -111,7 +113,6 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   }
 
   public Command slapDown() {
-
     return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
         .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 50);
   }
@@ -145,6 +146,8 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   @Override
   public void periodic() {
 
+   
+
     // Get the current arm angle from the encoder (Kraken's position is in rotations)
     double encoderRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
 
@@ -152,6 +155,8 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     // (encoder_rotations / ratio) * (2 * pi)
     double armAngleRadians = (encoderRotations / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI
         + IntakePivotConstants.kArmOffset;
+
+    IntakePivotVisualizer.setAngle(new Rotation2d(Radians.of(armAngleRadians)));
 
     // Calculate the feedforward voltage for gravity compensation
     // The current arm angle is used for feedforward, as it's the most accurate representation
