@@ -110,6 +110,7 @@ public class RobotContainer {
          * .onFalse(intakeRoller.stopRollers()); // Stop rollers when the button is
          * released/*
          */
+        drivetrain.registerTelemetry(logger::telemeterize);
     }
 
 
