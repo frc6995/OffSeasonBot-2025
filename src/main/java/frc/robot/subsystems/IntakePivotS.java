@@ -12,6 +12,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusSignal;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -20,10 +21,12 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,13 +44,14 @@ public class IntakePivotS extends SubsystemBase {
 
     public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40000.0);
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
+    public static final Angle SOME_ANGLE = Degrees.of(10);
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
     public static final double kArmP = 0.5; // Talon FX PID P gain (tune this)
     public static final double kArmI = 0.0; // Talon FX PID I gain (tune this)
     public static final double kArmD = 0.0; // Talon FX PID D gain (tune this)
     public static final double kArmS = 0.1; // Feedforward Static gain (tune this)
-    public static final double kArmG = 0.75; // Feedforward Gravity gain (tune this)
+    public static final double kArmG = 2; // Feedforward Gravity gain (tune this)
     public static final double kArmV = 1.0; // Feedforward Velocity gain (tune this)
     public static final double kArmA = 0.0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
@@ -85,7 +89,7 @@ public class IntakePivotS extends SubsystemBase {
   }
 
   //Other constants
-  private double targetAngle = IntakePivotConstants.targetAngle; // Default target angle from constants
+  public double targetAngle = IntakePivotConstants.targetAngle; // Default target angle from constants
 
   double feedforwardVoltage;
 
@@ -105,27 +109,11 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
     setDefaultCommand(hold());
 
+    SignalLogger.start();
+
   }
 
   //Commands:
-  public Command voltage(double voltage) {
-    return run(() -> IntakePivotMotor.setVoltage(voltage));
-  }
-
-  public Command slapDown() {
-    return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
-        .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 50);
-  }
-
-  public Command dropTillStall() {
-    return voltage(IntakePivotConstants.INTAKE_PIVOT_DOWN_VOLTAGE)
-        .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 20);
-  }
-
-  public Command slapUp() {
-    return voltage(IntakePivotConstants.INTAKE_PIVOT_UP_VOLTAGE)
-        .until(() -> IntakePivotMotor.getStatorCurrent().getValueAsDouble() > 50);
-  }
 
   public Command hold() {
     return Commands.sequence(runOnce(() -> targetAngle = getArmAngleRadians()),
@@ -136,7 +124,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
         }));
   }
 
-  public Command moveToAngle(double angle) {
+  public Command moveToAngle(Angle someAngle) {
     return run(() -> {
       setArmTargetAngle(targetAngle);
     });
@@ -146,7 +134,10 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   @Override
   public void periodic() {
 
-   
+    SignalLogger.writeDouble("Intake/TargetAngle", targetAngle);
+
+
+    
 
     // Get the current arm angle from the encoder (Kraken's position is in rotations)
     double encoderRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();

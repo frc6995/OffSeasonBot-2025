@@ -73,8 +73,9 @@ public class RobotContainer {
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
         joystick.a().onTrue(intakeRoller.coralIntake());
-        joystick.x().whileTrue(intakePivot.slapDown());
-        joystick.y().whileTrue(intakePivot.slapUp());
+        joystick.x().whileTrue(intakePivot.moveToAngle(IntakePivotS.IntakePivotConstants.SOME_ANGLE))
+                .onFalse(intakePivot.hold());
+       // joystick.y().whileTrue(intakePivot.slapUp());
         joystick.b().whileTrue(intakeRoller.outTakeRollers());
         /*
          * joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -111,9 +112,7 @@ public class RobotContainer {
          */
     }
 
-    public Command L1Score() {
-        return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
-    }
+
 
     /*
      * public Command Intake() {
