@@ -37,7 +37,7 @@ public class RobotContainer {
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-    public final Telemetry logger = new Telemetry(MaxSpeed);
+    private final Telemetry logger = new Telemetry(MaxSpeed);
 
     public static final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -109,6 +109,7 @@ public class RobotContainer {
          * .onFalse(intakeRoller.stopRollers()); // Stop rollers when the button is
          * released/*
          */
+        drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command L1Score() {
