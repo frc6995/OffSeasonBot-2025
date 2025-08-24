@@ -22,6 +22,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -44,7 +45,7 @@ public class IntakePivotS extends SubsystemBase {
 
     public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40000.0);
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
-    public static final Angle SOME_ANGLE = Degrees.of(10);
+    public static final Angle SOME_ANGLE = Degrees.of(20);
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
     public static final double kArmP = 0.5; // Talon FX PID P gain (tune this)
@@ -62,8 +63,7 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
     public static final double kArmGearRatio = kSensorToMechanismRatio; // For clarity, same as above
     public static final double kArmPositionToleranceRotations = 0.01; // Tolerance for position control in rotations
-    public static final double targetAngle = 0.0; // Initialized to a default value (e.g., 0 radians)
-
+ 
     private static final ArmFeedforward intakeFeedforward = new ArmFeedforward(
         kArmS, kArmG, kArmV, kArmA);
     public static final PositionTorqueCurrentFOC positionRequest = new PositionTorqueCurrentFOC(0); // Initialize with a target
@@ -89,9 +89,11 @@ public class IntakePivotS extends SubsystemBase {
   }
 
   //Other constants
-  public double targetAngle = IntakePivotConstants.targetAngle; // Default target angle from constants
+  public double targetAngle = 0.0;
 
   double feedforwardVoltage;
+
+  private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
   private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID,
       TunerConstants.kCANBus2);
@@ -134,8 +136,8 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   @Override
   public void periodic() {
 
-    SignalLogger.writeDouble("Intake/TargetAngle", targetAngle);
-
+    //SignalLogger.writeDouble("Intake/TargetAngle", targetAngle);
+    SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
 
     
 

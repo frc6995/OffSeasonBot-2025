@@ -73,8 +73,7 @@ public class RobotContainer {
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
         joystick.a().onTrue(intakeRoller.coralIntake());
-        joystick.x().whileTrue(intakePivot.moveToAngle(IntakePivotS.IntakePivotConstants.SOME_ANGLE))
-                .onFalse(intakePivot.hold());
+        joystick.x().whileTrue(intakePivot.moveToAngle(IntakePivotS.IntakePivotConstants.SOME_ANGLE));
        // joystick.y().whileTrue(intakePivot.slapUp());
         joystick.b().whileTrue(intakeRoller.outTakeRollers());
         /*
