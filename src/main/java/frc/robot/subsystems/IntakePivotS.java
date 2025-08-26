@@ -19,6 +19,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
@@ -45,7 +46,7 @@ public class IntakePivotS extends SubsystemBase {
 
     public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40000.0);
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
-    public static final Angle SOME_ANGLE = Degrees.of(20);
+    public static final double SOME_ANGLE = 20;
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
     public static final double kArmP = 0.5; // Talon FX PID P gain (tune this)
@@ -66,7 +67,7 @@ public class IntakePivotS extends SubsystemBase {
  
     private static final ArmFeedforward intakeFeedforward = new ArmFeedforward(
         kArmS, kArmG, kArmV, kArmA);
-    public static final PositionTorqueCurrentFOC positionRequest = new PositionTorqueCurrentFOC(0); // Initialize with a target
+   
 
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
       config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
@@ -89,13 +90,20 @@ public class IntakePivotS extends SubsystemBase {
   }
 
   //Other constants
-  public double targetAngle = 0.0;
+  public static double targetAngle = 0.0;
 
   double feedforwardVoltage;
 
+  private static PIDController m_pidController = 
+  new PIDController(
+      IntakePivotConstants.kArmP,
+      IntakePivotConstants.kArmI,
+      IntakePivotConstants.kArmP
+  );
+
   private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
-  private final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID,
+  private static final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID,
       TunerConstants.kCANBus2);
 
 public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d("Intake", 1, 0); 
@@ -118,17 +126,19 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   //Commands:
 
   public Command hold() {
-    return Commands.sequence(runOnce(() -> targetAngle = getArmAngleRadians()),
-        run(() -> {
-          IntakePivotMotor.setControl(
-              IntakePivotConstants.positionRequest.withPosition(targetAngle).withFeedForward(feedforwardVoltage));
+        return run(() -> {
+          IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(getArmAngleRadians(), feedforwardVoltage)
+          + m_pidController.calculate(getArmAngleRadians()));
 
-        }));
+        });
   }
 
-  public Command moveToAngle(Angle someAngle) {
+  public Command moveToAngle(double someAngle) {
     return run(() -> {
-      setArmTargetAngle(targetAngle);
+      targetAngle = someAngle;
+      IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(someAngle, feedforwardVoltage)
+      + m_pidController.calculate(someAngle));
+    
     });
   }
 
@@ -139,8 +149,8 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     //SignalLogger.writeDouble("Intake/TargetAngle", targetAngle);
     SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
 
-    
 
+    double currentPositionRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
     // Get the current arm angle from the encoder (Kraken's position is in rotations)
     double encoderRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
 
@@ -158,15 +168,17 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     feedforwardVoltage = IntakePivotConstants.intakeFeedforward.calculate(
         armAngleRadians, 0.0, 0.0); // Desired velocity and acceleration are 0 for gravity comp
 
-    // Update the arbitrary feedforward in the control request
-    IntakePivotConstants.positionRequest.withFeedForward(feedforwardVoltage / IntakePivotConstants.kArmMaxVoltage); // Scale to [-1, 1]
+    double pidOutputVolts = m_pidController.calculate(
+          currentPositionRotations, 
+          targetAngle);
 
-    // Set the control request with the target position and feedforward
+    // Update the arbitrary feedforward in the control request
+    double totalOutputVolts = feedforwardVoltage + pidOutputVolts;
+
     // Target position is in rotations, so convert from targetAngle (radians)
     double targetRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI)
         * IntakePivotConstants.kArmGearRatio;
-    IntakePivotConstants.positionRequest.withPosition(targetRotations);
-    IntakePivotMotor.setControl(IntakePivotConstants.positionRequest);
+    IntakePivotMotor.setVoltage(totalOutputVolts);
   }
 
   //Methods:
@@ -180,7 +192,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
         + IntakePivotConstants.kArmOffset;
   }
 
-  public boolean isAtTarget() {
+  public static boolean isAtTarget() {
     // Since onboard PID is used, it is necessary to check if the error is within a
     // tolerance
     // The tolerance value might need adjustment based on the mechanism
