@@ -46,7 +46,7 @@ public class IntakePivotS extends SubsystemBase {
 
     public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(40000.0);
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
-    public static final double SOME_ANGLE = 100;
+    public static final double SOME_ANGLE = 20;
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
     public static final double kArmP = 0.5; // Talon FX PID P gain (tune this)
@@ -58,7 +58,7 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmA = 0.0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
 
-    public static final double kArmOffset = Math.toRadians(136);
+    public static final double kArmOffset = Math.toRadians(-136);
     // Constants for the Kraken motor encoder
     public static final double kEncoderTicksPerRevolution = 2048.0; // Kraken X60 built-in encoder resolution
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
@@ -141,7 +141,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
   public Command moveToAngle(double someAngle) {
     return run(() -> {
-      targetAngle = someAngle;
+      targetAngle = someAngle + IntakePivotConstants.kArmOffset;
       IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(someAngle, feedforwardVoltage)
       + m_pidController.calculate(someAngle));
     
