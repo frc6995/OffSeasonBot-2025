@@ -141,7 +141,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
   public Command moveToAngle(double someAngle) {
     return run(() -> {
-      targetAngle = someAngle + IntakePivotConstants.kArmOffset;
+      targetAngle = someAngle;
       IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(someAngle, feedforwardVoltage)
       + m_pidController.calculate(someAngle));
     
