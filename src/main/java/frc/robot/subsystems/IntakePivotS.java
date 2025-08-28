@@ -58,12 +58,12 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmA = 0.0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
 
-    public static final double kArmOffset = Math.toRadians(-84.5);
+    public static final double kArmOffset = Math.toRadians(-36);
     // Constants for the Kraken motor encoder
     public static final double kEncoderTicksPerRevolution = 2048.0; // Kraken X60 built-in encoder resolution
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
     public static final double kArmGearRatio = kSensorToMechanismRatio; // For clarity, same as above
-    public static final double kArmPositionToleranceRotations = 0.01; // Tolerance for position control in rotations
+    public static final double kArmPositionToleranceDegrees = 1; // Tolerance for position control in rotations
  
     private static final ArmFeedforward intakeFeedforward = new ArmFeedforward(
         kArmS, kArmG, kArmV, kArmA);
@@ -159,7 +159,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     double armAngleRadians = (encoderRotations / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI
         + IntakePivotConstants.kArmOffset;
 
-    IntakePivotVisualizer.setAngle(new Rotation2d(Radians.of(armAngleRadians)));
+    IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(armAngleRadians * 180/Math.PI)));
 
     // Calculate the feedforward voltage for gravity compensation
     // The current arm angle is used for feedforward, as it's the most accurate representation
@@ -201,7 +201,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     double targetPositionRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI)
         * IntakePivotConstants.kArmGearRatio;
     return Math
-        .abs(currentPositionRotations - targetPositionRotations) < IntakePivotConstants.kArmPositionToleranceRotations;
+        .abs(currentPositionRotations - targetPositionRotations) < IntakePivotConstants.kArmPositionToleranceDegrees / 360;
 
   }
 }
