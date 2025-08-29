@@ -55,10 +55,10 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmS = 0.1; // Feedforward Static gain (tune this)
     public static final double kArmG = 2; // Feedforward Gravity gain (tune this)
     public static final double kArmV = 1.0; // Feedforward Velocity gain (tune this)
-    public static final double kArmA = 0.0; // Feedforward Acceleration gain (tune this)
+    public static final double kArmA = 1.0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
 
-    public static final double kArmOffset = Math.toRadians(-172 + (136 * 2));
+    public static final double kArmOffset = Math.toRadians(141);
     // Constants for the Kraken motor encoder
     public static final double kEncoderTicksPerRevolution = 2048.0; // Kraken X60 built-in encoder resolution
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
@@ -71,12 +71,12 @@ public class IntakePivotS extends SubsystemBase {
 
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
       config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
-          .withInverted(InvertedValue.CounterClockwise_Positive);
-      config.SoftwareLimitSwitch
-          .withForwardSoftLimitEnable(true)
-          .withForwardSoftLimitThreshold(FORWARD_SOFT_LIMIT)
-          .withReverseSoftLimitEnable(true)
-          .withReverseSoftLimitThreshold(REVERSE_SOFT_LIMIT);
+          .withInverted(InvertedValue.Clockwise_Positive);
+      //config.SoftwareLimitSwitch
+       //   .withForwardSoftLimitEnable(false)
+        //  .withForwardSoftLimitThreshold(FORWARD_SOFT_LIMIT)
+        //  .withReverseSoftLimitEnable(false)
+        //  .withReverseSoftLimitThreshold(REVERSE_SOFT_LIMIT);
 
       config.CurrentLimits.withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(Amps.of(50));
       config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_PIVOT_ROTATION);
@@ -115,9 +115,9 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
     IntakePivotMotor.getConfigurator().refresh(config);
     IntakePivotMotor.getConfigurator().apply(IntakePivotConstants.configureMotor(config));
-    IntakePivotMotor.setPosition(0.1);
+    IntakePivotMotor.setPosition(IntakePivotConstants.kArmOffset / (2* Math.PI));
 
-    setDefaultCommand(rest());
+    //setDefaultCommand(rest());
 
     SignalLogger.start();
 
@@ -142,9 +142,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   public Command moveToAngle(double someAngle) {
     return run(() -> {
       targetAngle = someAngle;
-      IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(someAngle, feedforwardVoltage)
-      + m_pidController.calculate(someAngle));
-    
+   
     });
   }
 
@@ -154,37 +152,22 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
     //SignalLogger.writeDouble("Intake/TargetAngle", targetAngle);
     SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
+    SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
 
+    IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
+    
+   // Calculate the feedforward voltage for gravity compensation
+      // The current arm angle is used for feedforward, as it's the most accurate representation
+      // The TalonFX handles velocity and acceleration internally with its PID or motion profiling
 
-    double currentPositionRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
-    // Get the current arm angle from the encoder (Kraken's position is in rotations)
-    double encoderRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
+      feedforwardVoltage = IntakePivotConstants.intakeFeedforward.calculate(
+      getArmAngleRadians(), 1, 1); // Desired velocity and acceleration are 0 for gravity comp
 
-    // Convert encoder rotations to radians for the mechanism
-    // (encoder_rotations / ratio) * (2 * pi)
-    double armAngleRadians = (encoderRotations / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI
-        + IntakePivotConstants.kArmOffset;
+      double pidOutputVolts = m_pidController.calculate(getArmAngleRadians(), targetAngle);
+      // Update the arbitrary feedforward in the control request
+      double totalOutputVolts = feedforwardVoltage + pidOutputVolts;
+      IntakePivotMotor.setVoltage(totalOutputVolts);
 
-    IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(armAngleRadians * 180/Math.PI)));
-
-    // Calculate the feedforward voltage for gravity compensation
-    // The current arm angle is used for feedforward, as it's the most accurate representation
-    // The TalonFX handles velocity and acceleration internally with its PID or motion profiling
-
-    feedforwardVoltage = IntakePivotConstants.intakeFeedforward.calculate(
-        armAngleRadians, 0.0, 0.0); // Desired velocity and acceleration are 0 for gravity comp
-
-    double pidOutputVolts = m_pidController.calculate(
-          currentPositionRotations, 
-          targetAngle);
-
-    // Update the arbitrary feedforward in the control request
-    double totalOutputVolts = feedforwardVoltage + pidOutputVolts;
-
-    // Target position is in rotations, so convert from targetAngle (radians)
-    double targetRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI)
-        * IntakePivotConstants.kArmGearRatio;
-    IntakePivotMotor.setVoltage(totalOutputVolts);
   }
 
   //Methods:
@@ -194,8 +177,12 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   }
 
   public double getArmAngleRadians() {
-    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI
-        + IntakePivotConstants.kArmOffset;
+    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI;
+  }
+
+  public double getArmAngleRotations() {
+    double currentPositionRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio;
+    return currentPositionRotations;
   }
 
   public static boolean isAtTarget() {
