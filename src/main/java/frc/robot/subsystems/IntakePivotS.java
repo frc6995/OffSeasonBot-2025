@@ -53,7 +53,7 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmI = 0.0; // Talon FX PID I gain (tune this)
     public static final double kArmD = 0.0; // Talon FX PID D gain (tune this)
     public static final double kArmS = 0.1; // Feedforward Static gain (tune this)
-    public static final double kArmG = 2; // Feedforward Gravity gain (tune this)
+    public static final double kArmG = 4; // Feedforward Gravity gain (tune this)
     public static final double kArmV = 1.0; // Feedforward Velocity gain (tune this)
     public static final double kArmA = 1.0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
@@ -163,7 +163,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
       feedforwardVoltage = IntakePivotConstants.intakeFeedforward.calculate(
       getArmAngleRadians(), 1, 1); // Desired velocity and acceleration are 0 for gravity comp
 
-      double pidOutputVolts = m_pidController.calculate(getArmAngleRadians(), targetAngle);
+      double pidOutputVolts = m_pidController.calculate(getArmAngleRadians(), -1);
       // Update the arbitrary feedforward in the control request
       double totalOutputVolts = feedforwardVoltage + pidOutputVolts;
       IntakePivotMotor.setVoltage(totalOutputVolts);
