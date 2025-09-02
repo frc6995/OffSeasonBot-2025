@@ -90,7 +90,7 @@ public class IntakePivotS extends SubsystemBase {
   }
 
   //Other constants
-  public static double targetAngle = 0.0;
+  public static double targetAngle = 141;
 
   double feedforwardVoltage;
 
@@ -115,7 +115,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
     IntakePivotMotor.getConfigurator().refresh(config);
     IntakePivotMotor.getConfigurator().apply(IntakePivotConstants.configureMotor(config));
-    IntakePivotMotor.setPosition(IntakePivotConstants.kArmOffset / (2* Math.PI));
+    //IntakePivotMotor.setPosition(IntakePivotConstants.kArmOffset / (2* Math.PI));
 
     //setDefaultCommand(rest());
 
@@ -163,7 +163,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
       feedforwardVoltage = IntakePivotConstants.intakeFeedforward.calculate(
       getArmAngleRadians(), 1, 1); // Desired velocity and acceleration are 0 for gravity comp
 
-      double pidOutputVolts = m_pidController.calculate(getArmAngleRadians(), -1);
+      double pidOutputVolts = m_pidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180)) + IntakePivotConstants.kArmOffset);
       // Update the arbitrary feedforward in the control request
       double totalOutputVolts = feedforwardVoltage + pidOutputVolts;
       IntakePivotMotor.setVoltage(totalOutputVolts);
@@ -177,7 +177,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   }
 
   public double getArmAngleRadians() {
-    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI;
+    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI + IntakePivotConstants.kArmOffset;
   }
 
   public double getArmAngleRotations() {
