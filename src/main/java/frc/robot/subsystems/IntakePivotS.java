@@ -49,16 +49,16 @@ public class IntakePivotS extends SubsystemBase {
     public static final double SOME_ANGLE = 20;
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
-    public static final double kArmP = 0.5; // Talon FX PID P gain (tune this)
+    public static final double kArmP = 8; // Talon FX PID P gain (tune this) 6
     public static final double kArmI = 0.0; // Talon FX PID I gain (tune this)
-    public static final double kArmD = 0.0; // Talon FX PID D gain (tune this)
-    public static final double kArmS = 0.1; // Feedforward Static gain (tune this)
-    public static final double kArmG = 4; // Feedforward Gravity gain (tune this)
-    public static final double kArmV = 1.0; // Feedforward Velocity gain (tune this)
-    public static final double kArmA = 1.0; // Feedforward Acceleration gain (tune this)
+    public static final double kArmD = 1; // Talon FX PID D gain (tune this) 0.4
+    public static final double kArmS = -0.05; // Feedforward Static gain (tune this) -0.05
+    public static final double kArmG = 0.9; // Feedforward Gravity gain (tune this)
+    public static final double kArmV = 0; // Feedforward Velocity gain (tune this)
+    public static final double kArmA = 0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
 
-    public static final double kArmOffset = Math.toRadians(141);
+    public static final double kArmOffset = Math.toRadians(136);
     // Constants for the Kraken motor encoder
     public static final double kEncoderTicksPerRevolution = 2048.0; // Kraken X60 built-in encoder resolution
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
@@ -70,7 +70,7 @@ public class IntakePivotS extends SubsystemBase {
    
 
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
-      config.MotorOutput.withNeutralMode(NeutralModeValue.Coast)
+      config.MotorOutput.withNeutralMode(NeutralModeValue.Brake)
           .withInverted(InvertedValue.Clockwise_Positive);
       //config.SoftwareLimitSwitch
        //   .withForwardSoftLimitEnable(false)
@@ -81,9 +81,6 @@ public class IntakePivotS extends SubsystemBase {
       config.CurrentLimits.withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(Amps.of(50));
       config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_PIVOT_ROTATION);
       config.Slot0 = new Slot0Configs();
-      config.Slot0.kP = kArmP;
-      config.Slot0.kI = kArmI;
-      config.Slot0.kD = kArmD;
 
       return config;
     }
@@ -98,7 +95,8 @@ public class IntakePivotS extends SubsystemBase {
   new PIDController(
       IntakePivotConstants.kArmP,
       IntakePivotConstants.kArmI,
-      IntakePivotConstants.kArmP
+      IntakePivotConstants.kArmD
+
   );
 
   private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -153,6 +151,9 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     //SignalLogger.writeDouble("Intake/TargetAngle", targetAngle);
     SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
     SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
+    SmartDashboard.putNumber("supplycurrent", IntakePivotMotor.getSupplyCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("statorcurrent", IntakePivotMotor.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("volage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
 
     IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
     
@@ -160,41 +161,29 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
       // The current arm angle is used for feedforward, as it's the most accurate representation
       // The TalonFX handles velocity and acceleration internally with its PID or motion profiling
 
-      feedforwardVoltage = IntakePivotConstants.intakeFeedforward.calculate(
-      getArmAngleRadians(), 1, 1); // Desired velocity and acceleration are 0 for gravity comp
-
-      double pidOutputVolts = m_pidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180)) + IntakePivotConstants.kArmOffset);
-      // Update the arbitrary feedforward in the control request
-      double totalOutputVolts = feedforwardVoltage + pidOutputVolts;
-      IntakePivotMotor.setVoltage(totalOutputVolts);
-
+      IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(
+      getArmAngleRadians(), 1, 1) +
+    m_pidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
   }
+ 
 
   //Methods:
-  public void setArmTargetAngle(double angleRadians) {
-    // Convert the target angle (radians) to TalonFX position units (rotations)
-    targetAngle = angleRadians;
-  }
 
   public double getArmAngleRadians() {
-    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI + IntakePivotConstants.kArmOffset;
+    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI;
   }
 
-  public double getArmAngleRotations() {
-    double currentPositionRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio;
-    return currentPositionRotations;
-  }
 
-  public static boolean isAtTarget() {
+////public static boolean isAtTarget() {
     // Since onboard PID is used, it is necessary to check if the error is within a
     // tolerance
     // The tolerance value might need adjustment based on the mechanism
-    double currentPositionRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
+   // double currentPositionRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
 
-    double targetPositionRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI)
-        * IntakePivotConstants.kArmGearRatio;
-    return Math
-        .abs(currentPositionRotations - targetPositionRotations) < IntakePivotConstants.kArmPositionToleranceDegrees / 360;
+   //// double targetPositionRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI)
+   //     * IntakePivotConstants.kArmGearRatio;
+    //return Math
+    //    .abs(currentPositionRotations - targetPositionRotations) < IntakePivotConstants.kArmPositionToleranceDegrees / 360;
 
-  }
+ // }
 }
