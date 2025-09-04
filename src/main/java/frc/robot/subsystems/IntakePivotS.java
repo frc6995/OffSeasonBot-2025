@@ -47,6 +47,9 @@ public class IntakePivotS extends SubsystemBase {
     public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(4000.0);
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
     public static final double SOME_ANGLE = 20;
+    public static final double DOWN_ANGLE = -23;
+    public static final double L1_ANGLE = 45;
+    public static final double HANDOFF_ANGLE = 135;
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
     public static final double kArmP = 8; // Talon FX PID P gain (tune this) 6

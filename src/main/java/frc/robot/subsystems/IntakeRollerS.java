@@ -38,6 +38,9 @@ public class IntakeRollerS extends SubsystemBase {
     public IntakeRollerS() {
         // Initialize motors and sensors
         intakeRollersMotor.getConfigurator().apply(new TalonFXConfiguration());
+        intakeRollersMotor.getConfigurator().apply(new MotorOutputConfigs() {
+        });
+        
         setDefaultCommand(stopRollers());
     }
 
@@ -53,7 +56,7 @@ public class IntakeRollerS extends SubsystemBase {
 
     public Command intakeRollersUntilStop() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
-                .until(() -> intakeRollersMotor.getStatorCurrent().getValueAsDouble() > 50);
+                .until(() -> intakeRollersMotor.getStatorCurrent().getValueAsDouble() > 30);
     }
 
     public Command coralIntake() {
