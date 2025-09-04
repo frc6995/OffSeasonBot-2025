@@ -100,6 +100,9 @@ public class Telemetry {
      MECH_VISUALIZER_ROOT.append(intake);
 
     }
+    public static void addElevator(MechanismLigament2d elevator) {
+        MECH_VISUALIZER_ROOT.append(elevator);
+    }
     
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
     public void telemeterize(SwerveDriveState state) {

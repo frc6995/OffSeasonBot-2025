@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakeRollerS;
 
@@ -46,12 +47,15 @@ public class RobotContainer {
     public final IntakePivotS intakePivot = new IntakePivotS();
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
+
+    public static final ElevatorS elevator = new ElevatorS();
     
     private Mechanism2d VISUALIZER; 
      
     public RobotContainer() {
         VISUALIZER = logger.MECH_VISUALIZER; 
         logger.addIntake(intakePivot.IntakePivotVisualizer);
+        logger.addElevator(elevator.elevatorVisualizer);
         configureBindings();
         SmartDashboard.putData("Visualzer", VISUALIZER);
     }
