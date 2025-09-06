@@ -48,20 +48,20 @@ public class IntakePivotS extends SubsystemBase {
     public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
     public static final double SOME_ANGLE = 20;
     public static final double DOWN_ANGLE = -23;
-    public static final double L1_ANGLE = 45;
+    public static final double L1_ANGLE = 65;
     public static final double HANDOFF_ANGLE = 135;
 
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
-    public static final double kArmP = 8; // Talon FX PID P gain (tune this) 6
-    public static final double kArmI = 0.0; // Talon FX PID I gain (tune this)
-    public static final double kArmD = 1; // Talon FX PID D gain (tune this) 0.4
+    public static final double kArmP = 6; // Talon FX PID P gain (tune this) 6
+    public static final double kArmI = 0; // Talon FX PID I gain (tune this)
+    public static final double kArmD = 0.7; // Talon FX PID D gain (tune this) 0.4
     public static final double kArmS = -0.05; // Feedforward Static gain (tune this) -0.05
     public static final double kArmG = 0.9; // Feedforward Gravity gain (tune this)
     public static final double kArmV = 0; // Feedforward Velocity gain (tune this)
     public static final double kArmA = 0; // Feedforward Acceleration gain (tune this)
     public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
 
-    public static final double kArmOffset = Math.toRadians(136);
+    public static final double kArmOffset = Math.toRadians(137);
     // Constants for the Kraken motor encoder
     public static final double kEncoderTicksPerRevolution = 2048.0; // Kraken X60 built-in encoder resolution
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
@@ -173,7 +173,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   //Methods:
 
   public double getArmAngleRadians() {
-    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI;
+    return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI + IntakePivotConstants.kArmOffset;
   }
 
 
