@@ -78,7 +78,7 @@ public class RobotContainer {
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
                 joystick.a().onTrue(intakeCoral());
-
+                joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
 
@@ -92,7 +92,7 @@ public class RobotContainer {
             }
             
             public Command intakeCoral() {
-                return Commands.parallel(intakePivot.moveToAngle(IntakePivotConstants.DOWN_ANGLE), intakeRoller.coralIntake());
+                return Commands.race(intakePivot.moveToAngle(IntakePivotConstants.DOWN_ANGLE), intakeRoller.coralIntake());
             }
         
             public Command Stow() {
