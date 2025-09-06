@@ -37,7 +37,7 @@ import choreo.Choreo.TrajectoryLogger;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
-import choreo.auto.NOMADAutoChooser;
+import choreo.auto.AutoChooser;
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.Logged.Strategy;
@@ -57,7 +57,6 @@ import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import choreo.auto.AutoFactory;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.HandS;
@@ -65,27 +64,38 @@ import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakeRollerS;
 
 public class Autos {
-    protected final CommandSwerveDrivetrain m_drivebase;
-    protected final ArmS m_arm;
-    protected final IntakePivotS m_intakepiv;
-    protected final IntakeRollerS m_intakerol;
-    protected final ElevatorS m_elev;
-    protected final HandS m_hand;
-    protected final AutoFactory m_autoFactory;
-    public final AutoChooser m_autoChooser;
-
-
-    public Autos(CommandSwerveDrivetrain drivebase, ArmS arm, IntakePivotS intakepiv, IntakeRollerS intakerol, ElevatorS elev, HandS hand) {
+        private final AutoFactory m_factory;
+        protected final CommandSwerveDrivetrain m_drivebase;
+        protected final ArmS m_arm;
+        protected final IntakePivotS m_intakepiv;
+        protected final IntakeRollerS m_intakerol;
+        protected final ElevatorS m_elev;
+        protected final HandS m_hand;
+    
+        public Autos(CommandSwerveDrivetrain drivebase, ArmS arm, IntakePivotS intakepiv, IntakeRollerS intakerol, ElevatorS elev, HandS hand, AutoFactory factory) {
+            m_drivebase = drivebase;
+            m_arm = arm;
+            m_intakepiv = intakepiv;
+            m_intakerol = intakerol;
+            m_elev = elev;
+            m_hand = hand;
+            m_factory = factory;
+        }
+    
+        public Command FourCoralRight() {
+            final AutoRoutine routine = m_factory.newRoutine("FourCoralRight");
+            var traj = routine.trajectory("1");
+            return routine.cmd();
+        //traj.atTime(0).onTrue(m_elev.goToPosition(ElevatorS.Positions.HIGH_POSITION)).onTrue(m_arm.goToPosition(ArmS.Positions.CORAL_L4)).onTrue(m_hand.)
+    }
+}
+    /* public Autos(CommandSwerveDrivetrain drivebase, ArmS arm, IntakePivotS intakepiv, IntakeRollerS intakerol, ElevatorS elev, HandS hand, AutoFactory factory) {
         m_drivebase = drivebase;
         m_arm = arm;
         m_intakepiv = intakepiv;
         m_intakerol = intakerol;
         m_elev = elev;
         m_hand = hand;
+        m_autoFactory = factory;
 
-        m_autoChooser = new AutoChooser();
-        m_autoFactory = new AutoFactory()
-        
-
-    }
-}
+    }*/

@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -19,6 +20,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
+import choreo.auto.AutoChooser;
+import choreo.auto.AutoFactory;
+import frc.robot.Autos;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakePivotS;
@@ -46,15 +50,27 @@ public class RobotContainer {
     public final IntakePivotS intakePivot = new IntakePivotS();
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
-    
+
+    private final AutoFactory autoFactory;
+    private Autos autoRoutines;
     private Mechanism2d VISUALIZER; 
-     
+    SendableChooser<Command> m_chooser = new SendableChooser<>();
+ 
     public RobotContainer() {
+        
         VISUALIZER = logger.MECH_VISUALIZER; 
         logger.addIntake(intakePivot.IntakePivotVisualizer);
         configureBindings();
         SmartDashboard.putData("Visualzer", VISUALIZER);
+        
+
+        autoFactory = drivetrain.createAutoFactory();
+        Autos autoRoutines = new Autos(drivetrain, null, intakePivot, intakeRoller, null, null, autoFactory);
+        m_chooser.setDefaultOption("FourCoralRight", autoRoutines.FourCoralRight());
+        SmartDashboard.putData(m_chooser); 
+
     }
+    
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
@@ -115,6 +131,11 @@ public class RobotContainer {
     public Command L1Score() {
         return Commands.sequence(intakePivot.dropTillStall(), intakeRoller.ejectL1Coral());
     }
+    
+    public Command getAutonomousCommand() {
+        return m_chooser.getSelected();
+        
+    }
 
     /*
      * public Command Intake() {
@@ -129,7 +150,5 @@ public class RobotContainer {
      * }
      */
 
-    public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
-    }
+
 }
