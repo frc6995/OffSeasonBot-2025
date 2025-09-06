@@ -334,6 +334,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public void followPath(SwerveSample sample) {
         m_pathThetaController.enableContinuousInput(-Math.PI, Math.PI);
         var pose = state().Pose;
+        
+        /*double targetHeading = sample.heading;
+        double headingError = Math.IEEEremainder(targetHeading - gyroRad, 2*Math.PI);
+
+        SignalLogger.writeDouble("logs/DBG_gyroRad", gyroRad);
+        SignalLogger.writeDouble("logs/DBG_targetHeading", targetHeading);
+        SignalLogger.writeDouble("logs/DBG_headingError", headingError);
+        SignalLogger.writeDouble("logs/DBG_omegaCmdBeforeClamp", m_pathThetaController.calculate(gyroRad, targetHeading));
+        */
         var targetSpeeds = sample.getChassisSpeeds();
         targetSpeeds.vxMetersPerSecond += m_pathXController.calculate(pose.getX(), sample.x);
         targetSpeeds.vyMetersPerSecond += m_pathYController.calculate(pose.getY(), sample.y);

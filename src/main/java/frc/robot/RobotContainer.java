@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.hardware.*;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -52,12 +53,13 @@ public class RobotContainer {
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
 
     private final AutoFactory autoFactory;
-    private Autos autoRoutines;
     private Mechanism2d VISUALIZER; 
-    SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private final Autos autoRoutines;
+    private final AutoChooser m_chooser = new AutoChooser();
+
  
     public RobotContainer() {
-        
+
         VISUALIZER = logger.MECH_VISUALIZER; 
         logger.addIntake(intakePivot.IntakePivotVisualizer);
         configureBindings();
@@ -65,13 +67,13 @@ public class RobotContainer {
         
 
         autoFactory = drivetrain.createAutoFactory();
-        Autos autoRoutines = new Autos(drivetrain, null, intakePivot, intakeRoller, null, null, autoFactory);
-        m_chooser.setDefaultOption("FourCoralRight", autoRoutines.FourCoralRight());
-        SmartDashboard.putData(m_chooser); 
+        autoRoutines = new Autos(drivetrain, null, intakePivot, intakeRoller, null, null, autoFactory);
+        m_chooser.addRoutine("FourCoralRight", autoRoutines::FourCoralRight);
+        //m_chooser.addRoutine("BrokenThing", autoRoutines::BrokenThing);
+        SmartDashboard.putData("Auto Mode", m_chooser); 
 
     }
     
-
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -133,7 +135,7 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand() {
-        return m_chooser.getSelected();
+        return m_chooser.selectedCommand();
         
     }
 

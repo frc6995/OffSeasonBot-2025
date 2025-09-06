@@ -81,13 +81,43 @@ public class Autos {
             m_hand = hand;
             m_factory = factory;
         }
-    
-        public Command FourCoralRight() {
+
+        public void resetOdometry() {
+
+        }
+        public AutoRoutine FourCoralRight() {
             final AutoRoutine routine = m_factory.newRoutine("FourCoralRight");
-            var traj = routine.trajectory("1");
-            return routine.cmd();
-        //traj.atTime(0).onTrue(m_elev.goToPosition(ElevatorS.Positions.HIGH_POSITION)).onTrue(m_arm.goToPosition(ArmS.Positions.CORAL_L4)).onTrue(m_hand.)
-    }
+            final AutoTrajectory traj = routine.trajectory("1");
+        //toScoreJ.atTime(0).onTrue(m_elev.goToPosition(ElevatorS.Positions.HIGH_POSITION)).onTrue(m_arm.goToPosition(ArmS.Positions.CORAL_L4)).onTrue(m_hand.)
+            final AutoTrajectory toScoreK = routine.trajectory("2");
+            final AutoTrajectory toScoreL = routine.trajectory("3");
+            final AutoTrajectory toScoreA = routine.trajectory("4");
+           // traj.chain(toScoreK);
+            //toScoreK.done().onTrue(waitSeconds(1.0).andThen(toScoreL.spawnCmd()));
+            //toScoreK.chain(toScoreL);
+            //toScoreL.done().onTrue(waitSeconds(1.0).andThen(toScoreA.spawnCmd()));
+            //toScoreL.chain(toScoreA);
+            routine.active().onTrue(
+                traj.resetOdometry() 
+                    .andThen(traj.cmd())
+                    .andThen(Commands.waitSeconds(0.5))
+                    .andThen(toScoreK.cmd())
+                    .andThen(Commands.waitSeconds(0.5))
+                    .andThen(toScoreL.cmd())
+                    .andThen(Commands.waitSeconds(0.5))
+                    .andThen(toScoreA.cmd())
+            );
+        return routine;
+        }
+        /*public AutoRoutine BrokenThing() {
+            final AutoRoutine routine = m_factory.newRoutine("BrokenThing");
+            final AutoTrajectory traj = routine.trajectory("New Path");
+
+            routine.active().onTrue(
+                traj.resetOdometry().andThen(traj.cmd())
+            );
+        return routine;
+        }*/
 }
     /* public Autos(CommandSwerveDrivetrain drivebase, ArmS arm, IntakePivotS intakepiv, IntakeRollerS intakerol, ElevatorS elev, HandS hand, AutoFactory factory) {
         m_drivebase = drivebase;
