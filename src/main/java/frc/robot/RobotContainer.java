@@ -82,6 +82,9 @@ public class RobotContainer {
                 joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
 
+                joystick.rightBumper().whileTrue(elevator.goToLength(Inches.of(40)));
+                joystick.leftBumper().whileTrue(elevator.goToLength(Inches.of(75)));
+
         
                 drivetrain.registerTelemetry(logger::telemeterize);
             }
