@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Volts;
 
 import java.util.function.DoubleSupplier;
 
@@ -14,17 +15,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N2;
-import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,8 +32,6 @@ public class ElevatorS extends SubsystemBase {
         public static final int LEADER_ID = 51;
         public static final int FOLLOWER_ID = 52;
 
-        public static final Distance FIRT_STAGE_LENGTH = Inches.of(6.995);
-        public static final Distance SECOND_STAGE_LENGTH = Inches.of(2.54);
         public static final double MOTOR_ROTATIONS_PER_METER = 1.0 / 5.0;
 
         public static final Distance MIN_EXTENSION = Inches.of(2.54);
@@ -59,23 +55,19 @@ public class ElevatorS extends SubsystemBase {
             return config;
         }
 
-        // public static final LinearSystem<N2, N1, N2> PLANT =
-        // LinearSystemId.identifyPositionSystem(
-        //     KV.in(VoltsPerRotationPerSecond) * MOTOR_ROTATIONS_PER_METER,
-        //     KA.in(VoltsPerRotationPerSecondSquared) * MOTOR_ROTATIONS_PER_METER);
-
-        public static ElevatorSim sim = new ElevatorSim(KV, KA, DCMotor.getKrakenX60(2), MIN_EXTENSION.in(Meters),
-                MAX_EXTENSION.in(Meters), true, MIN_EXTENSION.in(Meters));
+        public static final DCMotorSim m_motorSimModel = new DCMotorSim(
+        LinearSystemId.createDCMotorSystem(
+            DCMotor.getKrakenX60Foc(2), 0.001, MOTOR_ROTATIONS_PER_METER),
+        DCMotor.getKrakenX60Foc(2));
     }
 
     private TalonFX leader = new TalonFX(ElevatorConstants.LEADER_ID);
     private TalonFX follower = new TalonFX(ElevatorConstants.FOLLOWER_ID);
 
     private StatusSignal<Angle> positionSignal = leader.getPosition();
-    private StatusSignal<Double> m_setpointSig = leader.getClosedLoopReference();
 
     public final MechanismLigament2d elevatorVisualizer = new MechanismLigament2d("elevator",
-            ElevatorConstants.MIN_EXTENSION.in(Meters), -90);
+            ElevatorConstants.MIN_EXTENSION.in(Meters), 90);
 
     public ElevatorS() {
         var config = new TalonFXConfiguration();
@@ -87,13 +79,13 @@ public class ElevatorS extends SubsystemBase {
         follower.getConfigurator().apply(ElevatorConstants.configureFollower(followerConfig));
 
         follower.setControl(new Follower(ElevatorConstants.LEADER_ID, false));
+
         if (RobotBase.isReal()) {
             leader.setPosition(ElevatorConstants.MIN_LENGTH_ROTATIONS);
         } else {
-            ElevatorConstants.sim.setState(VecBuilder.fill(ElevatorConstants.MIN_EXTENSION.in(Meters), 90.0));
+            leader.getSimState().setRawRotorPosition(ElevatorConstants.MIN_LENGTH_ROTATIONS);
         }
-        m_setpointSig.setUpdateFrequency(50);
-        setDefaultCommand(voltage(() -> -3.0));
+        setDefaultCommand(voltage(() -> 0.1));
     }
 
     VoltageOut voltage = new VoltageOut(0);
@@ -107,22 +99,39 @@ public class ElevatorS extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Code to run periodically, such as checking sensors or updating motor states
         BaseStatusSignal.refreshAll(positionSignal);
         elevatorVisualizer.setLength(getElevatorLengthMeters());
 
     }
 
     public void simulationPeriodic() {
-        var simState = leader.getSimState();
-        simState.setSupplyVoltage(12); // voltage from battery
-        double volts = simState.getMotorVoltage();
-        ElevatorConstants.sim.setInput(volts - ElevatorConstants.KG);
-        ElevatorConstants.sim.update(0.02);
-        var rotorPos = ElevatorConstants.sim.getPositionMeters() * ElevatorConstants.MOTOR_ROTATIONS_PER_METER;
-        var rotorVel = ElevatorConstants.sim.getVelocityMetersPerSecond() * ElevatorConstants.MOTOR_ROTATIONS_PER_METER;
-        simState.setRawRotorPosition(rotorPos);
-        simState.setRotorVelocity(rotorVel);
+        var talonFXSim = leader.getSimState();
+
+        // set the supply voltage of the TalonFX
+        talonFXSim.setSupplyVoltage(RobotController.getBatteryVoltage());
+
+        // get the motor voltage of the TalonFX
+        Voltage motorVoltage = talonFXSim.getMotorVoltageMeasure();
+
+        // doesn't have any effect right now, don't know why
+        talonFXSim.setRotorAcceleration(-ElevatorConstants.KG * ElevatorConstants.MOTOR_ROTATIONS_PER_METER);
+
+        // use the motor voltage to calculate new position and velocity
+        // using WPILib's DCMotorSim class for physics simulation
+        ElevatorConstants.m_motorSimModel.setInputVoltage(motorVoltage.in(Volts));
+        ElevatorConstants.m_motorSimModel.update(0.020); // assume 20 ms loop time
+
+        // apply the new rotor position and velocity to the TalonFX;
+        // note that this is rotor position/velocity (before gear ratio), but
+        // DCMotorSim returns mechanism position/velocity (after gear ratio)
+        
+        talonFXSim.setRawRotorPosition(
+            ElevatorConstants.m_motorSimModel.getAngularPosition()
+                        .times(ElevatorConstants.MOTOR_ROTATIONS_PER_METER));
+        talonFXSim.setRotorVelocity(
+            ElevatorConstants.m_motorSimModel.getAngularVelocity()
+                        .times(ElevatorConstants.MOTOR_ROTATIONS_PER_METER));
+        
     }
 
     public double getElevatorLengthMeters() {
