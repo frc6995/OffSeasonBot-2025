@@ -16,7 +16,11 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -43,6 +47,7 @@ public class ElevatorS extends SubsystemBase {
 
         public static final double KV = 2.0;
         public static final double KA = 2.5;
+        public static final double KG = 1.0;
 
         private static TalonFXConfiguration configureLeader(TalonFXConfiguration config) {
             config.MotorOutput.withNeutralMode(NeutralModeValue.Brake).withInverted(InvertedValue.Clockwise_Positive);
@@ -54,14 +59,20 @@ public class ElevatorS extends SubsystemBase {
             return config;
         }
 
+        // public static final LinearSystem<N2, N1, N2> PLANT =
+        // LinearSystemId.identifyPositionSystem(
+        //     KV.in(VoltsPerRotationPerSecond) * MOTOR_ROTATIONS_PER_METER,
+        //     KA.in(VoltsPerRotationPerSecondSquared) * MOTOR_ROTATIONS_PER_METER);
+
         public static ElevatorSim sim = new ElevatorSim(KV, KA, DCMotor.getKrakenX60(2), MIN_EXTENSION.in(Meters),
-                MAX_EXTENSION.in(Meters), false, MIN_EXTENSION.in(Meters));
+                MAX_EXTENSION.in(Meters), true, MIN_EXTENSION.in(Meters));
     }
 
     private TalonFX leader = new TalonFX(ElevatorConstants.LEADER_ID);
     private TalonFX follower = new TalonFX(ElevatorConstants.FOLLOWER_ID);
 
     private StatusSignal<Angle> positionSignal = leader.getPosition();
+    private StatusSignal<Double> m_setpointSig = leader.getClosedLoopReference();
 
     public final MechanismLigament2d elevatorVisualizer = new MechanismLigament2d("elevator",
             ElevatorConstants.MIN_EXTENSION.in(Meters), -90);
@@ -81,7 +92,8 @@ public class ElevatorS extends SubsystemBase {
         } else {
             ElevatorConstants.sim.setState(VecBuilder.fill(ElevatorConstants.MIN_EXTENSION.in(Meters), 90.0));
         }
-        setDefaultCommand(voltage(() -> 0.5));
+        m_setpointSig.setUpdateFrequency(50);
+        setDefaultCommand(voltage(() -> -3.0));
     }
 
     VoltageOut voltage = new VoltageOut(0);
@@ -103,18 +115,23 @@ public class ElevatorS extends SubsystemBase {
 
     public void simulationPeriodic() {
         var simState = leader.getSimState();
-        simState.setSupplyVoltage(12);
-        // simState.getMotorVoltage is counterclockwise negative
+        simState.setSupplyVoltage(12); // voltage from battery
+        double volts = simState.getMotorVoltage();
+        ElevatorConstants.sim.setInput(volts - ElevatorConstants.KG);
         ElevatorConstants.sim.update(0.02);
         var rotorPos = ElevatorConstants.sim.getPositionMeters() * ElevatorConstants.MOTOR_ROTATIONS_PER_METER;
         var rotorVel = ElevatorConstants.sim.getVelocityMetersPerSecond() * ElevatorConstants.MOTOR_ROTATIONS_PER_METER;
         simState.setRawRotorPosition(rotorPos);
         simState.setRotorVelocity(rotorVel);
-      }
+    }
 
     public double getElevatorLengthMeters() {
-        double length = positionSignal.getValueAsDouble() / ElevatorConstants.MOTOR_ROTATIONS_PER_METER;
+        double length = getMotorRotations() / ElevatorConstants.MOTOR_ROTATIONS_PER_METER;
         return length;
+    }
+
+    public double getMotorRotations() {
+        return positionSignal.getValueAsDouble();
     }
 
 }

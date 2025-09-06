@@ -57,7 +57,7 @@ public class RobotContainer {
         logger.addIntake(intakePivot.IntakePivotVisualizer);
         logger.addElevator(elevator.elevatorVisualizer);
         configureBindings();
-        SmartDashboard.putData("Visualzer", VISUALIZER);
+        SmartDashboard.putData("Visualizer", VISUALIZER);
     }
 
     private void configureBindings() {
