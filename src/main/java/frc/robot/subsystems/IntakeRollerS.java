@@ -29,6 +29,7 @@ public class IntakeRollerS extends SubsystemBase {
         public static final int INTAKE_ROLLER_MOTOR_CAN_ID = 41;
         public static final double INTAKE_ROLLER_IN_VOLTAGE = -6; // Voltage to move the intake rollers in
         public static final double INTAKE_ROLLER_OUT_VOLTAGE = 2.7; // Voltage to move the intake rollers out
+        public static final int HAND_ROLLER_MOTOR_CAN_ID = 0;
 
     }
     
