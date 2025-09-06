@@ -42,11 +42,13 @@ public class IntakePivotS extends SubsystemBase {
 
     public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 40;
 
+    //Pivot angles
     public static final double SOME_ANGLE = 20;
     public static final double DOWN_ANGLE = -23;
     public static final double L1_ANGLE = 65;
     public static final double HANDOFF_ANGLE = 135;
 
+    //Constants used for PID and Feedforward
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
     public static final double kArmP = 6; // Talon FX PID P gain (tune this) 6
     public static final double kArmI = 0; // Talon FX PID I gain (tune this)
@@ -56,14 +58,18 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmV = 0; // Feedforward Velocity gain (tune this)
     public static final double kArmA = 0; // Feedforward Acceleration gain (tune this)
 
+    //Pivot Offset from Zero degrees (when the code starts, it always resets the angle to zero so this is neccesary
+    // for offseting it to the upper hard stop)
     public static final double kArmOffset = Math.toRadians(137);
     // Constants for the Kraken motor encoder
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
     public static final double kArmGearRatio = kSensorToMechanismRatio; // For clarity, same as above
  
+    //Initiallizes the feedforward controller to a variable
     private static final ArmFeedforward intakeFeedforward = new ArmFeedforward(
         kArmS, kArmG, kArmV, kArmA);
    
+    //Motor configuration
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
       config.MotorOutput.withNeutralMode(NeutralModeValue.Brake)
           .withInverted(InvertedValue.Clockwise_Positive);
@@ -77,10 +83,11 @@ public class IntakePivotS extends SubsystemBase {
   }
 
   //Other constants
+
+  //Sets initial target angle to hard stop
   public static double targetAngle = 141;
 
-  double feedforwardVoltage;
-
+  //Initiallizes the PID controller to a variable
   private static PIDController m_pidController = 
   new PIDController(
       IntakePivotConstants.kArmP,
@@ -89,11 +96,14 @@ public class IntakePivotS extends SubsystemBase {
 
   );
 
+  //Sets up visualization 
   private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
+  //Sets the motor to the CAN ID and CAN Bus
   private static final TalonFX IntakePivotMotor = new TalonFX(IntakePivotConstants.INTAKE_PIVOT_MOTOR_CAN_ID,
       TunerConstants.kCANBus2);
 
+  //Sets up a simulation visualizer for our mechanism
 public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d("Intake", 1, 0); 
 
   //set initiall configurations/values
@@ -108,6 +118,8 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   }
 
   //Commands:
+
+  //Takes in an angle, and sets the PID target angle to that angle
   public Command moveToAngle(double someAngle) {
     return run(() -> {
       targetAngle = someAngle;
@@ -115,24 +127,28 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     });
   }
 
-  //Periodic:
+  //Periodic (always active):
   @Override
   public void periodic() {
+
+    //Puts values to Smart Dashboard. Add as needed for simulation
     SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
     SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
     SmartDashboard.putNumber("supplycurrent", IntakePivotMotor.getSupplyCurrent().getValueAsDouble());
     SmartDashboard.putNumber("statorcurrent", IntakePivotMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("volage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
 
+    //sets initiall angle for simulation
     IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
 
+    //Sets the voltage of the motor to the sum of Feedforward and PID controllers
       IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(
       getArmAngleRadians(), 1, 1) +
     m_pidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
   }
 
   //Methods:
-
+  //Gets the output of the motor sensor, then converts it to the accurate radian measure for the pivot
   public double getArmAngleRadians() {
     return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI + IntakePivotConstants.kArmOffset;
   }
