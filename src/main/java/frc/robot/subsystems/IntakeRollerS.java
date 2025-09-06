@@ -76,11 +76,6 @@ public class IntakeRollerS extends SubsystemBase {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
     }
 
-    public double getCurrent() {
-        return intakeRollersMotor.getStatorCurrent().getValueAsDouble();
-
-    }
-
     @Override
     public void periodic() {
         // runs once every update cycle

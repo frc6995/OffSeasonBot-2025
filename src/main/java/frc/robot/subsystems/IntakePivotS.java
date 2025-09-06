@@ -41,11 +41,7 @@ public class IntakePivotS extends SubsystemBase {
   public class IntakePivotConstants {
 
     public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 40;
-    public static final double INTAKE_PIVOT_UP_VOLTAGE = -2.5; // Voltage to move the intake pivot up
-    public static final double INTAKE_PIVOT_DOWN_VOLTAGE = 2.5; // Voltage to move the intake pivot down
 
-    public static final Angle FORWARD_SOFT_LIMIT = Degrees.of(4000.0);
-    public static final Angle REVERSE_SOFT_LIMIT = Degrees.of(-40000.0);
     public static final double SOME_ANGLE = 20;
     public static final double DOWN_ANGLE = -23;
     public static final double L1_ANGLE = 65;
@@ -59,27 +55,18 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmG = 0.9; // Feedforward Gravity gain (tune this)
     public static final double kArmV = 0; // Feedforward Velocity gain (tune this)
     public static final double kArmA = 0; // Feedforward Acceleration gain (tune this)
-    public static final double kArmMaxVoltage = 12.0; // Maximum voltage for the arm motor
 
     public static final double kArmOffset = Math.toRadians(137);
     // Constants for the Kraken motor encoder
-    public static final double kEncoderTicksPerRevolution = 2048.0; // Kraken X60 built-in encoder resolution
     public static final double kSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
     public static final double kArmGearRatio = kSensorToMechanismRatio; // For clarity, same as above
-    public static final double kArmPositionToleranceDegrees = 1; // Tolerance for position control in rotations
  
     private static final ArmFeedforward intakeFeedforward = new ArmFeedforward(
         kArmS, kArmG, kArmV, kArmA);
    
-
     private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
       config.MotorOutput.withNeutralMode(NeutralModeValue.Brake)
           .withInverted(InvertedValue.Clockwise_Positive);
-      //config.SoftwareLimitSwitch
-       //   .withForwardSoftLimitEnable(false)
-        //  .withForwardSoftLimitThreshold(FORWARD_SOFT_LIMIT)
-        //  .withReverseSoftLimitEnable(false)
-        //  .withReverseSoftLimitThreshold(REVERSE_SOFT_LIMIT);
 
       config.CurrentLimits.withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(Amps.of(50));
       config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_PIVOT_ROTATION);
@@ -116,30 +103,11 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
     IntakePivotMotor.getConfigurator().refresh(config);
     IntakePivotMotor.getConfigurator().apply(IntakePivotConstants.configureMotor(config));
-    //IntakePivotMotor.setPosition(IntakePivotConstants.kArmOffset / (2* Math.PI));
-
-    //setDefaultCommand(rest());
 
     SignalLogger.start();
-
   }
 
   //Commands:
-
-  public Command hold() {
-        return run(() -> {
-          IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(getArmAngleRadians(), feedforwardVoltage)
-          + m_pidController.calculate(getArmAngleRadians()));
-
-        });
-  }
-
-  public Command rest() {
-    return run(() -> {
-      IntakePivotMotor.setVoltage(0);
-    });
-  }
-
   public Command moveToAngle(double someAngle) {
     return run(() -> {
       targetAngle = someAngle;
@@ -150,8 +118,6 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   //Periodic:
   @Override
   public void periodic() {
-
-    //SignalLogger.writeDouble("Intake/TargetAngle", targetAngle);
     SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
     SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
     SmartDashboard.putNumber("supplycurrent", IntakePivotMotor.getSupplyCurrent().getValueAsDouble());
@@ -159,16 +125,11 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     SmartDashboard.putNumber("volage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
 
     IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
-    
-   // Calculate the feedforward voltage for gravity compensation
-      // The current arm angle is used for feedforward, as it's the most accurate representation
-      // The TalonFX handles velocity and acceleration internally with its PID or motion profiling
 
       IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(
       getArmAngleRadians(), 1, 1) +
     m_pidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
   }
- 
 
   //Methods:
 
@@ -176,17 +137,4 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI + IntakePivotConstants.kArmOffset;
   }
 
-
-////public static boolean isAtTarget() {
-    // Since onboard PID is used, it is necessary to check if the error is within a
-    // tolerance
-    // The tolerance value might need adjustment based on the mechanism
-   // double currentPositionRotations = IntakePivotMotor.getRotorPosition().getValueAsDouble();
-
-   //// double targetPositionRotations = (targetAngle - IntakePivotConstants.kArmOffset) / (2 * Math.PI)
-   //     * IntakePivotConstants.kArmGearRatio;
-    //return Math
-    //    .abs(currentPositionRotations - targetPositionRotations) < IntakePivotConstants.kArmPositionToleranceDegrees / 360;
-
- // }
 }
