@@ -25,29 +25,37 @@ public class IntakeRollerS extends SubsystemBase {
 
     public class IntakeRollersConstants {
 
+        //Subsystem constants
         public static final int INTAKE_ROLLER_MOTOR_CAN_ID = 41;
         public static final double INTAKE_ROLLER_IN_VOLTAGE = -6; // Voltage to move the intake rollers in
         public static final double INTAKE_ROLLER_OUT_VOLTAGE = 2.7; // Voltage to move the intake rollers out
 
     }
-    // Define motors, sensors, and other components here
-
+    
+    //Configure motor variable
     private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID,
             TunerConstants.kCANBus2);
 
     public IntakeRollerS() {
-        // Initialize motors and sensors
+        // Initialize motor configuration
         intakeRollersMotor.getConfigurator().apply(new TalonFXConfiguration());
         intakeRollersMotor.getConfigurator().apply(new MotorOutputConfigs() {
         });
         
+
+        //Set a default motor command
         setDefaultCommand(stopRollers());
     }
 
+
+    //Commands
+
+    //Sets up constructor for simpler voltage command code; see below how its implemented
     public Command setRollerVoltage(double voltage) {
         return run(() -> intakeRollersMotor.setVoltage(voltage));
     }
 
+    //voltage commands:
     public Command intakeRollersStart() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
                 .withTimeout(0.15);
@@ -61,7 +69,6 @@ public class IntakeRollerS extends SubsystemBase {
 
     public Command coralIntake() {
         return Commands.sequence(intakeRollersStart(), intakeRollersUntilStop());
-
     }
 
     public Command outTakeRollers() {
@@ -78,6 +85,6 @@ public class IntakeRollerS extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // runs once every update cycle
+        // always running
     }
 }

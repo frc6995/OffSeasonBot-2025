@@ -12,7 +12,7 @@ public class ArmS extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Code to run periodically, such as checking sensors or updating motor states
+        // Code to run always
     }
     
 }

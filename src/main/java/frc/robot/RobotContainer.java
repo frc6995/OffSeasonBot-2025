@@ -73,6 +73,8 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
+
+                //set button bindings
                 joystick.a().onTrue(intakeCoral());
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
@@ -87,6 +89,8 @@ public class RobotContainer {
         
             }
             
+
+            //Commands combining multiple subsystem functions
             public Command intakeCoral() {
                 return Commands.race(intakePivot.moveToAngle(IntakePivotConstants.DOWN_ANGLE), intakeRoller.coralIntake());
             }
