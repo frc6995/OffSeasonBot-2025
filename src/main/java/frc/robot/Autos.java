@@ -71,6 +71,7 @@ public class Autos {
         protected final IntakeRollerS m_intakerol;
         protected final ElevatorS m_elev;
         protected final HandS m_hand;
+        private final double SCORE_WAIT = 0.875;
     
         public Autos(CommandSwerveDrivetrain drivebase, ArmS arm, IntakePivotS intakepiv, IntakeRollerS intakerol, ElevatorS elev, HandS hand, AutoFactory factory) {
             m_drivebase = drivebase;
@@ -100,11 +101,35 @@ public class Autos {
             routine.active().onTrue(
                 traj.resetOdometry() 
                     .andThen(traj.cmd())
-                    .andThen(Commands.waitSeconds(0.5))
+                    .andThen(Commands.waitSeconds(SCORE_WAIT))
                     .andThen(toScoreK.cmd())
-                    .andThen(Commands.waitSeconds(0.5))
+                    .andThen(Commands.waitSeconds(SCORE_WAIT))
                     .andThen(toScoreL.cmd())
-                    .andThen(Commands.waitSeconds(0.5))
+                    .andThen(Commands.waitSeconds(SCORE_WAIT))
+                    .andThen(toScoreA.cmd())
+            );
+        return routine;
+        }
+        public AutoRoutine FourCoralLeft() {
+            final AutoRoutine routine = m_factory.newRoutine("FourCoralLeft");
+            final AutoTrajectory traj = routine.trajectory("5");
+        //toScoreJ.atTime(0).onTrue(m_elev.goToPosition(ElevatorS.Positions.HIGH_POSITION)).onTrue(m_arm.goToPosition(ArmS.Positions.CORAL_L4)).onTrue(m_hand.)
+            final AutoTrajectory toScoreK = routine.trajectory("6");
+            final AutoTrajectory toScoreL = routine.trajectory("7");
+            final AutoTrajectory toScoreA = routine.trajectory("8");
+           // traj.chain(toScoreK);
+            //toScoreK.done().onTrue(waitSeconds(1.0).andThen(toScoreL.spawnCmd()));
+            //toScoreK.chain(toScoreL);
+            //toScoreL.done().onTrue(waitSeconds(1.0).andThen(toScoreA.spawnCmd()));
+            //toScoreL.chain(toScoreA);
+            routine.active().onTrue(
+                traj.resetOdometry() 
+                    .andThen(traj.cmd())
+                    .andThen(Commands.waitSeconds(SCORE_WAIT))
+                    .andThen(toScoreK.cmd())
+                    .andThen(Commands.waitSeconds(SCORE_WAIT))
+                    .andThen(toScoreL.cmd())
+                    .andThen(Commands.waitSeconds(SCORE_WAIT))
                     .andThen(toScoreA.cmd())
             );
         return routine;

@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.hardware.*;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -59,7 +60,8 @@ public class RobotContainer {
 
  
     public RobotContainer() {
-
+    
+        drivetrain.resetOdometry(new Pose2d());
         VISUALIZER = logger.MECH_VISUALIZER; 
         logger.addIntake(intakePivot.IntakePivotVisualizer);
         configureBindings();
@@ -69,6 +71,7 @@ public class RobotContainer {
         autoFactory = drivetrain.createAutoFactory();
         autoRoutines = new Autos(drivetrain, null, intakePivot, intakeRoller, null, null, autoFactory);
         m_chooser.addRoutine("FourCoralRight", autoRoutines::FourCoralRight);
+        m_chooser.addRoutine("FourCoralLeft", autoRoutines::FourCoralLeft);
         //m_chooser.addRoutine("BrokenThing", autoRoutines::BrokenThing);
         SmartDashboard.putData("Auto Mode", m_chooser); 
 
