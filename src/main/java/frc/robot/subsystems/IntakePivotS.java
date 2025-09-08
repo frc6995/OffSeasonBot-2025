@@ -81,9 +81,9 @@ public class IntakePivotS extends SubsystemBase {
                         slot0Configs.kD = 0; // A velocity error of 1 rps results in 0.1 V output
                   
                         var motionMagicConfigs = config.MotionMagic;
-                        motionMagicConfigs.MotionMagicCruiseVelocity = 20; // Target cruise velocity of 80 rps
-                        motionMagicConfigs.MotionMagicAcceleration = 60; // Target acceleration of 160 rps/s (0.5 seconds)
-                        motionMagicConfigs.MotionMagicJerk = 160; // Target jerk of 1600 rps/s/s (0.1 seconds)
+                        motionMagicConfigs.MotionMagicCruiseVelocity = Units.degreesToRotations(20); // Target cruise velocity of 80 rps
+                        motionMagicConfigs.MotionMagicAcceleration = Units.degreesToRotations(20);; // Target acceleration of 160 rps/s (0.5 seconds)
+                        motionMagicConfigs.MotionMagicJerk = Units.degreesToRotations(20);; // Target jerk of 1600 rps/s/s (0.1 seconds)
                   
                         return config;
                       }
@@ -123,7 +123,7 @@ public class IntakePivotS extends SubsystemBase {
                     //Takes in an angle, and sets the PID target angle to that angle
                     public Command moveToAngle(double someAngle) {
                       return run(() -> {
-                        targetAngle = someAngle;
+                        ;
                      
                       });
                     }
@@ -143,10 +143,12 @@ public class IntakePivotS extends SubsystemBase {
                       IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
                   
                       // create a Motion Magic request, voltage output
-                      final MotionMagicVoltage m_request = new MotionMagicVoltage(0).withFeedForward(getArmFeedforward());
+                      final MotionMagicVoltage m_request = new MotionMagicVoltage(Units.degreesToRotations(20)).withFeedForward(getArmFeedforward());
                   
                   // set target position to 100 rotations
-                      IntakePivotMotor.setControl(m_request.withPosition(-2));
+                     
+                  
+                  IntakePivotMotor.setControl(m_request);
                     }
                   
                     //Methods:
