@@ -147,8 +147,8 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     SmartDashboard.putNumber("statorcurrent", IntakePivotMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("voltage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
 
-    SmartDashboard.putNumber("Profiled PID Target", m_profiledpidController.getGoal().position);
-SmartDashboard.putNumber("Profiled PID Setpoint", m_profiledpidController.getSetpoint().position);
+    SmartDashboard.putNumber("Profiled PID Target", m_profiledpidController.getGoal().position * (180/Math.PI));
+SmartDashboard.putNumber("Profiled PID Setpoint", m_profiledpidController.getSetpoint().position * (180/Math.PI));
 
 
     //sets initiall angle for simulation
