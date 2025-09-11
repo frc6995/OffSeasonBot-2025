@@ -20,7 +20,9 @@ import com.ctre.phoenix6.controls.VoltageOut;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -58,6 +60,9 @@ public class IntakePivotS extends SubsystemBase {
     public static final double kArmV = 0; // Feedforward Velocity gain (tune this)
     public static final double kArmA = 0; // Feedforward Acceleration gain (tune this)
 
+    public static final double TrapizoidalMaxAcceleration = 1;
+    public static final double TrapizoidalMaxVelocity = 1;
+
     //Pivot Offset from Zero degrees (when the code starts, it always resets the angle to zero so this is neccesary
     // for offseting it to the upper hard stop)
     public static final double kArmOffset = Math.toRadians(137);
@@ -88,11 +93,15 @@ public class IntakePivotS extends SubsystemBase {
   public static double targetAngle = 141;
 
   //Initiallizes the PID controller to a variable
-  private static PIDController m_pidController = 
-  new PIDController(
+  private static ProfiledPIDController m_profiledpidController = 
+  new ProfiledPIDController(
       IntakePivotConstants.kArmP,
       IntakePivotConstants.kArmI,
-      IntakePivotConstants.kArmD
+      IntakePivotConstants.kArmD,
+      new TrapezoidProfile.Constraints(
+        IntakePivotConstants.TrapizoidalMaxAcceleration,
+        IntakePivotConstants.TrapizoidalMaxVelocity
+        )
 
   );
 
@@ -136,7 +145,11 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
     SmartDashboard.putNumber("supplycurrent", IntakePivotMotor.getSupplyCurrent().getValueAsDouble());
     SmartDashboard.putNumber("statorcurrent", IntakePivotMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("volage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("voltage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
+
+    SmartDashboard.putNumber("Profiled PID Target", m_profiledpidController.getGoal().position);
+SmartDashboard.putNumber("Profiled PID Setpoint", m_profiledpidController.getSetpoint().position);
+
 
     //sets initiall angle for simulation
     IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
@@ -144,7 +157,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     //Sets the voltage of the motor to the sum of Feedforward and PID controllers
       IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(
       getArmAngleRadians(), 1, 1) +
-    m_pidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
+    m_profiledpidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
   }
 
   //Methods:
