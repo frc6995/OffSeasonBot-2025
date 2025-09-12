@@ -20,10 +20,12 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.subsystems.IntakeRollerS;
+import frc.robot.subsystems.ArmS.PivotConstants;
 
 
 public class RobotContainer {
@@ -48,6 +50,7 @@ public class RobotContainer {
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
     
+    public final ArmS Arm =  new ArmS();
     private Mechanism2d VISUALIZER; 
      
     public RobotContainer() {
@@ -79,6 +82,8 @@ public class RobotContainer {
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
+                joystick.leftTrigger().whileTrue(Arm_L2scoring());
+                joystick.rightTrigger().whileTrue(Arm_L3Scoring());
 
         
                 drivetrain.registerTelemetry(logger::telemeterize);
@@ -104,6 +109,18 @@ public class RobotContainer {
         
             public Command Handoff() {
                 return intakePivot.moveToAngle(IntakePivotConstants.HANDOFF_ANGLE);
+            }
+            public Command ArmHandOff(){
+                return Arm.moveToAngle(PivotConstants.HANDOFF_ANGLE);
+            }
+            public Command Arm_L2scoring(){
+                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
+            }
+            public Command Arm_L3Scoring(){
+                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L3);
+            }
+            public Command Arm_L4Scoring(){
+                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L4);
             }
         }
 
