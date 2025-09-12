@@ -4,15 +4,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.IntakePivotS;
+import edu.wpi.first.math.util.Units;
 
 public class Robot extends TimedRobot {
+  public static final String kLimelightName = "limelight";
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  boolean enableLimelight = false;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -21,6 +25,18 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
+    if (enableLimelight) {
+      var driveState = m_robotContainer.drivetrain.getState();
+      double headingDeg = driveState.Pose.getRotation().getDegrees();
+      //double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
+    LimelightHelpers.SetRobotOrientation(kLimelightName, headingDeg, 0.0, 0.0, 0.0, 0.0, 0.0);
+    //Periodically retrieve the results from the limelight and extract the pose.
+    LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue(kLimelightName);
+    if (limelightMeasurement.tagCount > 0) {
+      m_robotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+      m_robotContainer.drivetrain.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds);
+    }
+  }
   }
 
   @Override
