@@ -46,22 +46,22 @@ public class IntakePivotS extends SubsystemBase {
 
     //Pivot angles
     public static final double SOME_ANGLE = 20;
-    public static final double DOWN_ANGLE = -23;
+    public static final double DOWN_ANGLE = -25;
     public static final double L1_ANGLE = 65;
     public static final double HANDOFF_ANGLE = 135;
 
     //Constants used for PID and Feedforward
     public static final double MOTOR_ROTATIONS_PER_PIVOT_ROTATION = 12.5;
-    public static final double kArmP = 6; // Talon FX PID P gain (tune this) 6
+    public static final double kArmP = 6.5; // Talon FX PID P gain (tune this) 6
     public static final double kArmI = 0; // Talon FX PID I gain (tune this)
-    public static final double kArmD = 0.7; // Talon FX PID D gain (tune this) 0.4
+    public static final double kArmD = 0.4; // Talon FX PID D gain (tune this) 0.4
     public static final double kArmS = -0.05; // Feedforward Static gain (tune this) -0.05
-    public static final double kArmG = 0.9; // Feedforward Gravity gain (tune this)
+    public static final double kArmG = 1.3; // Feedforward Gravity gain (tune this)
     public static final double kArmV = 0; // Feedforward Velocity gain (tune this)
     public static final double kArmA = 0; // Feedforward Acceleration gain (tune this)
 
-    public static final double TrapizoidalMaxAcceleration = 1;
-    public static final double TrapizoidalMaxVelocity = 1;
+    public static final double TrapizoidalMaxAcceleration = 8;
+    public static final double TrapizoidalMaxVelocity = 12;
 
     //Pivot Offset from Zero degrees (when the code starts, it always resets the angle to zero so this is neccesary
     // for offseting it to the upper hard stop)
@@ -142,7 +142,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
     //Puts values to Smart Dashboard. Add as needed for simulation
     SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
-    SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
+    SmartDashboard.putNumber("Intake/currentAngleDeg", getArmAngleRadians() * (180/Math.PI));
     SmartDashboard.putNumber("supplycurrent", IntakePivotMotor.getSupplyCurrent().getValueAsDouble());
     SmartDashboard.putNumber("statorcurrent", IntakePivotMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("voltage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
@@ -156,8 +156,8 @@ SmartDashboard.putNumber("Profiled PID Setpoint", m_profiledpidController.getSet
 
     //Sets the voltage of the motor to the sum of Feedforward and PID controllers
       IntakePivotMotor.setVoltage(IntakePivotConstants.intakeFeedforward.calculate(
-      getArmAngleRadians(), 1, 1) +
-    m_profiledpidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
+      getArmAngleRadians(), 1, 1) 
+    + m_profiledpidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
   }
 
   //Methods:
