@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +25,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.subsystems.IntakeRollerS;
+import frc.robot.subsystems.YAMSIntakePivot;
 
 
 public class RobotContainer {
@@ -47,7 +49,9 @@ public class RobotContainer {
     public final IntakePivotS intakePivot = new IntakePivotS();
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
-    
+
+    public final YAMSIntakePivot yIntakePivot = new YAMSIntakePivot();
+
     private Mechanism2d VISUALIZER; 
      
     public RobotContainer() {
@@ -79,9 +83,11 @@ public class RobotContainer {
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
+                joystick.rightBumper().whileTrue(yIntakePivot.setAngle(Degrees.of(30)));
 
         
                 drivetrain.registerTelemetry(logger::telemeterize);
+
             }
         
             public Command getAutonomousCommand() {
