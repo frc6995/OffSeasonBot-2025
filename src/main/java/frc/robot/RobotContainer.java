@@ -27,6 +27,7 @@ import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.subsystems.IntakeRollerS;
 import frc.robot.subsystems.ArmS.PivotConstants;
+import frc.robot.subsystems.HandS.HandConstants;
 
 
 public class RobotContainer {
@@ -82,12 +83,19 @@ public class RobotContainer {
 
                 //set button bindings
                 joystick.a().onTrue(handRoller.HandCoralIntake());
-                joystick.b().onTrue(Handoff());
+                joystick.b().onTrue(Intake_Handoff());
                // joystick.x().onTrue(HandS.HandCoralIntake());
                 joystick.y().whileTrue(L1Score());
                 joystick.leftTrigger().whileTrue(Arm_L2scoring());
                 joystick.rightTrigger().whileTrue(Arm_L3Scoring());
 
+                //Hand Off sequence
+                //joystick.rightBumper().onTrue(Commands.sequence(Commands.parallel(Arm_Hand_Off_Angle(), intakeCoral()).withTimeout(0.5)
+                //,Commands.parallel(L1Score(), Hand_Rollers_In())
+                //));
+                //Scoring sequence 
+                //joystick.leftBumper().onTrue(Commands.sequence(Stow(), L1Score()));
+                
         
                 drivetrain.registerTelemetry(logger::telemeterize);
             }
@@ -110,11 +118,8 @@ public class RobotContainer {
                 return intakeRoller.outTakeRollers();
             }
         
-            public Command Handoff() {
+            public Command Intake_Handoff() {
                 return intakePivot.moveToAngle(IntakePivotConstants.HANDOFF_ANGLE);
-            }
-            public Command ArmHandOff(){
-                return Arm.moveToAngle(PivotConstants.HANDOFF_ANGLE);
             }
             public Command Arm_L2scoring(){
                 return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
@@ -124,6 +129,18 @@ public class RobotContainer {
             }
             public Command Arm_L4Scoring(){
                 return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L4);
+            }
+            public Command Arm_Hand_Off_Angle(){
+                return Arm.moveToAngle(PivotConstants.HANDOFF_ANGLE);
+            }
+            public Command Hand_Voltage_Scoring(){
+                return handRoller.setHandRollerVoltage(HandConstants.HAND_ROLLER_OUT_VOLTAGE);
+            }
+            public Command Hand_Rollers_In(){
+                return handRoller.HandCoralIntake();
+            }
+            public Command Arm_Scoring_postion(){
+                return Arm.moveToAngle(PivotConstants.ARM_SOME_ANGLE);
             }
         }
 

@@ -55,7 +55,7 @@ public class ArmS extends SubsystemBase {
         // for offseting it to the upper hard stop)
         public static final double ArmOffSet = Math.toRadians(-90);
         // Constants for the Kraken motor encoder
-        public static final double ARMSensorToMechanismRatio = 12.5; // Gear ratio from encoder to arm mechanism
+        public static final double ARMSensorToMechanismRatio = 62.5; // Gear ratio from encoder to arm mechanism
         public static final double ArmGearRatio = ARMSensorToMechanismRatio; // For clarity, same as above
      
         //Initiallizes the feedforward controller to a variable
@@ -78,7 +78,7 @@ public class ArmS extends SubsystemBase {
   //Other constants
 
   //Sets initial target angle to hard stop
-  public static double targetAngle = 170;
+  private static double targetAngle = 170;
 
   //Initiallizes the PID controller to a variable
   private static PIDController m_pidController = 
@@ -134,7 +134,7 @@ public class ArmS extends SubsystemBase {
 
   //Methods:
   //Gets the output of the motor sensor, then converts it to the accurate radian measure for the pivot
-  public double getArmAngleRadians() {
+  private double getArmAngleRadians() {
     return (ARM_MOTOR.getRotorPosition().getValueAsDouble() / PivotConstants.ArmGearRatio) * 2 * Math.PI + PivotConstants.ArmOffSet;
   }
 

@@ -54,6 +54,7 @@ public class HandS extends SubsystemBase {
                 .withTimeout(0.15);
 
     }
+    
 
     public Command handRollersUntilStop() {
         return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
@@ -76,12 +77,13 @@ public class HandS extends SubsystemBase {
         return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
     }
     
+    
 
     
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("voltage", HandRollersMotor.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("Hand voltage", HandRollersMotor.getMotorVoltage().getValueAsDouble());
         // Code to run periodically, such as checking sensors or updating motor states
     }
 
