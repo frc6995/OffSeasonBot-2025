@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Feet;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.Second;
@@ -68,11 +69,11 @@ public class YAMSIntakePivot extends SubsystemBase {
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
-  .withClosedLoopController(5, 0, 0, DegreesPerSecond.of(20), DegreesPerSecondPerSecond.of(30))
-  .withSimClosedLoopController(5, 0, 0, DegreesPerSecond.of(20), DegreesPerSecondPerSecond.of(30))
+  .withClosedLoopController(6, 0, 0.5, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(280))
+  .withSimClosedLoopController(6, 0, 0.5, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(280))
   // Feedforward Constants
-  .withFeedforward(new ArmFeedforward(0, 1, 0))
-  .withSimFeedforward(new ArmFeedforward(0, 1, 0))
+  .withFeedforward(new ArmFeedforward(0, 0.9, 0))
+  .withSimFeedforward(new ArmFeedforward(0, 0.9, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
@@ -95,18 +96,20 @@ public class YAMSIntakePivot extends SubsystemBase {
 
   private ArmConfig armCfg = new ArmConfig(sparkSmartMotorController)
   // Soft limit is applied to the SmartMotorControllers PID
-  .withSoftLimits(Degrees.of(-30), Degrees.of(141))
+
   .withHardLimit(Degrees.of(-30), Degrees.of(141))
   // Starting position is where your arm starts
   .withStartingPosition(Degrees.of(141))
   // Length and mass of your arm for sim.
-  .withLength(Feet.of((0.6)))
-  .withMass(Pounds.of(3))
+  .withLength(Feet.of((0.58)))
+  //.withMass(Pounds.of(5))
+  .withMOI(0.145931148)
 
   
   // Telemetry name and verbosity for the arm.
   .withTelemetry("Arm", TelemetryVerbosity.HIGH)
   .withMechanismPositionConfig(robotToMechanism);
+  //withMOI(0.489);
 
   // Arm Mechanism
   private Arm arm = new Arm(armCfg);
