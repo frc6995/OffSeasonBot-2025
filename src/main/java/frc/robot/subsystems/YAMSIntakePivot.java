@@ -70,15 +70,15 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
   .withClosedLoopController(6, 0, 0.5, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(280))
-  .withSimClosedLoopController(6, 0, 0.5, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(280))
+  .withSimClosedLoopController(10, 0, 1.0, DegreesPerSecond.of(300), DegreesPerSecondPerSecond.of(300))
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(0, 0.9, 0))
-  .withSimFeedforward(new ArmFeedforward(0, 0.9, 0))
+  .withSimFeedforward(new ArmFeedforward(-0.05,1.2, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
   // In this example gearbox(3,4) is the same as gearbox("3:1","4:1") which corresponds to the gearbox attached to your motor.
-  .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(12.5)))
+  .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(12.5,1)))
   // Motor properties to prevent over currenting.
   .withMotorInverted(false)
   .withIdleMode(MotorMode.BRAKE)
@@ -103,7 +103,7 @@ public class YAMSIntakePivot extends SubsystemBase {
   // Length and mass of your arm for sim.
   .withLength(Feet.of((0.58)))
   //.withMass(Pounds.of(5))
-  .withMOI(0.145931148)
+  .withMOI(0.1055457256)
 
   
   // Telemetry name and verbosity for the arm.

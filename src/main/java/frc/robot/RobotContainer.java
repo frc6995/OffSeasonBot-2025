@@ -83,7 +83,7 @@ public class RobotContainer {
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
-                joystick.rightBumper().onTrue(yIntakePivot.setAngle(Degrees.of(140)));
+                joystick.rightBumper().onTrue(yIntakePivot.setAngle(Degrees.of(120)));
                 joystick.leftBumper().onTrue(yIntakePivot.setAngle(Degrees.of(0)));
 
         
