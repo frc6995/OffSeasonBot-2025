@@ -136,7 +136,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
     SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
     SmartDashboard.putNumber("supplycurrent", IntakePivotMotor.getSupplyCurrent().getValueAsDouble());
     SmartDashboard.putNumber("statorcurrent", IntakePivotMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("volage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("pivotvoltage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
 
     //sets initiall angle for simulation
     IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));

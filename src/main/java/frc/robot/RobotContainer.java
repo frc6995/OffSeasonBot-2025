@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.HandS;
 import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.subsystems.IntakeRollerS;
@@ -49,6 +50,8 @@ public class RobotContainer {
     public final IntakePivotS intakePivot = new IntakePivotS();
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
+
+    public final HandS handRoller = new HandS();
     
     public final ArmS Arm =  new ArmS();
     private Mechanism2d VISUALIZER; 
@@ -78,9 +81,9 @@ public class RobotContainer {
 
 
                 //set button bindings
-                joystick.a().onTrue(intakeCoral());
+                joystick.a().onTrue(handRoller.HandCoralIntake());
                 joystick.b().onTrue(Handoff());
-                joystick.x().onTrue(Stow());
+               // joystick.x().onTrue(HandS.HandCoralIntake());
                 joystick.y().whileTrue(L1Score());
                 joystick.leftTrigger().whileTrue(Arm_L2scoring());
                 joystick.rightTrigger().whileTrue(Arm_L3Scoring());
