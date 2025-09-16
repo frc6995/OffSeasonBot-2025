@@ -29,6 +29,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import yams.mechanisms.config.ArmConfig;
@@ -67,45 +68,42 @@ public class YAMSIntakePivot extends SubsystemBase {
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
-  .withClosedLoopController(50, 0, 0, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
-  .withSimClosedLoopController(50, 0, 0, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
+  .withClosedLoopController(5, 0, 0, DegreesPerSecond.of(20), DegreesPerSecondPerSecond.of(30))
+  .withSimClosedLoopController(5, 0, 0, DegreesPerSecond.of(20), DegreesPerSecondPerSecond.of(30))
   // Feedforward Constants
-  .withFeedforward(new ArmFeedforward(0, 0, 0))
-  .withSimFeedforward(new ArmFeedforward(0, 0, 0))
+  .withFeedforward(new ArmFeedforward(0, 1, 0))
+  .withSimFeedforward(new ArmFeedforward(0, 1, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
   // In this example gearbox(3,4) is the same as gearbox("3:1","4:1") which corresponds to the gearbox attached to your motor.
-  .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(3,4)))
+  .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(12.5)))
   // Motor properties to prevent over currenting.
   .withMotorInverted(false)
   .withIdleMode(MotorMode.BRAKE)
-  .withStatorCurrentLimit(Amps.of(40))
-  .withClosedLoopRampRate(Seconds.of(0.25))
-  .withOpenLoopRampRate(Seconds.of(0.25));
+  .withStatorCurrentLimit(Amps.of(120));
 
   // Vendor motor controller object
   private TalonFX spark = new TalonFX(4, TunerConstants.kCANBus2);
 
   // Create our SmartMotorController from our Spark and config with the NEO.
-  private SmartMotorController sparkSmartMotorController = new TalonFXWrapper(spark, DCMotor.getNEO(1), smcConfig);
+  private SmartMotorController sparkSmartMotorController = new TalonFXWrapper(spark, DCMotor.getKrakenX60(1), smcConfig);
 
   private final MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
-      .withMaxRobotHeight(Meters.of(1.5))
-      .withMaxRobotLength(Meters.of(0.75))
-      .withRelativePosition(new Translation3d(Meters.of(0.25), Meters.of(0), Meters.of(0.5)));
+      .withRelativePosition(new Translation3d(Meters.of(0.05), Meters.of(0), Meters.of(0.15)));
 
 
   private ArmConfig armCfg = new ArmConfig(sparkSmartMotorController)
   // Soft limit is applied to the SmartMotorControllers PID
-  .withSoftLimits(Degrees.of(-20), Degrees.of(10))
-  // Hard limit is applied to the simulation.
-  .withHardLimit(Degrees.of(-30), Degrees.of(40))
+  .withSoftLimits(Degrees.of(-30), Degrees.of(141))
+  .withHardLimit(Degrees.of(-30), Degrees.of(141))
   // Starting position is where your arm starts
-  .withStartingPosition(Degrees.of(-5))
+  .withStartingPosition(Degrees.of(141))
   // Length and mass of your arm for sim.
-  .withLength(Feet.of(3))
-  .withMass(Pounds.of(1))
+  .withLength(Feet.of((0.6)))
+  .withMass(Pounds.of(3))
+
+  
   // Telemetry name and verbosity for the arm.
   .withTelemetry("Arm", TelemetryVerbosity.HIGH)
   .withMechanismPositionConfig(robotToMechanism);
@@ -118,7 +116,10 @@ public class YAMSIntakePivot extends SubsystemBase {
    * Set the angle of the arm.
    * @param angle Angle to go to.
    */
-  public Command setAngle(Angle angle) { return arm.setAngle(angle);}
+  public Command setAngle(Angle angle) {
+ 
+    return arm.setAngle(angle);
+    }
 
   /**
    * Move the arm up and down.

@@ -83,7 +83,8 @@ public class RobotContainer {
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
-                joystick.rightBumper().whileTrue(yIntakePivot.setAngle(Degrees.of(30)));
+                joystick.rightBumper().onTrue(yIntakePivot.setAngle(Degrees.of(140)));
+                joystick.leftBumper().onTrue(yIntakePivot.setAngle(Degrees.of(0)));
 
         
                 drivetrain.registerTelemetry(logger::telemeterize);
