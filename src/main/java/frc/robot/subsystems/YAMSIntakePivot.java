@@ -17,13 +17,6 @@ import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
-import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
-import static yams.mechanisms.SmartMechanism.gearbox;
-import static yams.mechanisms.SmartMechanism.gearing;
-
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -42,26 +35,9 @@ import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 
-
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.geometry.Translation3d;
-
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.generated.TunerConstants;
 import yams.mechanisms.SmartMechanism;
-import yams.mechanisms.config.ArmConfig;
-import yams.mechanisms.config.MechanismPositionConfig;
-import yams.mechanisms.positional.Arm;
-import yams.motorcontrollers.SmartMotorController;
-import yams.motorcontrollers.SmartMotorControllerConfig;
-import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
-import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
-import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
-import yams.motorcontrollers.local.SparkWrapper;
 import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class YAMSIntakePivot extends SubsystemBase {
@@ -70,10 +46,10 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
   .withClosedLoopController(6, 0, 0.5, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(280))
-  .withSimClosedLoopController(10, 0, 1.0, DegreesPerSecond.of(300), DegreesPerSecondPerSecond.of(300))
+  .withSimClosedLoopController(10, 0, 0.4, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(0, 0.9, 0))
-  .withSimFeedforward(new ArmFeedforward(-0.05,1.2, 0))
+  .withSimFeedforward(new ArmFeedforward(0,1.1, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
@@ -85,31 +61,32 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withStatorCurrentLimit(Amps.of(120));
 
   // Vendor motor controller object
-  private TalonFX spark = new TalonFX(4, TunerConstants.kCANBus2);
+  private TalonFX Motor40 = new TalonFX(4, TunerConstants.kCANBus2);
 
   // Create our SmartMotorController from our Spark and config with the NEO.
-  private SmartMotorController sparkSmartMotorController = new TalonFXWrapper(spark, DCMotor.getKrakenX60(1), smcConfig);
+  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor40, DCMotor.getKrakenX60(1), smcConfig);
 
   private final MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
-      .withRelativePosition(new Translation3d(Meters.of(0.05), Meters.of(0), Meters.of(0.15)));
+      .withRelativePosition(new Translation3d(Meters.of(0.1), Meters.of(0), Meters.of(0.15)));
 
 
-  private ArmConfig armCfg = new ArmConfig(sparkSmartMotorController)
+  private ArmConfig armCfg = new ArmConfig(IntakeSMC)
   // Soft limit is applied to the SmartMotorControllers PID
 
-  .withHardLimit(Degrees.of(-30), Degrees.of(141))
+  .withHardLimit(Degrees.of(-25), Degrees.of(141))
   // Starting position is where your arm starts
   .withStartingPosition(Degrees.of(141))
   // Length and mass of your arm for sim.
-  .withLength(Feet.of((0.58)))
-  //.withMass(Pounds.of(5))
+  .withLength(Feet.of((7.8/12)))
+
   .withMOI(0.1055457256)
+
 
   
   // Telemetry name and verbosity for the arm.
   .withTelemetry("Arm", TelemetryVerbosity.HIGH)
   .withMechanismPositionConfig(robotToMechanism);
-  //withMOI(0.489);
+
 
   // Arm Mechanism
   private Arm arm = new Arm(armCfg);
