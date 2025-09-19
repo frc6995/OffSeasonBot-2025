@@ -46,10 +46,10 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
   .withClosedLoopController(6, 0, 0.5, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(280))
-  .withSimClosedLoopController(10, 0, 0.4, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+  .withSimClosedLoopController(10, 0, 0.8, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(0, 0.9, 0))
-  .withSimFeedforward(new ArmFeedforward(0,1.1, 0))
+  .withSimFeedforward(new ArmFeedforward(0,1.05, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
@@ -61,10 +61,10 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withStatorCurrentLimit(Amps.of(120));
 
   // Vendor motor controller object
-  private TalonFX Motor40 = new TalonFX(4, TunerConstants.kCANBus2);
+  private TalonFX Motor40 = new TalonFX(40, TunerConstants.kCANBus2);
 
   // Create our SmartMotorController from our Spark and config with the NEO.
-  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor40, DCMotor.getKrakenX60(1), smcConfig);
+  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor40, DCMotor.getFalcon500(1), smcConfig);
 
   private final MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
       .withRelativePosition(new Translation3d(Meters.of(0.1), Meters.of(0), Meters.of(0.15)));
@@ -77,7 +77,7 @@ public class YAMSIntakePivot extends SubsystemBase {
   // Starting position is where your arm starts
   .withStartingPosition(Degrees.of(141))
   // Length and mass of your arm for sim.
-  .withLength(Feet.of((7.8/12)))
+  .withLength(Feet.of((1)))
 
   .withMOI(0.1055457256)
 

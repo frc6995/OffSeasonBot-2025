@@ -40,7 +40,7 @@ public class IntakePivotS extends SubsystemBase {
   //Primary constants:
   public class IntakePivotConstants {
 
-    public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 40;
+    public static final int INTAKE_PIVOT_MOTOR_CAN_ID = 4;
 
     //Pivot angles
     public static final double SOME_ANGLE = 20;
