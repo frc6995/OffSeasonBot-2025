@@ -40,16 +40,18 @@ import frc.robot.generated.TunerConstants;
 import yams.mechanisms.SmartMechanism;
 import yams.motorcontrollers.remote.TalonFXWrapper;
 
+import frc.robot.KrakenX44;
+
 public class YAMSIntakePivot extends SubsystemBase {
 
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
   .withClosedLoopController(6, 0, 0.5, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(280))
-  .withSimClosedLoopController(10, 0, 0.8, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+  .withSimClosedLoopController(10, 0, 0.5, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(0, 0.9, 0))
-  .withSimFeedforward(new ArmFeedforward(0,1.05, 0))
+  .withSimFeedforward(new ArmFeedforward(0,1.0, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
@@ -77,7 +79,7 @@ public class YAMSIntakePivot extends SubsystemBase {
   // Starting position is where your arm starts
   .withStartingPosition(Degrees.of(141))
   // Length and mass of your arm for sim.
-  .withLength(Feet.of((1)))
+  .withLength(Feet.of((14/12)))
 
   .withMOI(0.1055457256)
 
