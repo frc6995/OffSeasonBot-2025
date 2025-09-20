@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,23 +45,38 @@ import frc.robot.KrakenX44;
 
 public class YAMSIntakePivot extends SubsystemBase {
 
+  public static final Angle SOME_ANGLE = Degrees.of(20);
+  public static final Angle DOWN_ANGLE =  Degrees.of(-35);
+  public static final Angle L1_ANGLE =  Degrees.of(65);
+  public static final Angle HANDOFF_ANGLE = Degrees.of(135);
+
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
-  .withClosedLoopController(10, 0, 0.5, DegreesPerSecond.of(600), DegreesPerSecondPerSecond.of(688))
-  .withSimClosedLoopController(10, 0, 0.5, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+  .withClosedLoopController(18
+  , 0, 0.2, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+
+  .withSimClosedLoopController(15, 0, 0.5, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
   // Feedforward Constants
-  .withFeedforward(new ArmFeedforward(0, 1.0, 0))
-  .withSimFeedforward(new ArmFeedforward(0, 1.0, 0))
+  .withFeedforward(new ArmFeedforward(-0.1, 1.2, 0))
+  .withSimFeedforward(new ArmFeedforward(0.0, 1.2, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
   // In this example gearbox(3,4) is the same as gearbox("3:1","4:1") which corresponds to the gearbox attached to your motor.
   .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(12.5,1)))
   // Motor properties to prevent over currenting.
-  .withMotorInverted(true)
+  .withMotorInverted(false)
   .withIdleMode(MotorMode.BRAKE)
-  .withStatorCurrentLimit(Amps.of(120));
+  //.setMotionProfileMaxAcceleration(DegreesPerSecondPerSecond.of(300))
+  
+  .withStatorCurrentLimit(Amps.of(120)
+  );
+
+ void setMotionProfileMaxAcceleration(LinearAcceleration maxAcceleration) {
+    // Set the max acceleration for motion profile
+    //smcConfig.setMotionProfileMaxAcceleration(maxAcceleration);
+  }
 
   // Vendor motor controller object
   private TalonFX Motor40 = new TalonFX(40, TunerConstants.kCANBus2);
@@ -78,7 +94,9 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withHardLimit(Degrees.of(-25), Degrees.of(141))
   // Starting position is where your IntakePivot starts
   .withStartingPosition(Degrees.of(141))
+
   // Length and mass of your IntakePivot for sim.
+
   .withLength(Feet.of((14/12)))
 
   .withMOI(0.1055457256)
@@ -107,7 +125,9 @@ public class YAMSIntakePivot extends SubsystemBase {
    * Move the IntakePivot up and down.
    * @param dutycycle [-1, 1] speed to set the IntakePivot too.
    */
+
   public Command set(double dutycycle) { return IntakePivot.set(dutycycle);}
+
 
   /**
    * Run sysId on the {@link Arm}

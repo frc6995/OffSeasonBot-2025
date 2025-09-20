@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-import frc.robot.subsystems.IntakePivotS;
+
 
 public class Telemetry {
     private final double MaxSpeed;
@@ -99,6 +99,10 @@ public class Telemetry {
     public static void addIntake(MechanismLigament2d intake) {
      MECH_VISUALIZER_ROOT.append(intake);
 
+    }
+
+    public static void addIntakeRollers(MechanismLigament2d rollers) {
+        MECH_VISUALIZER_ROOT.append(rollers);
     }
     
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
