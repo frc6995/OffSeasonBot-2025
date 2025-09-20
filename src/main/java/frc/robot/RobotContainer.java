@@ -25,7 +25,7 @@ import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.HandS;
 
-import frc.robot.subsystems.ArmS.PivotConstants;
+
 import frc.robot.subsystems.HandS.HandConstants;
 
 import frc.robot.subsystems.YAMSIntakePivot;
@@ -92,6 +92,23 @@ public class RobotContainer {
                joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
 
+
+                //joystick.leftTrigger().whileTrue(Arm_L2scoring());
+                //joystick.rightTrigger().whileTrue(Arm_L3Scoring());
+
+                //Hand Off sequence
+                //joystick.rightBumper().onTrue(Commands.sequence(Commands.parallel(Arm_Hand_Off_Angle(), intakeCoral()).withTimeout(0.5)
+                //,Commands.parallel(L1Score(), Hand_Rollers_In())
+                //));
+                //Scoring sequence 
+                //joystick.leftBumper().onTrue(Commands.sequence(Stow(), L1Score()));
+                
+
+                joystick.rightBumper().onTrue(Arm.setAngle(Degrees.of(120)));
+                joystick.leftBumper().onTrue(Arm.setAngle(Degrees.of(0)));
+
+
+
         
                 drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -115,9 +132,11 @@ public class RobotContainer {
                 return intakeRoller.outTakeRollers();
             }
         
+
             public Command Handoff() {
                 return yIntakePivot.setAngle(yIntakePivot.HANDOFF_ANGLE);
             }
+
             public Command Arm_L2scoring(){
                 return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
             }
@@ -138,6 +157,6 @@ public class RobotContainer {
             }
             public Command Arm_Scoring_postion(){
                 return Arm.moveToAngle(PivotConstants.ARM_SOME_ANGLE);
-            }
+            }*/
         }
 

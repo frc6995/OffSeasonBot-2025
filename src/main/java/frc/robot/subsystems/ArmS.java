@@ -1,143 +1,156 @@
+
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.subsystems;
-
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.SignalLogger;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Feet;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
+
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import yams.mechanisms.config.ArmConfig;
+import yams.mechanisms.config.MechanismPositionConfig;
+import yams.mechanisms.positional.Arm;
+import yams.motorcontrollers.SmartMotorController;
+import yams.motorcontrollers.SmartMotorControllerConfig;
+import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.fasterxml.jackson.databind.ser.std.StdDelegatingSerializer;
+
 import frc.robot.generated.TunerConstants;
+import yams.mechanisms.SmartMechanism;
+import yams.motorcontrollers.remote.TalonFXWrapper;
+
+import frc.robot.KrakenX44;
+
 public class ArmS extends SubsystemBase {
-    // Define motors, sensors, and other components here
-    public ArmS() {
-        // Initialize motors and sensors
-        var config = new TalonFXConfiguration();
 
-        ARM_MOTOR.getConfigurator().refresh(config);
-        ARM_MOTOR.getConfigurator().apply(PivotConstants.configureMotor(config));
-    
-        SignalLogger.start();
+  private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
+  .withControlMode(ControlMode.CLOSED_LOOP)
+  // Feedback Constants (PID Constants)
+  .withClosedLoopController(10, 0, 0.5, DegreesPerSecond.of(600), DegreesPerSecondPerSecond.of(688))
+  .withSimClosedLoopController(10, 0, 0.5, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+  // Feedforward Constants
+  .withFeedforward(new ArmFeedforward(0, 1.0, 0))
+  .withSimFeedforward(new ArmFeedforward(0, 1.0, 0))
+  // Telemetry name and verbosity level
+  .withTelemetry("ArmS", TelemetryVerbosity.HIGH)
+  // Gearing from the motor rotor to final shaft.
+  // In this example gearbox(3,4) is the same as gearbox("3:1","4:1") which corresponds to the gearbox attached to your motor.
+  .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(12.5,1)))
+  // Motor properties to prevent over currenting.
+  .withMotorInverted(true)
+  .withIdleMode(MotorMode.BRAKE)
+  .withStatorCurrentLimit(Amps.of(120));
+
+  // Vendor motor controller object
+  private TalonFX Motor80 = new TalonFX(80, TunerConstants.kCANBus2);
+
+  // Create our SmartMotorController from our Spark and config with the NEO.
+  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor80, DCMotor.getFalcon500(1), smcConfig);
+
+  private final MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
+      .withRelativePosition(new Translation3d(Meters.of(0.1), Meters.of(0), Meters.of(0.15)));
+
+
+  private ArmConfig armCfg = new ArmConfig(IntakeSMC)
+  // Soft limit is applied to the SmartMotorControllers PID
+
+  .withHardLimit(Degrees.of(-25), Degrees.of(141))
+  // Starting position is where your m_Arm starts
+  .withStartingPosition(Degrees.of(141))
+  // Length and mass of your m_Arm for sim.
+  .withLength(Feet.of((14/12)))
+
+  .withMOI(0.1055457256)
+
+
+  
+  // Telemetry name and verbosity for the m_Arm.
+  .withTelemetry("ArmS", TelemetryVerbosity.HIGH)
+  .withMechanismPositionConfig(robotToMechanism);
+
+
+  // arm Mechanism
+  private Arm m_Arm = new Arm(armCfg);
+
+
+  /**
+   * Set the angle of the m_Arm.
+   * @param angle Angle to go to.
+   */
+  public Command setAngle(Angle angle) {
+ 
+    return m_Arm.setAngle(angle);
     }
-    public class PivotConstants {
 
-        public static final int ARM_MOTOR_CAN_ID = 60;
-        //Pivot angles
-        //public static final double ARM_SOME_ANGLE = 20;
-        public static final double SCORE_ANGLE_L2 = 45;
-        public static final double SCORE_ANGLE_L3 = 55;
-        public static final double SCORE_ANGLE_L4 = 65;
-        public static final double HANDOFF_ANGLE = -90;
-        public static final double ARM_SOME_ANGLE = 130;
-        //Constants used for PID and Feedforward
-        public static final double MOTOR_ROTATIONS_PER_ARM_PIVOT_ROTATION = 12.5;//idk what it is
-        public static final double ArmP = 6; // Talon FX PID P gain (tune this) 6
-        public static final double ArmI = 0; // Talon FX PID I gain (tune this)
-        public static final double ArmD = 0.7; // Talon FX PID D gain (tune this) 0.4
-        public static final double ArmS = -0.05; // Feedforward Static gain (tune this) -0.05
-        public static final double ArmG = 0.9; // Feedforward Gravity gain (tune this)
-        public static final double ArmV = 0; // Feedforward Velocity gain (tune this)
-        public static final double ArmA = 0; // Feedforward Acceleration gain (tune this)
-    
-        //Pivot Offset from Zero degrees (when the code starts, it always resets the angle to zero so this is neccesary
-        // for offseting it to the upper hard stop)
-        public static final double ArmOffSet = Math.toRadians(-90);
-        // Constants for the Kraken motor encoder
-        public static final double ARMSensorToMechanismRatio = 62.5; // Gear ratio from encoder to arm mechanism
-        public static final double ArmGearRatio = ARMSensorToMechanismRatio; // For clarity, same as above
-     
-        //Initiallizes the feedforward controller to a variable
-        private static final ArmFeedforward ARMINTAKEFEEDFOWARD = new ArmFeedforward(
-            ArmS, ArmG, ArmV, ArmA);
-       
-        //Motor configuration
-        private static TalonFXConfiguration configureMotor(TalonFXConfiguration config) {
-          config.MotorOutput.withNeutralMode(NeutralModeValue.Brake)
-              .withInverted(InvertedValue.Clockwise_Positive);
-    
-          config.CurrentLimits.withSupplyCurrentLimitEnable(true).withSupplyCurrentLimit(Amps.of(50));
-          config.Feedback.withSensorToMechanismRatio(MOTOR_ROTATIONS_PER_ARM_PIVOT_ROTATION);
-          config.Slot0 = new Slot0Configs();
-    
-          return config;
-        }
-      }
-    
-  //Other constants
+  /**
+   * Move the m_Arm up and down.
+   * @param dutycycle [-1, 1] speed to set the m_Arm too.
+   */
+  public Command set(double dutycycle) { return m_Arm.set(dutycycle);}
 
-  //Sets initial target angle to hard stop
-  private static double targetAngle = 170;
-
-  //Initiallizes the PID controller to a variable
-  private static PIDController m_pidController = 
-  new PIDController(
-      PivotConstants.ArmP,
-      PivotConstants.ArmI,
-      PivotConstants.ArmD
-
-  );
-
-  //Sets up visualization 
-  private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-
-  //Sets the motor to the CAN ID and CAN Bus
-  private static final TalonFX ARM_MOTOR = new TalonFX(PivotConstants.ARM_MOTOR_CAN_ID,
-      TunerConstants.kCANBus2);
-
-  //Sets up a simulation visualizer for our mechanism
-//public final MechanismLigament2d armVisualizer = new MechanismLigament2d("Pivot", 1, 0); 
-
-  //set initiall configurations/values
+  /**
+   * Run sysId on the {@link m_Arm}
+   */
+  public Command sysId() { return m_Arm.sysId(Volts.of(7), Volts.of(2).per(Second), Seconds.of(4));}
 
 
-  //Commands:
 
-  //Takes in an angle, and sets the PID target angle to that angle
-  public Command moveToAngle(double someAngle) {
-    return run(() -> {
-      targetAngle = someAngle;
-   
-    });
+  /**
+   * Example command factory method.
+   *
+   * @return a command
+   */
+  public Command exampleMethodCommand() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+        });
   }
 
-  //Periodic (always active):
+  /**
+   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
+   *
+   * @return value of some boolean subsystem state, such as a digital sensor.
+   */
+  public boolean exampleCondition() {
+    // Query some boolean state, such as a digital sensor.
+    return false;
+  }
+
   @Override
   public void periodic() {
-
-    //Puts values to Smart Dashboard. Add as needed for simulation
-    SmartDashboard.putNumber("ArmTargetAngle", targetAngle);
-    SmartDashboard.putNumber("ArmIntake/currentAngleRadians", getArmAngleRadians());
-    SmartDashboard.putNumber("Armsupplycurrent", ARM_MOTOR.getSupplyCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("Armstatorcurrent", ARM_MOTOR.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("Arm volage", ARM_MOTOR.getMotorVoltage().getValueAsDouble());
-
-    //sets initiall angle for simulation
-    //armVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
-
-    //Sets the voltage of the motor to the sum of Feedforward and PID controllers
-      ARM_MOTOR.setVoltage(PivotConstants.ARMINTAKEFEEDFOWARD.calculate(
-      getArmAngleRadians(), 1, 1) +
-    m_pidController.calculate(getArmAngleRadians(), (targetAngle * (Math.PI/180))));
+    // This method will be called once per scheduler run
+    m_Arm.updateTelemetry();
   }
 
-  //Methods:
-  //Gets the output of the motor sensor, then converts it to the accurate radian measure for the pivot
-  private double getArmAngleRadians() {
-    return (ARM_MOTOR.getRotorPosition().getValueAsDouble() / PivotConstants.ArmGearRatio) * 2 * Math.PI + PivotConstants.ArmOffSet;
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
+    m_Arm.simIterate();
   }
-
-
-
 }
