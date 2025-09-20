@@ -108,8 +108,8 @@ public class RobotContainer {
                 //joystick.leftBumper().onTrue(Commands.sequence(Stow(), L1Score()));
                 
 
-                joystick.rightBumper().onTrue(yIntakePivot.setAngle(Degrees.of(120)));
-                joystick.leftBumper().onTrue(yIntakePivot.setAngle(Degrees.of(0)));
+                joystick.rightBumper().onTrue(Arm.setAngle(Degrees.of(120)));
+                joystick.leftBumper().onTrue(Arm.setAngle(Degrees.of(0)));
 
 
         
@@ -137,7 +137,7 @@ public class RobotContainer {
         
             public Command Intake_Handoff() {
                 return intakePivot.moveToAngle(IntakePivotConstants.HANDOFF_ANGLE);
-            }
+            }/*
             public Command Arm_L2scoring(){
                 return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
             }
@@ -158,6 +158,6 @@ public class RobotContainer {
             }
             public Command Arm_Scoring_postion(){
                 return Arm.moveToAngle(PivotConstants.ARM_SOME_ANGLE);
-            }
+            }*/
         }
 

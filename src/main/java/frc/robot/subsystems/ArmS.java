@@ -78,43 +78,43 @@ public class ArmS extends SubsystemBase {
   // Soft limit is applied to the SmartMotorControllers PID
 
   .withHardLimit(Degrees.of(-25), Degrees.of(141))
-  // Starting position is where your IntakePivot starts
+  // Starting position is where your m_Arm starts
   .withStartingPosition(Degrees.of(141))
-  // Length and mass of your IntakePivot for sim.
+  // Length and mass of your m_Arm for sim.
   .withLength(Feet.of((14/12)))
 
   .withMOI(0.1055457256)
 
 
   
-  // Telemetry name and verbosity for the IntakePivot.
+  // Telemetry name and verbosity for the m_Arm.
   .withTelemetry("ArmS", TelemetryVerbosity.HIGH)
   .withMechanismPositionConfig(robotToMechanism);
 
 
-  // Arm Mechanism
-  private Arm IntakePivot = new Arm(armCfg);
+  // arm Mechanism
+  private Arm m_Arm = new Arm(armCfg);
 
 
   /**
-   * Set the angle of the IntakePivot.
+   * Set the angle of the m_Arm.
    * @param angle Angle to go to.
    */
   public Command setAngle(Angle angle) {
  
-    return IntakePivot.setAngle(angle);
+    return m_Arm.setAngle(angle);
     }
 
   /**
-   * Move the IntakePivot up and down.
-   * @param dutycycle [-1, 1] speed to set the IntakePivot too.
+   * Move the m_Arm up and down.
+   * @param dutycycle [-1, 1] speed to set the m_Arm too.
    */
-  public Command set(double dutycycle) { return IntakePivot.set(dutycycle);}
+  public Command set(double dutycycle) { return m_Arm.set(dutycycle);}
 
   /**
-   * Run sysId on the {@link Arm}
+   * Run sysId on the {@link m_Arm}
    */
-  public Command sysId() { return IntakePivot.sysId(Volts.of(7), Volts.of(2).per(Second), Seconds.of(4));}
+  public Command sysId() { return m_Arm.sysId(Volts.of(7), Volts.of(2).per(Second), Seconds.of(4));}
 
 
 
@@ -145,12 +145,12 @@ public class ArmS extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    IntakePivot.updateTelemetry();
+    m_Arm.updateTelemetry();
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-    IntakePivot.simIterate();
+    m_Arm.simIterate();
   }
 }
