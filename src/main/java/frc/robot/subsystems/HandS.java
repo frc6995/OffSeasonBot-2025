@@ -12,49 +12,38 @@ import frc.robot.subsystems.IntakeRollerS.IntakeRollersConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HandS extends SubsystemBase {
-   
-   public class HandConstants { 
 
-       public static final int HAND_ROLLER_MOTOR_CAN_ID = 61;
-       public static final double HAND_ROLLER_IN_VOLTAGE = -6; // Voltage to move the intake rollers in
-       public static final double HAND_ROLLER_OUT_VOLTAGE = 2.7; 
+    public class HandConstants {
 
-         }
- 
-          
-    //Configure addtional motor variables 
-    private final TalonFX /* Change->*/HandRollersMotor = new TalonFX(IntakeRollersConstants.HAND_ROLLER_MOTOR_CAN_ID,
-    TunerConstants.kCANBus2);
-        
-
-
-    public HandS() {
-     
-    //Set to new variable name and configure addtional motors if necessary
-    HandRollersMotor.getConfigurator().apply(new TalonFXConfiguration());
-    HandRollersMotor.getConfigurator().apply(new MotorOutputConfigs() {
-
-    //Set default command
-    
-      });
-    
-        
+        public static final int HAND_ROLLER_MOTOR_CAN_ID = 61;
+        public static final double HAND_ROLLER_IN_VOLTAGE = -6; // Voltage to move the intake rollers in
+        public static final double HAND_ROLLER_OUT_VOLTAGE = 2.7;
 
     }
-    
-    
-    //Code from IntakeRollerS.java: change motor variable names 
+
+    // Configure addtional motor variables
+    private final TalonFX /* Change-> */ HandRollersMotor = new TalonFX(HandConstants.HAND_ROLLER_MOTOR_CAN_ID,
+            TunerConstants.kCANBus2);
+
+    public HandS() {
+
+        // Set to new variable name and configure addtional motors if necessary
+        HandRollersMotor.getConfigurator().apply(new TalonFXConfiguration());
+        HandRollersMotor.getConfigurator().apply(new MotorOutputConfigs());
+
+    }
+
+    // Code from IntakeRollerS.java: change motor variable names
     public Command setHandRollerVoltage(double voltage) {
         return run(() -> HandRollersMotor.setVoltage(voltage));
     }
 
-    //voltage commands:
+    // voltage commands:
     public Command handRollersStart() {
         return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
                 .withTimeout(0.15);
 
     }
-    
 
     public Command handRollersUntilStop() {
         return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
@@ -76,10 +65,6 @@ public class HandS extends SubsystemBase {
     public Command handjectL1Coral() {
         return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
     }
-    
-    
-
-    
 
     @Override
     public void periodic() {
@@ -87,6 +72,7 @@ public class HandS extends SubsystemBase {
         // Code to run periodically, such as checking sensors or updating motor states
     }
 
-    // Define methods to control the hand system, e.g., open, close, check status, etc.
-    
+    // Define methods to control the hand system, e.g., open, close, check status,
+    // etc.
+
 }

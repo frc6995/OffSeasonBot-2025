@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -15,6 +13,8 @@ import com.ctre.phoenix6.signals.*;
 import com.ctre.phoenix6.swerve.*;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.*;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,38 +25,38 @@ public class IntakeRollerS extends SubsystemBase {
 
     public class IntakeRollersConstants {
 
-        //Subsystem constants
+        // Subsystem constants
         public static final int INTAKE_ROLLER_MOTOR_CAN_ID = 41;
         public static final double INTAKE_ROLLER_IN_VOLTAGE = -6; // Voltage to move the intake rollers in
         public static final double INTAKE_ROLLER_OUT_VOLTAGE = 2.7; // Voltage to move the intake rollers out
-        public static final int HAND_ROLLER_MOTOR_CAN_ID = 0;
 
     }
-    
-    //Configure motor variable
+
+    // Configure motor variable
     private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID,
             TunerConstants.kCANBus2);
+
+    public MechanismLigament2d intakeRollerVisualizer = new MechanismLigament2d("Intake Roller", 0.5, 0);
 
     public IntakeRollerS() {
         // Initialize motor configuration
         intakeRollersMotor.getConfigurator().apply(new TalonFXConfiguration());
         intakeRollersMotor.getConfigurator().apply(new MotorOutputConfigs() {
         });
-        
 
-        //Set a default motor command
+        // Set a default motor command
         setDefaultCommand(stopRollers());
     }
 
+    // Commands
 
-    //Commands
-
-    //Sets up constructor for simpler voltage command code; see below how its implemented
+    // Sets up constructor for simpler voltage command code; see below how its
+    // implemented
     public Command setRollerVoltage(double voltage) {
         return run(() -> intakeRollersMotor.setVoltage(voltage));
     }
 
-    //voltage commands:
+    // voltage commands:
     public Command intakeRollersStart() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
                 .withTimeout(0.15);
@@ -83,9 +83,11 @@ public class IntakeRollerS extends SubsystemBase {
     public Command ejectL1Coral() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
     }
-    //Add Smart dash board
+
+    // Add Smart dash board
     @Override
     public void periodic() {
-        // always running
+        intakeRollerVisualizer
+                .setAngle(new Rotation2d(Rotations.of(intakeRollersMotor.getRotorPosition().getValueAsDouble())));
     }
 }

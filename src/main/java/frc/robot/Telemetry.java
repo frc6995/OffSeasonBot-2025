@@ -100,6 +100,10 @@ public class Telemetry {
      MECH_VISUALIZER_ROOT.append(intake);
 
     }
+
+    public static void addIntakeRollers(MechanismLigament2d rollers) {
+        MECH_VISUALIZER_ROOT.append(rollers);
+    }
     
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
     public void telemeterize(SwerveDriveState state) {
