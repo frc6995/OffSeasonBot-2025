@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,8 +27,12 @@ import frc.robot.subsystems.HandS;
 import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.subsystems.IntakeRollerS;
+
 import frc.robot.subsystems.ArmS.PivotConstants;
 import frc.robot.subsystems.HandS.HandConstants;
+
+import frc.robot.subsystems.YAMSIntakePivot;
+
 
 
 public class RobotContainer {
@@ -52,9 +57,14 @@ public class RobotContainer {
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
 
+
     public final HandS handRoller = new HandS();
     
     public final ArmS Arm =  new ArmS();
+
+    public final YAMSIntakePivot yIntakePivot = new YAMSIntakePivot();
+
+
     private Mechanism2d VISUALIZER; 
      
     public RobotContainer() {
@@ -86,6 +96,7 @@ public class RobotContainer {
                 joystick.b().onTrue(Intake_Handoff());
                // joystick.x().onTrue(HandS.HandCoralIntake());
                 joystick.y().whileTrue(L1Score());
+
                 joystick.leftTrigger().whileTrue(Arm_L2scoring());
                 joystick.rightTrigger().whileTrue(Arm_L3Scoring());
 
@@ -96,8 +107,14 @@ public class RobotContainer {
                 //Scoring sequence 
                 //joystick.leftBumper().onTrue(Commands.sequence(Stow(), L1Score()));
                 
+
+                joystick.rightBumper().onTrue(yIntakePivot.setAngle(Degrees.of(120)));
+                joystick.leftBumper().onTrue(yIntakePivot.setAngle(Degrees.of(0)));
+
+
         
                 drivetrain.registerTelemetry(logger::telemeterize);
+
             }
         
             public Command getAutonomousCommand() {
