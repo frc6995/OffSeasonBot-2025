@@ -28,7 +28,7 @@ import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.subsystems.IntakeRollerS;
 
-import frc.robot.subsystems.ArmS.PivotConstants;
+
 import frc.robot.subsystems.HandS.HandConstants;
 
 import frc.robot.subsystems.YAMSIntakePivot;
@@ -97,8 +97,8 @@ public class RobotContainer {
                // joystick.x().onTrue(HandS.HandCoralIntake());
                 joystick.y().whileTrue(L1Score());
 
-                joystick.leftTrigger().whileTrue(Arm_L2scoring());
-                joystick.rightTrigger().whileTrue(Arm_L3Scoring());
+                //joystick.leftTrigger().whileTrue(Arm_L2scoring());
+                //joystick.rightTrigger().whileTrue(Arm_L3Scoring());
 
                 //Hand Off sequence
                 //joystick.rightBumper().onTrue(Commands.sequence(Commands.parallel(Arm_Hand_Off_Angle(), intakeCoral()).withTimeout(0.5)
