@@ -54,7 +54,7 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
   .withClosedLoopController(18
-  , 0, 0.2)
+  , 0, 0.2, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
 
   .withSimClosedLoopController(15, 0, 0.5, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
   // Feedforward Constants
@@ -66,7 +66,7 @@ public class YAMSIntakePivot extends SubsystemBase {
   // In this example gearbox(3,4) is the same as gearbox("3:1","4:1") which corresponds to the gearbox attached to your motor.
   .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(12.5,1)))
   // Motor properties to prevent over currenting.
-  .withMotorInverted(true)
+  .withMotorInverted(false)
   .withIdleMode(MotorMode.BRAKE)
   //.setMotionProfileMaxAcceleration(DegreesPerSecondPerSecond.of(300))
   
