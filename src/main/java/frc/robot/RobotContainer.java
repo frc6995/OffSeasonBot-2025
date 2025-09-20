@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.IntakePivotS;
 import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
 import frc.robot.subsystems.IntakeRollerS;
@@ -48,12 +49,14 @@ public class RobotContainer {
 
     public final IntakeRollerS intakeRoller = new IntakeRollerS();
     
+    public final ElevatorS m_elevator = new ElevatorS();
     private Mechanism2d VISUALIZER; 
      
     public RobotContainer() {
         VISUALIZER = logger.MECH_VISUALIZER; 
         logger.addIntake(intakePivot.IntakePivotVisualizer);
         configureBindings();
+        m_elevator.setDefaultCommand(m_elevator.setHeight(Inches.of(0)));
         SmartDashboard.putData("Visualzer", VISUALIZER);
     }
 
@@ -78,8 +81,7 @@ public class RobotContainer {
                 joystick.a().onTrue(intakeCoral());
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
-                joystick.y().whileTrue(L1Score());
-
+                joystick.y().onTrue(m_elevator.setHeight(Inches.of(77.5)));
         
                 drivetrain.registerTelemetry(logger::telemeterize);
             }
