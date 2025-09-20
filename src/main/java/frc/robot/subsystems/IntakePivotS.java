@@ -85,7 +85,7 @@ public class IntakePivotS extends SubsystemBase {
   //Other constants
 
   //Sets initial target angle to hard stop
-  public static double targetAngle = 141;
+  private static double targetAngle = 141;
 
   //Initiallizes the PID controller to a variable
   private static PIDController m_pidController = 
@@ -132,11 +132,11 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
   public void periodic() {
 
     //Puts values to Smart Dashboard. Add as needed for simulation
-    SmartDashboard.putNumber("Intake/TargetAngle", targetAngle);
-    SmartDashboard.putNumber("Intake/currentAngleRadians", getArmAngleRadians());
+    SmartDashboard.putNumber("Arm Target Angle", targetAngle);
+    SmartDashboard.putNumber("Arm Intake/currentAngleRadians", getArmAngleRadians());
     SmartDashboard.putNumber("supplycurrent", IntakePivotMotor.getSupplyCurrent().getValueAsDouble());
     SmartDashboard.putNumber("statorcurrent", IntakePivotMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("volage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("pivotvoltage", IntakePivotMotor.getMotorVoltage().getValueAsDouble());
 
     //sets initiall angle for simulation
     IntakePivotVisualizer.setAngle(new Rotation2d(Degrees.of(getArmAngleRadians() * 180/Math.PI)));
@@ -149,7 +149,7 @@ public final MechanismLigament2d IntakePivotVisualizer = new MechanismLigament2d
 
   //Methods:
   //Gets the output of the motor sensor, then converts it to the accurate radian measure for the pivot
-  public double getArmAngleRadians() {
+  private double getArmAngleRadians() {
     return (IntakePivotMotor.getRotorPosition().getValueAsDouble() / IntakePivotConstants.kArmGearRatio) * 2 * Math.PI + IntakePivotConstants.kArmOffset;
   }
 
