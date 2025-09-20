@@ -81,7 +81,8 @@ public class RobotContainer {
                 joystick.a().onTrue(intakeCoral());
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
-                joystick.y().onTrue(m_elevator.setHeight(Inches.of(77.5)));
+                joystick.rightBumper().onTrue(m_elevator.setHeight(Inches.of(70)));
+                joystick.leftBumper().onTrue(m_elevator.setHeight(Inches.of(39.875)));
         
                 drivetrain.registerTelemetry(logger::telemeterize);
             }
