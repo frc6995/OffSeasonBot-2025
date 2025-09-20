@@ -31,8 +31,7 @@ import frc.robot.subsystems.ArmS.PivotConstants;
 import frc.robot.subsystems.HandS.HandConstants;
 
 import frc.robot.subsystems.YAMSIntakePivot;
-
-
+import frc.robot.subsystems.YAMSIntakeRollerS;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -52,23 +51,24 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public final IntakeRollerS intakeRoller = new IntakeRollerS();
+    //public final IntakePivotS intakePivot = new IntakePivotS();
 
+    // public final IntakeRollerS intakeRoller = new IntakeRollerS();
+    public final YAMSIntakeRollerS intakeRoller = new YAMSIntakeRollerS();
 
     public final HandS handRoller = new HandS();
-    
-    public final ArmS Arm =  new ArmS();
+
+    public final ArmS Arm = new ArmS();
 
     public final YAMSIntakePivot yIntakePivot = new YAMSIntakePivot();
 
+    private Mechanism2d VISUALIZER;
 
-    private Mechanism2d VISUALIZER; 
-     
     public RobotContainer() {
         VISUALIZER = logger.MECH_VISUALIZER; 
 
         configureBindings();
-        SmartDashboard.putData("Visualzer", VISUALIZER);
+        SmartDashboard.putData("Visualizer", VISUALIZER);
     }
 
     private void configureBindings() {
@@ -76,9 +76,12 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+                                                                                                   // negative Y
+                                                                                                   // (forward)
                         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                        .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
+                                                                                    // negative X (left)
                 ));
 
         // Idle while the robot is disabled. This ensures the configured
