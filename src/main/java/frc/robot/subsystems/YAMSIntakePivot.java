@@ -41,7 +41,7 @@ import frc.robot.generated.TunerConstants;
 import yams.mechanisms.SmartMechanism;
 import yams.motorcontrollers.remote.TalonFXWrapper;
 
-import frc.robot.KrakenX44;
+
 
 public class YAMSIntakePivot extends SubsystemBase {
 
@@ -56,7 +56,9 @@ public class YAMSIntakePivot extends SubsystemBase {
   .withClosedLoopController(18
   , 0, 0.2, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
 
-  .withSimClosedLoopController(15, 0, 0.5, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+
+  .withSimClosedLoopController(18, 0, 0.2, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(-0.1, 1.2, 0))
   .withSimFeedforward(new ArmFeedforward(0.0, 1.2, 0))
@@ -92,32 +94,30 @@ public class YAMSIntakePivot extends SubsystemBase {
   // Soft limit is applied to the SmartMotorControllers PID
 
   .withHardLimit(Degrees.of(-25), Degrees.of(141))
-  // Starting position is where your IntakePivot starts
+
+  // Starting position is where your arm starts
   .withStartingPosition(Degrees.of(141))
 
-  // Length and mass of your IntakePivot for sim.
-
+  // Length and mass of your arm for sim.
   .withLength(Feet.of((14/12)))
 
   .withMOI(0.1055457256)
 
 
-  
+
   // Telemetry name and verbosity for the IntakePivot.
   .withTelemetry("Intake pivot", TelemetryVerbosity.HIGH)
+
   .withMechanismPositionConfig(robotToMechanism);
 
 
   // Arm Mechanism
-  private Arm IntakePivot = new Arm(armCfg);
 
-  
-  /**
-   * Set the angle of the IntakePivot.
    * @param angle Angle to go to.
    */
   public Command setAngle(Angle angle) {
  
+
     return IntakePivot.setAngle(angle);
     }
 
@@ -129,10 +129,11 @@ public class YAMSIntakePivot extends SubsystemBase {
   public Command set(double dutycycle) { return IntakePivot.set(dutycycle);}
 
 
-  /**
-   * Run sysId on the {@link Arm}
-   */
+  /*
+   *Run sysId on the {@link Arm}
+
   public Command sysId() { return IntakePivot.sysId(Volts.of(7), Volts.of(2).per(Second), Seconds.of(4));}
+
 
 
 
@@ -163,12 +164,16 @@ public class YAMSIntakePivot extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
     IntakePivot.updateTelemetry();
+
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+
     IntakePivot.simIterate();
+
   }
 }

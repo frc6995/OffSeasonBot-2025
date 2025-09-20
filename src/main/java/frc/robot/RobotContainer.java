@@ -23,7 +23,14 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+
+import frc.robot.subsystems.ElevatorS;
+import frc.robot.subsystems.IntakePivotS;
+import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
+import frc.robot.subsystems.IntakeRollerS;
+
 import frc.robot.subsystems.HandS;
+
 
 
 import frc.robot.subsystems.HandS.HandConstants;
@@ -59,11 +66,24 @@ public class RobotContainer {
 
     private Mechanism2d VISUALIZER;
 
+
+    public final IntakeRollerS intakeRoller = new IntakeRollerS();
+    
+    public final ElevatorS m_elevator = new ElevatorS();
+    private Mechanism2d VISUALIZER; 
+     
+
+
     public RobotContainer() {
         VISUALIZER = logger.MECH_VISUALIZER; 
 
         configureBindings();
+
+        m_elevator.setDefaultCommand(m_elevator.setHeight(Inches.of(0)));
+        SmartDashboard.putData("Visualzer", VISUALIZER);
+
         SmartDashboard.putData("Visualizer", VISUALIZER);
+
     }
 
     private void configureBindings() {
@@ -89,7 +109,12 @@ public class RobotContainer {
                 //set button bindings
                 joystick.a().onTrue(intakeCoral());
                 joystick.b().onTrue(Handoff());
-               joystick.x().onTrue(Stow());
+
+                joystick.x().onTrue(Stow());
+                joystick.rightBumper().onTrue(m_elevator.setHeight(Inches.of(70)));
+                joystick.leftBumper().onTrue(m_elevator.setHeight(Inches.of(39.875)));
+
+               
                 joystick.y().whileTrue(L1Score());
 
 
@@ -104,8 +129,8 @@ public class RobotContainer {
                 //joystick.leftBumper().onTrue(Commands.sequence(Stow(), L1Score()));
                 
 
-                joystick.rightBumper().onTrue(Arm.setAngle(Degrees.of(120)));
-                joystick.leftBumper().onTrue(Arm.setAngle(Degrees.of(0)));
+               // joystick.rightBumper().onTrue(Arm.setAngle(Degrees.of(120)));
+               // joystick.leftBumper().onTrue(Arm.setAngle(Degrees.of(0)));
 
 
 
