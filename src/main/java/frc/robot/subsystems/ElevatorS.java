@@ -47,21 +47,25 @@ public class ElevatorS extends SubsystemBase {
     .withFollowers(Pair.of(new TalonFX(52, TunerConstants.kCANBus2), false))
     .withControlMode(ControlMode.CLOSED_LOOP)
     .withMechanismCircumference((Meters.of(Inches.of(0.25).in(Meters) *22)))
-    .withClosedLoopController(10, 0, 0.2, MetersPerSecond.of(1), MetersPerSecondPerSecond.of(5))
-    .withSimClosedLoopController(10, 0, 0.2, MetersPerSecond.of(1), MetersPerSecondPerSecond.of(5))
-//    .withSoftLimit(Inches.of(0), Inches.of(77.5))
-      .withGearing(gearing(gearbox(1, 5)))
+
+    .withClosedLoopController(2.0, 0, 0.5, MetersPerSecond.of(1.0), MetersPerSecondPerSecond.of(1.0))
+    .withSoftLimit(Inches.of(0), Inches.of(77.5))
+      .withGearing(gearing(gearbox(3, 4)))
 //      .withExternalEncoder(armMotor.getAbsoluteEncoder())
       .withIdleMode(MotorMode.BRAKE)
       .withTelemetry("ElevatorMotor", TelemetryVerbosity.HIGH)
 //      .withSpecificTelemetry("ElevatorMotor", motorTelemetryConfig)
-      .withStatorCurrentLimit(Amps.of(120))
+
+      .withStatorCurrentLimit(Amps.of(40))
+
 //      .withVoltageCompensation(Volts.of(12))
       .withMotorInverted(false)
 //      .withClosedLoopRampRate(Seconds.of(0.25))
 //      .withOpenLoopRampRate(Seconds.of(0.25))
       //.withFeedforward(new ElevatorFeedforward(0, 2.28, 3.07, 0.41));
+
       .withFeedforward(new ElevatorFeedforward(0, 1.4, 0, 0));
+
     
     private TalonFX leadMotor = new TalonFX(51, TunerConstants.kCANBus2);
 
@@ -69,7 +73,9 @@ public class ElevatorS extends SubsystemBase {
 
     
     private ElevatorConfig elevconfig = new ElevatorConfig(elevatorLeadSMC)
+
     .withStartingHeight(Inches.of(39.875))
+
     .withHardLimits(Inches.of(39.875), Inches.of(77.5))
     .withTelemetry("Elevator", TelemetryVerbosity.HIGH)
     .withMass(Pounds.of(27.5));
