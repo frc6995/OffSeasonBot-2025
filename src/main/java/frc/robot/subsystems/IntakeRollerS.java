@@ -18,7 +18,7 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstants.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
+
 import frc.robot.generated.TunerConstants;
 
 public class IntakeRollerS extends SubsystemBase {
@@ -30,8 +30,11 @@ public class IntakeRollerS extends SubsystemBase {
         public static final double INTAKE_ROLLER_IN_VOLTAGE = -6; // Voltage to move the intake rollers in
         public static final double INTAKE_ROLLER_OUT_VOLTAGE = 12; // Voltage to move the intake rollers out
 
+        public static final int HAND_ROLLER_MOTOR_CAN_ID = 0;
+
     }
     
+
     //Configure motor variable
     private final TalonFX intakeRollersMotor = new TalonFX(IntakeRollersConstants.INTAKE_ROLLER_MOTOR_CAN_ID,
             TunerConstants.kCANBus2);
@@ -82,7 +85,7 @@ public class IntakeRollerS extends SubsystemBase {
     public Command ejectL1Coral() {
         return setRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
     }
-
+    //Add Smart dash board
     @Override
     public void periodic() {
         // always running
