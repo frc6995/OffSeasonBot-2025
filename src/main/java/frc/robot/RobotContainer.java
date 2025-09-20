@@ -83,8 +83,7 @@ public class RobotContainer {
                 joystick.b().onTrue(Handoff());
                 joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
-                joystick.rightBumper().onTrue(yIntakePivot.setAngle(Degrees.of(120)));
-                joystick.leftBumper().onTrue(yIntakePivot.setAngle(Degrees.of(0)));
+;
 
         
                 drivetrain.registerTelemetry(logger::telemeterize);
@@ -99,18 +98,18 @@ public class RobotContainer {
 
             //Commands combining multiple subsystem functions
             public Command intakeCoral() {
-                return Commands.race(intakePivot.moveToAngle(IntakePivotConstants.DOWN_ANGLE), intakeRoller.coralIntake());
+                return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake());
             }
         
             public Command Stow() {
-                return intakePivot.moveToAngle(IntakePivotConstants.L1_ANGLE);
+                return yIntakePivot.setAngle(yIntakePivot.L1_ANGLE);
             }
             public Command L1Score() {
                 return intakeRoller.outTakeRollers();
             }
         
             public Command Handoff() {
-                return intakePivot.moveToAngle(IntakePivotConstants.HANDOFF_ANGLE);
+                return yIntakePivot.setAngle(yIntakePivot.HANDOFF_ANGLE);
             }
         }
 
