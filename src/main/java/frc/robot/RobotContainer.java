@@ -25,8 +25,6 @@ import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.HandS;
 
-import frc.robot.subsystems.IntakeRollerS;
-
 import frc.robot.subsystems.ArmS.PivotConstants;
 import frc.robot.subsystems.HandS.HandConstants;
 
@@ -51,9 +49,6 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    //public final IntakePivotS intakePivot = new IntakePivotS();
-
-    // public final IntakeRollerS intakeRoller = new IntakeRollerS();
     public final YAMSIntakeRollerS intakeRoller = new YAMSIntakeRollerS();
 
     public final HandS handRoller = new HandS();

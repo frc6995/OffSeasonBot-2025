@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -8,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.IntakeRollerS.IntakeRollersConstants;
+import frc.robot.subsystems.YAMSIntakeRollerS.YAMSIntakeRollerConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HandS extends SubsystemBase {
@@ -40,13 +42,13 @@ public class HandS extends SubsystemBase {
 
     // voltage commands:
     public Command handRollersStart() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
+        return setHandRollerVoltage(YAMSIntakeRollerConstants.INTAKE_VOLTAGE.in(Volts))
                 .withTimeout(0.15);
 
     }
 
     public Command handRollersUntilStop() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
+        return setHandRollerVoltage(YAMSIntakeRollerConstants.INTAKE_VOLTAGE.in(Volts))
                 .until(() -> HandRollersMotor.getStatorCurrent().getValueAsDouble() > 50);
     }
 
@@ -55,7 +57,7 @@ public class HandS extends SubsystemBase {
     }
 
     public Command handOutTakeRollers() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
+        return setHandRollerVoltage(YAMSIntakeRollerConstants.OUTTAKE_VOLTAGE.in(Volts));
     }
 
     public Command handStopRollers() {
@@ -63,7 +65,7 @@ public class HandS extends SubsystemBase {
     }
 
     public Command handjectL1Coral() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
+        return setHandRollerVoltage(YAMSIntakeRollerConstants.OUTTAKE_VOLTAGE.in(Volts));
     }
 
     @Override
