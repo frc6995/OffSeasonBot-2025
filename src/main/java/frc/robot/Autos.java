@@ -118,7 +118,7 @@ public class Autos {
             final AutoTrajectory toScoreL = routine.trajectory("7");
             final AutoTrajectory toScoreA = routine.trajectory("8");
            // traj.chain(toScoreK);
-            //toScoreK.done().onTrue(waitSeconds(1.0).andThen(toScoreL.spawnCmd()));
+            //toScoreK.done().onTrue(waitSeconds(1.0).andThen(toScoreL.spawnCmd())); Please work.
             //toScoreK.chain(toScoreL);
             //toScoreL.done().onTrue(waitSeconds(1.0).andThen(toScoreA.spawnCmd()));
             //toScoreL.chain(toScoreA);
