@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -24,7 +25,6 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.HandS;
-
 
 import frc.robot.subsystems.HandS.HandConstants;
 
@@ -57,11 +57,13 @@ public class RobotContainer {
 
     public final YAMSIntakePivot yIntakePivot = new YAMSIntakePivot();
 
+    public final AutoAlign autoAlign;
+
     private Mechanism2d VISUALIZER;
 
     public RobotContainer() {
-        VISUALIZER = logger.MECH_VISUALIZER; 
-
+        VISUALIZER = logger.MECH_VISUALIZER;
+        autoAlign = new AutoAlign(drivetrain);
         configureBindings();
         SmartDashboard.putData("Visualizer", VISUALIZER);
     }
@@ -85,78 +87,80 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
+        // set button bindings
+        joystick.a().onTrue(intakeCoral());
+        joystick.b().onTrue(Handoff());
+        joystick.x().onTrue(Stow());
+        joystick.y().whileTrue(L1Score());
 
-                //set button bindings
-                joystick.a().onTrue(intakeCoral());
-                joystick.b().onTrue(Handoff());
-               joystick.x().onTrue(Stow());
-                joystick.y().whileTrue(L1Score());
+        // joystick.leftTrigger().whileTrue(Arm_L2scoring());
+        // joystick.rightTrigger().whileTrue(Arm_L3Scoring());
 
+        // Hand Off sequence
+        // joystick.rightBumper().onTrue(Commands.sequence(Commands.parallel(Arm_Hand_Off_Angle(),
+        // intakeCoral()).withTimeout(0.5)
+        // ,Commands.parallel(L1Score(), Hand_Rollers_In())
+        // ));
+        // Scoring sequence
+        // joystick.leftBumper().onTrue(Commands.sequence(Stow(), L1Score()));
 
-                //joystick.leftTrigger().whileTrue(Arm_L2scoring());
-                //joystick.rightTrigger().whileTrue(Arm_L3Scoring());
+        joystick.rightBumper().onTrue(Arm.setAngle(Degrees.of(120)));
+        joystick.leftBumper().onTrue(Arm.setAngle(Degrees.of(0)));
 
-                //Hand Off sequence
-                //joystick.rightBumper().onTrue(Commands.sequence(Commands.parallel(Arm_Hand_Off_Angle(), intakeCoral()).withTimeout(0.5)
-                //,Commands.parallel(L1Score(), Hand_Rollers_In())
-                //));
-                //Scoring sequence 
-                //joystick.leftBumper().onTrue(Commands.sequence(Stow(), L1Score()));
-                
+        joystick.rightTrigger().whileTrue(autoAlign.AlignToPose(new Pose2d(0,0, new Rotation2d())));
 
-                joystick.rightBumper().onTrue(Arm.setAngle(Degrees.of(120)));
-                joystick.leftBumper().onTrue(Arm.setAngle(Degrees.of(0)));
+        drivetrain.registerTelemetry(logger::telemeterize);
 
+    }
 
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
 
-        
-                drivetrain.registerTelemetry(logger::telemeterize);
+    }
 
-            }
-        
-            public Command getAutonomousCommand() {
-                return Commands.print("No autonomous command configured");
-        
-            }
-            
+    // Commands combining multiple subsystem functions
+    public Command intakeCoral() {
+        return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake());
+    }
 
-            //Commands combining multiple subsystem functions
-            public Command intakeCoral() {
-                return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake());
-            }
-        
-            public Command Stow() {
-                return yIntakePivot.setAngle(yIntakePivot.L1_ANGLE);
-            }
-            public Command L1Score() {
-                return intakeRoller.outTakeRollers();
-            }
-        
+    public Command Stow() {
+        return yIntakePivot.setAngle(yIntakePivot.L1_ANGLE);
+    }
 
-            public Command Handoff() {
-                return yIntakePivot.setAngle(yIntakePivot.HANDOFF_ANGLE);
-            }
-/* 
-            public Command Arm_L2scoring(){
-                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
-            }
-            public Command Arm_L3Scoring(){
-                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L3);
-            }
-            public Command Arm_L4Scoring(){
-                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L4);
-            }
-            public Command Arm_Hand_Off_Angle(){
-                return Arm.moveToAngle(PivotConstants.HANDOFF_ANGLE);
-            }
-            public Command Hand_Voltage_Scoring(){
-                return handRoller.setHandRollerVoltage(HandConstants.HAND_ROLLER_OUT_VOLTAGE);
-            }
-            public Command Hand_Rollers_In(){
-                return handRoller.HandCoralIntake();
-            }
-            public Command Arm_Scoring_postion(){
-                return Arm.moveToAngle(PivotConstants.ARM_SOME_ANGLE);
-            }*/
-        }
+    public Command L1Score() {
+        return intakeRoller.outTakeRollers();
+    }
 
+    public Command Handoff() {
+        return yIntakePivot.setAngle(yIntakePivot.HANDOFF_ANGLE);
+    }
+    /*
+     * public Command Arm_L2scoring(){
+     * return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
+     * }
+     * public Command Arm_L3Scoring(){
+     * return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L3);
+     * }
+     * public Command Arm_L4Scoring(){
+     * return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L4);
+     * }
+     * public Command Arm_Hand_Off_Angle(){
+     * return Arm.moveToAngle(PivotConstants.HANDOFF_ANGLE);
+     * }
+     * public Command Hand_Voltage_Scoring(){
+     * return
+     * handRoller.setHandRollerVoltage(HandConstants.HAND_ROLLER_OUT_VOLTAGE);
+     * }
+     * public Command Hand_Rollers_In(){
+     * return handRoller.HandCoralIntake();
+     * }
+     * public Command Arm_Scoring_postion(){
+     * return Arm.moveToAngle(PivotConstants.ARM_SOME_ANGLE);
+     * }
+     */
+
+    public void RobotPeriodic() {
+        autoAlign.UpdateCurrentPose(drivetrain.getState().Pose);
+    }
+
+}
