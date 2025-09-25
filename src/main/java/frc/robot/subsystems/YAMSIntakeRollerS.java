@@ -20,6 +20,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.generated.TunerConstants;
 import yams.mechanisms.SmartMechanism;
 import yams.mechanisms.config.ShooterConfig;
 import yams.mechanisms.velocity.Shooter;
@@ -62,7 +63,7 @@ public class YAMSIntakeRollerS extends SubsystemBase {
             .withClosedLoopRampRate(Seconds.of(0.25));
 
     // TalonFX motor controller object
-    private TalonFX rollerMotor = new TalonFX(YAMSIntakeRollerConstants.ROLLER_CAN_ID);
+    private TalonFX rollerMotor = new TalonFX(YAMSIntakeRollerConstants.ROLLER_CAN_ID, TunerConstants.kCANBus2);
 
     // create SmartMotorController with the TalonFX
     private SmartMotorController talonFXSmartMotorController = new TalonFXWrapper(

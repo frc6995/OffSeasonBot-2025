@@ -82,7 +82,7 @@ public class YAMSIntakePivot extends SubsystemBase {
   private TalonFX Motor40 = new TalonFX(40, TunerConstants.kCANBus2);
 
   // Create our SmartMotorController from our Spark and config with the NEO.
-  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor40, DCMotor.getFalcon500(1), smcConfig);
+  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor40, DCMotor.getKrakenX60(1), smcConfig);
 
   private final MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
       .withRelativePosition(new Translation3d(Meters.of(0.1), Meters.of(0), Meters.of(0.15)));

@@ -65,16 +65,16 @@ public class ArmS extends SubsystemBase {
   .withStatorCurrentLimit(Amps.of(120));
 
   // Vendor motor controller object
-  private TalonFX Motor80 = new TalonFX(80, TunerConstants.kCANBus2);
+  private TalonFX Motor80 = new TalonFX(71, TunerConstants.kCANBus2);
 
   // Create our SmartMotorController from our Spark and config with the NEO.
-  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor80, DCMotor.getFalcon500(1), smcConfig);
+  private SmartMotorController ArmSMC = new TalonFXWrapper(Motor80, DCMotor.getFalcon500(1), smcConfig);
 
   private final MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
       .withRelativePosition(new Translation3d(Meters.of(0.1), Meters.of(0), Meters.of(0.15)));
 
 
-  private ArmConfig armCfg = new ArmConfig(IntakeSMC)
+  private ArmConfig armCfg = new ArmConfig(ArmSMC)
   // Soft limit is applied to the SmartMotorControllers PID
 
   .withHardLimit(Degrees.of(-25), Degrees.of(141))
