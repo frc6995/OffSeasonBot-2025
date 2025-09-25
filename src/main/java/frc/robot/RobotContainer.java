@@ -112,7 +112,7 @@ public class RobotContainer {
             public Command intakeCoral() {
                 return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake());
             }
-        
+        /* 
             public Command Stow() {
                 return yIntakePivot.setAngle(yIntakePivot.L1_ANGLE);
             }
@@ -144,5 +144,6 @@ public class RobotContainer {
             public Command Arm_Scoring_postion(){
                 return Arm.moveToAngle(PivotConstants.ARM_SOME_ANGLE);
             }
+                */
         }
 
