@@ -65,7 +65,7 @@ public class ElevatorS extends SubsystemBase {
     
     private TalonFX leadMotor = new TalonFX(51, TunerConstants.kCANBus2);
 
-    private SmartMotorController elevatorLeadSMC = new TalonFXWrapper(leadMotor, DCMotor.getFalcon500(1), smcElevConfig);
+    private SmartMotorController elevatorLeadSMC = new TalonFXWrapper(leadMotor, DCMotor.getFalcon500(2), smcElevConfig);
 
     
     private ElevatorConfig elevconfig = new ElevatorConfig(elevatorLeadSMC)
@@ -115,7 +115,6 @@ public class ElevatorS extends SubsystemBase {
 
 }
   
-
 
  
 
