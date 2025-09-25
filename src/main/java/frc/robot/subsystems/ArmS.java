@@ -77,7 +77,7 @@ public class ArmS extends SubsystemBase {
   }
 
   // Vendor motor controller object
-  private TalonFX Motor40 = new TalonFX(46, TunerConstants.kCANBus2);
+  private TalonFX Motor40 = new TalonFX(60, TunerConstants.kCANBus2);
 
   // Create our SmartMotorController from our Spark and config with the NEO.
   private SmartMotorController mainArmSMC = new TalonFXWrapper(Motor40, DCMotor.getFalcon500(1), smcConfig);
