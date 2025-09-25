@@ -23,9 +23,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.HandS;
-
-import frc.robot.subsystems.IntakeRollerS;
 
 import frc.robot.subsystems.HandS.HandConstants;
 
@@ -58,6 +57,8 @@ public class RobotContainer {
     public final HandS handRoller = new HandS();
 
     public final ArmS Arm = new ArmS();
+
+    public final ElevatorS elevator = new ElevatorS();
 
     public final YAMSIntakePivot yIntakePivot = new YAMSIntakePivot();
 
@@ -95,6 +96,8 @@ public class RobotContainer {
                 joystick.b().onTrue(Handoff());
                joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
+                joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(70)));
+                joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
 
         
                 drivetrain.registerTelemetry(logger::telemeterize);
