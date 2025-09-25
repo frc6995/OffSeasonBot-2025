@@ -13,8 +13,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.HandS;
-import frc.robot.subsystems.IntakePivotS;
-import frc.robot.subsystems.IntakeRollerS;
 public class AutoAlign {
     private CommandSwerveDrivetrain drivetrain;
     private final Supplier<Pose2d> limelightPoseSupplier;

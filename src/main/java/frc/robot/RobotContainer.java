@@ -23,12 +23,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-
 import frc.robot.subsystems.ElevatorS;
-import frc.robot.subsystems.IntakePivotS;
-import frc.robot.subsystems.IntakePivotS.IntakePivotConstants;
-import frc.robot.subsystems.IntakeRollerS;
-
 import frc.robot.subsystems.HandS;
 
 
@@ -66,13 +61,9 @@ public class RobotContainer {
 
     private Mechanism2d VISUALIZER;
 
-
-    public final IntakeRollerS intakeRoller = new IntakeRollerS();
     
     public final ElevatorS m_elevator = new ElevatorS();
-    private Mechanism2d VISUALIZER; 
      
-
 
     public RobotContainer() {
         VISUALIZER = logger.MECH_VISUALIZER; 
