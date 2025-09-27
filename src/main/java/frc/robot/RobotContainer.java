@@ -78,11 +78,11 @@ public class RobotContainer {
 
 
                 //set button bindings
-                joystick.a().onTrue(intakeCoral());
-                joystick.b().onTrue(Handoff());
-                joystick.x().onTrue(Stow());
-                joystick.rightBumper().onTrue(m_elevator.setHeight(Inches.of(70)));
-                joystick.leftBumper().onTrue(m_elevator.setHeight(Inches.of(39.875)));
+                //joystick.a().onTrue(intakeCoral());
+               // joystick.b().onTrue(Handoff());
+                //joystick.x().onTrue(Stow());
+            joystick.rightBumper().onTrue(m_elevator.setHeight(m_elevator.kElevatorMaxHeight));
+                joystick.leftBumper().onTrue(m_elevator.setHeight(m_elevator.kElevatorMinHeight));
         
                 drivetrain.registerTelemetry(logger::telemeterize);
             }
