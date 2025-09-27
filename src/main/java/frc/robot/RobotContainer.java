@@ -34,7 +34,6 @@ import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.HandS;
 
 import frc.robot.subsystems.HandS.HandConstants;
-import frc.robot.subsystems.IntakeRollerS;
 import frc.robot.subsystems.YAMSIntakePivot;
 import frc.robot.subsystems.YAMSIntakeRollerS;
 
@@ -62,7 +61,7 @@ public class RobotContainer {
 
     public final HandS handRoller = new HandS();
 
-    public final ArmS Arm = new ArmS();
+    public final ArmS arm = new ArmS();
 
     public final ElevatorS elevator = new ElevatorS();
 
@@ -84,7 +83,7 @@ public class RobotContainer {
         
 
         autoFactory = drivetrain.createAutoFactory();
-        autoRoutines = new Autos(drivetrain, null, intakePivot, intakeRoller, null, null, autoFactory);
+        autoRoutines = new Autos(drivetrain, arm, yIntakePivot, intakeRoller, elevator, null, autoFactory);
         m_chooser.addRoutine("FourCoralRight", autoRoutines::FourCoralRight);
         m_chooser.addRoutine("FourCoralLeft", autoRoutines::FourCoralLeft);
         //m_chooser.addRoutine("BrokenThing", autoRoutines::BrokenThing);
@@ -120,7 +119,7 @@ public class RobotContainer {
                 joystick.leftBumper().whileTrue(elevator.setHeight(Inches.of(70)));
                 joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
                 joystick.rightTrigger().whileTrue(new AutoAlign(new APTarget(drivetrain.targetPose()), drivetrain));
-                joystick.leftTrigger().whileTrue(new AutoAlign(new APTarget(new Pose2d(2.0, 4.0, new Rotation2d())), drivetrain));
+                joystick.leftTrigger().whileTrue(new AutoAlign(new APTarget(new Pose2d(ChoreoVariables.get("X_pos"), ChoreoVariables.get("Y_pos"), new Rotation2d(ChoreoVariables.get("Theta")))), drivetrain));
 
         
                 drivetrain.registerTelemetry(logger::telemeterize);
@@ -169,7 +168,7 @@ public class RobotContainer {
                 return handRoller.HandCoralIntake();
             }
             public Command Arm_Scoring_postion(){
-                return Arm.setAngle(Arm.SOME_ANGLE);
+                return arm.setAngle(arm.SOME_ANGLE);
             }
                 
         }

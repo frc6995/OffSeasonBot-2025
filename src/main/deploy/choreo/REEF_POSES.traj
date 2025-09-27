@@ -1,0 +1,39 @@
+{
+ "name":"REEF_POSES",
+ "version":1,
+ "snapshot":{
+  "waypoints":[],
+  "constraints":[],
+  "targetDt":0.05
+ },
+ "params":{
+  "waypoints":[
+    {"x":{"exp":"5.455968856811523 m", "val":5.455968856811523}, "y":{"exp":"5.221315860748291 m", "val":5.221315860748291}, "heading":{"exp":"-0.5667292175235064 rad", "val":-0.5667292175235064}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"5.126226425170898 m", "val":5.126226425170898}, "y":{"exp":"5.427404880523682 m", "val":5.427404880523682}, "heading":{"exp":"-0.5667292175235064 rad", "val":-0.5667292175235064}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"3.9721288681030273 m", "val":3.9721288681030273}, "y":{"exp":"5.4480133056640625 m", "val":5.4480133056640625}, "heading":{"exp":"0.49180951995477223 rad", "val":0.49180951995477223}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"3.6836044788360596 m", "val":3.683604478836059}, "y":{"exp":"5.303751468658447 m", "val":5.303751468658447}, "heading":{"exp":"0.5 rad", "val":0.5}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"2.9829022884368896 m", "val":2.9829022884368896}, "y":{"exp":"4.170262813568115 m", "val":4.170262813568115}, "heading":{"exp":"1.5707963267948966 rad", "val":1.5707963267948966}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"2.9829022884368896 m", "val":2.9829022884368896}, "y":{"exp":"3.8817381858825684 m", "val":3.881738185882568}, "heading":{"exp":"1.5707963267948966 rad", "val":1.5707963267948966}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"3.539342164993286 m", "val":3.539342164993286}, "y":{"exp":"2.7894670963287354 m", "val":2.7894670963287354}, "heading":{"exp":"-0.5280745083679603 rad", "val":-0.5280745083679603}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"3.869084358215332 m", "val":3.869084358215332}, "y":{"exp":"2.5833780765533447 m", "val":2.5833780765533447}, "heading":{"exp":"-0.5280745083679603 rad", "val":-0.5280745083679603}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"X_pos m", "val":5.125}, "y":{"exp":"Y_pos m", "val":2.5625}, "heading":{"exp":"Theta rad", "val":0.5456551192169858}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"5.4765777587890625 m", "val":5.4765777587890625}, "y":{"exp":"2.7688581943511963 m", "val":2.7688581943511963}, "heading":{"exp":"0.5456551192169858 rad", "val":0.5456551192169858}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"6.053626537322998 m", "val":6.053626537322998}, "y":{"exp":"3.8817384243011475 m", "val":3.881738424301147}, "heading":{"exp":"1.57 rad", "val":1.57}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"6.074235439300537 m", "val":6.074235439300537}, "y":{"exp":"4.190871715545654 m", "val":4.190871715545654}, "heading":{"exp":"1.57 rad", "val":1.57}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+  "constraints":[
+    {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
+    {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
+    {"from":"first", "to":"last", "data":{"type":"KeepInRectangle", "props":{"x":{"exp":"0 m", "val":0.0}, "y":{"exp":"0 m", "val":0.0}, "w":{"exp":"17.548 m", "val":17.548}, "h":{"exp":"8.052 m", "val":8.052}}}, "enabled":false}],
+  "targetDt":{
+   "exp":"0.05 s",
+   "val":0.05
+  }
+ },
+ "trajectory":{
+  "sampleType":null,
+  "waypoints":[],
+  "samples":[],
+  "splits":[]
+ },
+ "events":[]
+}

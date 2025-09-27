@@ -3,7 +3,29 @@
  "version":1,
  "type":"Swerve",
  "variables":{
-  "expressions":{},
+  "expressions":{
+   "Theta":{
+    "dimension":"Number",
+    "var":{
+     "exp":"0.5456551192169858",
+     "val":0.5456551192169858
+    }
+   },
+   "X_pos":{
+    "dimension":"Number",
+    "var":{
+     "exp":"5.125",
+     "val":5.125
+    }
+   },
+   "Y_pos":{
+    "dimension":"Number",
+    "var":{
+     "exp":"2.5625",
+     "val":2.5625
+    }
+   }
+  },
   "poses":{}
  },
  "config":{

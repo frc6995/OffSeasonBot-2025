@@ -60,20 +60,20 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.HandS;
-import frc.robot.subsystems.IntakePivotS;
-import frc.robot.subsystems.IntakeRollerS;
+import frc.robot.subsystems.YAMSIntakeRollerS;
+import frc.robot.subsystems.YAMSIntakePivot;
 
 public class Autos {
         private final AutoFactory m_factory;
         protected final CommandSwerveDrivetrain m_drivebase;
         protected final ArmS m_arm;
-        protected final IntakePivotS m_intakepiv;
-        protected final IntakeRollerS m_intakerol;
+        protected final YAMSIntakePivot m_intakepiv;
+        protected final YAMSIntakeRollerS m_intakerol;
         protected final ElevatorS m_elev;
         protected final HandS m_hand;
         private final double SCORE_WAIT = 0.875;
     
-        public Autos(CommandSwerveDrivetrain drivebase, ArmS arm, IntakePivotS intakepiv, IntakeRollerS intakerol, ElevatorS elev, HandS hand, AutoFactory factory) {
+        public Autos(CommandSwerveDrivetrain drivebase, ArmS arm, YAMSIntakePivot intakepiv, YAMSIntakeRollerS intakerol, ElevatorS elev, HandS hand, AutoFactory factory) {
             m_drivebase = drivebase;
             m_arm = arm;
             m_intakepiv = intakepiv;
