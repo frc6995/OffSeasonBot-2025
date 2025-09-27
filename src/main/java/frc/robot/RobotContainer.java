@@ -8,7 +8,9 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.therekrab.autopilot.APTarget;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -94,10 +96,12 @@ public class RobotContainer {
                 //set button bindings
                 joystick.a().onTrue(intakeCoral());
                 joystick.b().onTrue(Handoff());
-               joystick.x().onTrue(Stow());
+                joystick.x().onTrue(Stow());
                 joystick.y().whileTrue(L1Score());
-                joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(70)));
+                joystick.leftBumper().whileTrue(elevator.setHeight(Inches.of(70)));
                 joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
+                joystick.rightTrigger().whileTrue(new AutoAlign(new APTarget(drivetrain.targetPose()), drivetrain));
+                joystick.leftTrigger().whileTrue(new AutoAlign(new APTarget(new Pose2d(2.0, 4.0, new Rotation2d())), drivetrain));
 
         
                 drivetrain.registerTelemetry(logger::telemeterize);
