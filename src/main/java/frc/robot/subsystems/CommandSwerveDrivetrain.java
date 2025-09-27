@@ -8,10 +8,17 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.therekrab.autopilot.APTarget;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import choreo.Choreo.TrajectoryLogger;
+import choreo.auto.AutoFactory;
+import choreo.trajectory.SwerveSample;
+import choreo.trajectory.Trajectory;
+import edu.wpi.first.epilogue.NotLogged;import com.therekrab.autopilot.APTarget;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,13 +30,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
+
+}
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
  * Subsystem so it can easily be used in command-based projects.
  */
@@ -37,6 +46,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    Pigeon2 pigeon = new Pigeon2(1, "canivore");
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -49,12 +59,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
-
+    private final SwerveRequest.ApplyFieldSpeeds m_pathApplyFieldSpeeds = new SwerveRequest.ApplyFieldSpeeds()
+    .withDriveRequestType(DriveRequestType.Velocity);
     private final PIDController m_pathXController = new PIDController(14, 0, 0.2);
     private final PIDController m_pathYController = new PIDController(14, 0, 0.2);
     private final PIDController m_pathThetaController = new PIDController(7, 0, 0);
-
-
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -109,6 +118,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 /* also log the requested output for SysId */
                 SignalLogger.writeDouble("Rotational_Rate", output.in(Volts));
             },
+            
             null,
             this
         )
@@ -160,7 +170,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
     }
+    public Rotation2d getGyroRotation() {
+        return pigeon.getRotation2d();
+    }
 
+    public void zeroHeading() {
+        pigeon.setYaw(0);
+    }
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
      * <p>
@@ -192,7 +208,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
     }
-
+    @NotLogged
+    public SwerveDriveState state = getState();
+    @NotLogged
+    public SwerveDriveState lastState = getState().clone();
+    /** Re-expose the state as a method of the subclass so Epilogue finds it. */
+    public SwerveDriveState state() {
+        return state;
+    }
     /**
      * Returns a command that applies the specified control request to this swerve drivetrain.
      *
@@ -209,7 +232,27 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             m_pathYController.getSetpoint(),
             Rotation2d.fromRadians(m_pathThetaController.getSetpoint()));
       }
+    public AutoFactory createAutoFactory() {
+        return createAutoFactory((sample, isStart) -> {});
+    }
 
+    /**
+     * Creates a new auto factory for this drivetrain with the given
+     * trajectory logger.
+     *
+     * @param trajLogger Logger for the trajectory
+     * @return AutoFactory for this drivetrain
+     */
+    public AutoFactory createAutoFactory(TrajectoryLogger<SwerveSample> trajLogger) {
+        return new AutoFactory(
+            () -> getState().Pose,
+            this::resetPose,
+            this::followPath,
+            true,
+            this,
+            trajLogger
+        );
+    }
     /**
      * Runs the SysId Quasistatic test in the given direction for the routine
      * specified by {@link #m_sysIdRoutineToApply}.
@@ -301,4 +344,38 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     ) {
         super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
     }
+    private final SwerveSample[] emptyTrajectory = new SwerveSample[0];
+    public SwerveSample[] currentTrajectory = emptyTrajectory;
+    public void logTrajectory(Trajectory<SwerveSample> traj, boolean isStarting) {
+        currentTrajectory = isStarting ? traj.samples().toArray(SwerveSample[]::new) : emptyTrajectory;
+    }
+    public void resetOdometry(Pose2d pose) {
+        zeroHeading();
+        pigeon.setYaw(-pigeon.getYaw().getValueAsDouble());
+        
+        // m_vision.resetPose();
+    }
+    public void followPath(SwerveSample sample) {
+        m_pathThetaController.enableContinuousInput(-Math.PI, Math.PI);
+        var pose = state().Pose;
+
+   
+        double targetHeading = sample.heading;
+        double actualHeading = pose.getRotation().getRadians();
+        double error = Math.IEEEremainder(targetHeading - actualHeading, 2 * Math.PI);
+
+        SmartDashboard.putNumber("Auto/TargetHeading", targetHeading);
+        SmartDashboard.putNumber("Auto/ActualHeading", actualHeading);
+        var targetSpeeds = sample.getChassisSpeeds();
+        targetSpeeds.vxMetersPerSecond += m_pathXController.calculate(pose.getX(), sample.x);
+        targetSpeeds.vyMetersPerSecond += m_pathYController.calculate(pose.getY(), sample.y);
+        targetSpeeds.omegaRadiansPerSecond += m_pathThetaController.calculate(pose.getRotation().getRadians(),
+            sample.heading);
+    
+        setControl(
+            m_pathApplyFieldSpeeds
+                .withSpeeds(targetSpeeds)
+                .withWheelForceFeedforwardsX(sample.moduleForcesX())
+                .withWheelForceFeedforwardsY(sample.moduleForcesY()));
+      }
 }

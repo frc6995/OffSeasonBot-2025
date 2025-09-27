@@ -9,11 +9,13 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.therekrab.autopilot.APTarget;
+import com.ctre.phoenix6.hardware.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -22,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
+import choreo.auto.AutoChooser;
+import choreo.auto.AutoFactory;
+import frc.robot.Autos;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -29,7 +34,7 @@ import frc.robot.subsystems.ElevatorS;
 import frc.robot.subsystems.HandS;
 
 import frc.robot.subsystems.HandS.HandConstants;
-
+import frc.robot.subsystems.IntakeRollerS;
 import frc.robot.subsystems.YAMSIntakePivot;
 import frc.robot.subsystems.YAMSIntakeRollerS;
 
@@ -53,7 +58,6 @@ public class RobotContainer {
 
     //public final IntakePivotS intakePivot = new IntakePivotS();
 
-    // public final IntakeRollerS intakeRoller = new IntakeRollerS();
     public final YAMSIntakeRollerS intakeRoller = new YAMSIntakeRollerS();
 
     public final HandS handRoller = new HandS();
@@ -63,16 +67,31 @@ public class RobotContainer {
     public final ElevatorS elevator = new ElevatorS();
 
     public final YAMSIntakePivot yIntakePivot = new YAMSIntakePivot();
+    
+    private final AutoFactory autoFactory;
+    private Mechanism2d VISUALIZER; 
+    private final Autos autoRoutines;
+    private final AutoChooser m_chooser = new AutoChooser();
 
-    private Mechanism2d VISUALIZER;
-
+     
     public RobotContainer() {
+    
+        drivetrain.resetOdometry(new Pose2d());
         VISUALIZER = logger.MECH_VISUALIZER; 
 
         configureBindings();
-        SmartDashboard.putData("Visualizer", VISUALIZER);
-    }
+        SmartDashboard.putData("Visualzer", VISUALIZER);
+        
 
+        autoFactory = drivetrain.createAutoFactory();
+        autoRoutines = new Autos(drivetrain, null, intakePivot, intakeRoller, null, null, autoFactory);
+        m_chooser.addRoutine("FourCoralRight", autoRoutines::FourCoralRight);
+        m_chooser.addRoutine("FourCoralLeft", autoRoutines::FourCoralLeft);
+        //m_chooser.addRoutine("BrokenThing", autoRoutines::BrokenThing);
+        SmartDashboard.putData("Auto Mode", m_chooser); 
+
+    }
+    
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -109,8 +128,8 @@ public class RobotContainer {
             }
         
             public Command getAutonomousCommand() {
-                return Commands.print("No autonomous command configured");
-        
+                return m_chooser.selectedCommand();
+                
             }
             
 
