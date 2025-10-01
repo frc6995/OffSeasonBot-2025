@@ -114,13 +114,15 @@ public class RobotContainer {
                 //set button bindings
                 joystick.a().onTrue(intakeCoral());
                 joystick.b().onTrue(Handoff());
-                joystick.x().onTrue(Stow());
-                joystick.y().whileTrue(L1Score());
+                //joystick.x().onTrue(Stow());
+                //joystick.y().whileTrue(L1Score());
                 joystick.leftBumper().whileTrue(elevator.setHeight(Inches.of(70)));
                 joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
-                joystick.rightTrigger().whileTrue(new AutoAlign(new APTarget(drivetrain.targetPose()), drivetrain));
-                joystick.leftTrigger().whileTrue(new AutoAlign(new APTarget(new Pose2d(ChoreoVariables.get("X_pos"), ChoreoVariables.get("Y_pos"), new Rotation2d(ChoreoVariables.get("Theta")))), drivetrain));
-
+                joystick.x().whileTrue(new AutoAlign(null, drivetrain, "left"));
+                joystick.y().whileTrue(new AutoAlign(null, drivetrain, "right"));
+                //joystick.y().whileTrue(new AutoAlign(new APTarget(new Pose2d(ChoreoVariables.get("X_pos"), ChoreoVariables.get("Y_pos"), new Rotation2d(ChoreoVariables.get("Theta")))), drivetrain));
+/*                joystick.rightTrigger().whileTrue(new AutoAlign(new APTarget(drivetrain.targetPose()), drivetrain));
+                joystick.leftTrigger().whileTrue(new AutoAlign(new APTarget(new Pose2d(ChoreoVariables.get("X_pos"), ChoreoVariables.get("Y_pos"), new Rotation2d(ChoreoVariables.get("Theta")))), drivetrain)); */
         
                 drivetrain.registerTelemetry(logger::telemeterize);
 
