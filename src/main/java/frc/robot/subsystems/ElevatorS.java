@@ -41,15 +41,15 @@ public class ElevatorS extends SubsystemBase {
     // private final CANSparkMax elevatorMotor = new CANSparkMax(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
     // private final DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_ID);
 ;
-  public final Distance kElevatorMinHeight = Inches.of(0);
-  public final Distance kElevatorMaxHeight = Inches.of(5);
+  public final Distance kElevatorMinHeight = Inches.of(13);
+  public final Distance kElevatorMaxHeight = Inches.of(76);
     
     private SmartMotorControllerConfig smcElevConfig = new SmartMotorControllerConfig(this)
     .withFollowers(Pair.of(new TalonFX(52, TunerConstants.kCANBus), false))
     .withControlMode(ControlMode.CLOSED_LOOP)
-    .withMechanismCircumference((Meters.of(Inches.of(0.25).in(Meters) *22)))
+    .withMechanismCircumference((Meters.of(Inches.of(0.25).in(Meters) *16)))
     .withClosedLoopController(10, 0, 0.2, MetersPerSecond.of(1), MetersPerSecondPerSecond.of(5))
-    .withSimClosedLoopController(6, 0, 0, MetersPerSecond.of(1), MetersPerSecondPerSecond.of(5))
+    .withSimClosedLoopController(2, 0, 0, MetersPerSecond.of(3), MetersPerSecondPerSecond.of(5))
 //    .withSoftLimit(Inches.of(0), Inches.of(77.5))
       .withGearing(gearing(gearbox(1, 5)))
 //      .withExternalEncoder(armMotor.getAbsoluteEncoder())
@@ -62,17 +62,19 @@ public class ElevatorS extends SubsystemBase {
 //      .withClosedLoopRampRate(Seconds.of(0.25))
 //      .withOpenLoopRampRate(Seconds.of(0.25))
       //.withFeedforward(new ElevatorFeedforward(0, 2.28, 3.07, 0.41));
-      .withFeedforward(new ElevatorFeedforward(0, 0.7, 0.539, 0.015)); //0.54, 0.024
+      .withFeedforward(new ElevatorFeedforward(0, 0.4, 0.8, 0.06)); //KG: gravity compensation, KV: velicity (multiplied by closed loop controller velocity)
+      //KA: acceleration (multiplied by closed loop controller acceleration). Tune Velocity until line is same angle as target, tune accel until curve mathces accuately. 
+      // After this, tune KP to help with any small inconsitencies.
     
     private TalonFX leadMotor = new TalonFX(51, TunerConstants.kCANBus);
 
-    private SmartMotorController elevatorLeadSMC = new TalonFXWrapper(leadMotor, DCMotor.getFalcon500(1), smcElevConfig);
+    private SmartMotorController elevatorLeadSMC = new TalonFXWrapper(leadMotor, DCMotor.getFalcon500(2), smcElevConfig);
 
     
     private ElevatorConfig elevconfig = new ElevatorConfig(elevatorLeadSMC)
     .withStartingHeight(Inches.of(13))
-    .withHardLimits(Inches.of(0), Inches.of(5))
-    .withSoftLimits(Inches.of(0),  Inches.of(15))
+    .withHardLimits(Inches.of(13), Inches.of(76))
+    .withSoftLimits(Inches.of(13),  Inches.of(76))
     .withTelemetry("Elevator", TelemetryVerbosity.HIGH)
     .withMass(Pounds.of(14));
     
