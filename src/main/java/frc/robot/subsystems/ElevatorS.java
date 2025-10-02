@@ -63,7 +63,7 @@ public class ElevatorS extends SubsystemBase {
 //      .withOpenLoopRampRate(Seconds.of(0.25))
       //.withFeedforward(new ElevatorFeedforward(0, 2.28, 3.07, 0.41));
       .withFeedforward(new ElevatorFeedforward(0, 0.4, 0.8, 0.06)); //KG: gravity compensation, KV: velicity (multiplied by closed loop controller velocity)
-      //KA: acceleration (multiplied by closed loop controller acceleration). Tune Velocity until line is same angle as target, tune accel until curve mathces accuately. 
+      //KA: acceleration (multiplied by closed loop controller acceleration). Tune Velocity until line is near same angle as target, tune accel until curve mathces accuately. 
       // After this, tune KP to help with any small inconsitencies.
     
     private TalonFX leadMotor = new TalonFX(51, TunerConstants.kCANBus);
