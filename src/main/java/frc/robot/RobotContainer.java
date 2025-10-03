@@ -14,12 +14,16 @@ import com.ctre.phoenix6.hardware.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -90,7 +94,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", m_chooser); 
 
     }
-    
+    public double xButtonPressedTime = 0;   
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -110,16 +114,38 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-
                 //set button bindings
-                joystick.a().onTrue(intakeCoral());
-                joystick.b().onTrue(Handoff());
+                //joystick.a().onTrue(intakeCoral()); // when Denham Venom does it, the arm and elevator go the handoff position at the same time.
+                //joystick.b().onTrue(Handoff());
                 //joystick.x().onTrue(Stow());
                 //joystick.y().whileTrue(L1Score());
-                joystick.leftBumper().whileTrue(elevator.setHeight(Inches.of(70)));
-                joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
-                joystick.x().whileTrue(new AutoAlign(null, drivetrain, "left"));
-                joystick.y().whileTrue(new AutoAlign(null, drivetrain, "right"));
+                //joystick.leftBumper().whileTrue(elevator.setHeight(Inches.of(70)));
+                //joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
+
+                joystick.a().onTrue(
+                    intakeCoral()
+                );
+                joystick.b().onTrue(zeroAll());
+                // separated command queueing allows for both with a single push
+
+
+                joystick.x()
+                    .onTrue(new InstantCommand(() -> {
+                        xButtonPressedTime = Timer.getFPGATimestamp();
+                    }))
+                    .onFalse(new InstantCommand(() -> {
+                        double heldTime = Timer.getFPGATimestamp() - xButtonPressedTime;
+                        if (heldTime < 0.25) {  // threshold in seconds
+                            // Short tap
+                            elevator.setHeight(Inches.of(70)).schedule();
+                        } else {
+                            // Long hold
+                            new AutoAlign(null, drivetrain, "left", () -> joystick.getLeftX(), () -> joystick.getLeftY()).schedule();
+                        }
+                    }));
+
+                
+                //joystick.x().whileTrue(new AutoAlign(null, drivetrain, "left"));
                 //joystick.y().whileTrue(new AutoAlign(new APTarget(new Pose2d(ChoreoVariables.get("X_pos"), ChoreoVariables.get("Y_pos"), new Rotation2d(ChoreoVariables.get("Theta")))), drivetrain));
 /*                joystick.rightTrigger().whileTrue(new AutoAlign(new APTarget(drivetrain.targetPose()), drivetrain));
                 joystick.leftTrigger().whileTrue(new AutoAlign(new APTarget(new Pose2d(ChoreoVariables.get("X_pos"), ChoreoVariables.get("Y_pos"), new Rotation2d(ChoreoVariables.get("Theta")))), drivetrain)); */
@@ -136,8 +162,14 @@ public class RobotContainer {
 
             //Commands combining multiple subsystem functions
             public Command intakeCoral() {
-                return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake());
-            }
+                return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake())
+                .andThen(
+                    Commands.parallel(
+                        elevator.handoffHeight(),
+                        arm.handoffAngle()
+                    )
+                );
+    }
         
             public Command Stow() {
                 return yIntakePivot.setAngle(yIntakePivot.L1_ANGLE);
@@ -147,7 +179,8 @@ public class RobotContainer {
             }
         
             public Command Handoff() {
-                return yIntakePivot.setAngle(yIntakePivot.HANDOFF_ANGLE);
+                return yIntakePivot.setAngle(YAMSIntakePivot.HANDOFF_ANGLE).until(() ->Math.abs(yIntakePivot.getAngle().in(Degrees) - YAMSIntakePivot.HANDOFF_ANGLE.in(Degrees)) < 2.0);
+                
             }
             /* 
             public Command Arm_L2scoring(){
@@ -172,6 +205,9 @@ public class RobotContainer {
             public Command Arm_Scoring_postion(){
                 return arm.setAngle(arm.SOME_ANGLE);
             }
-                
+            public Command zeroAll() {
+                return elevator.zeroHeight();
+                //return null; // first elevator.handoffHeight(), chained with arm.handoffAngle();
+            }
         }
 

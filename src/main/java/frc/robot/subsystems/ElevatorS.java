@@ -41,6 +41,9 @@ public class ElevatorS extends SubsystemBase {
     // private final CANSparkMax elevatorMotor = new CANSparkMax(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
     // private final DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_ID);
 
+    public final Distance kElevatorMinHeight = Inches.of(13);
+    
+    public final Distance kElevatorHandoffHeight = Inches.of(50);
 
     
     private SmartMotorControllerConfig smcElevConfig = new SmartMotorControllerConfig(this)
@@ -102,6 +105,12 @@ public class ElevatorS extends SubsystemBase {
     public Command set(double dutycycle) {
         return elevator.set(dutycycle);}
         
+    public Command zeroHeight() {
+        return elevator.setHeight(kElevatorMinHeight);
+    }
+    public Command handoffHeight() {
+        return elevator.setHeight(kElevatorHandoffHeight);
+    }
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).

@@ -29,6 +29,11 @@ public class AutoAlign extends Command{
     private static final APConstraints kConstraints = new APConstraints()
     .withAcceleration(5.0)
     .withJerk(2.0);
+    private final Supplier<Double> xSupplier;
+    private final Supplier<Double> ySupplier;
+
+
+
     private String branch;
 
     private static final APProfile kProfile = new APProfile(kConstraints)
@@ -46,13 +51,18 @@ public class AutoAlign extends Command{
         
         
         
-    public AutoAlign(APTarget target, CommandSwerveDrivetrain drivetrain, String branch) {
-          m_target = target;
-          m_drivetrain = drivetrain;
-          this.branch = branch;
-    }
-
+    public AutoAlign(APTarget target, CommandSwerveDrivetrain drivetrain,
+                String branch,
+                Supplier<Double> xSupplier,
+                Supplier<Double> ySupplier) {
+        this.m_target = target;
+        this.m_drivetrain = drivetrain;
+        this.branch = branch;
+        this.xSupplier = xSupplier;
+        this.ySupplier = ySupplier;}
     public void execute() {
+
+
       Pose2d robotPose = m_drivetrain.getState().Pose;
       ChassisSpeeds robotSpeeds = m_drivetrain.getState().Speeds;
 
@@ -80,4 +90,5 @@ public class AutoAlign extends Command{
     }
 
 
-}
+  }
+

@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,7 +47,7 @@ import frc.robot.KrakenX44;
 public class ArmS extends SubsystemBase {
 
   public static final Angle SOME_ANGLE = Degrees.of(20);
-
+  public final Angle kArmHandoffAngle = Degrees.of(180);
 
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
@@ -114,10 +115,11 @@ public class ArmS extends SubsystemBase {
    * @param angle Angle to go to.
    */
   public Command setAngle(Angle angle) {
- 
-    return arm.setAngle(angle);
-    }
+    return arm.setAngle(angle);}
 
+  public Command handoffAngle() {
+    return arm.setAngle(kArmHandoffAngle);
+  }
   /**
    * Move the arm up and down.
    * @param dutycycle [-1, 1] speed to set the arm too.

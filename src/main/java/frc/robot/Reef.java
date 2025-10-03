@@ -6,18 +6,18 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public class Reef {
         // 12 reef faces
     public static final Pose2d[] FACES = {
-        new Pose2d(3.02, 4.19, Rotation2d.fromDegrees(180)), //A
-        new Pose2d(3.02, 3.87, Rotation2d.fromDegrees(180)), //B
-        new Pose2d(3.62, 2.84, Rotation2d.fromDegrees(240)), //C
-        new Pose2d(3.90, 2.68, Rotation2d.fromDegrees(240)), //D
-        new Pose2d(5.08, 2.68, Rotation2d.fromDegrees(300)), //E
-        new Pose2d(5.36, 2.84, Rotation2d.fromDegrees(300)), //F
-        new Pose2d(5.96, 3.87, Rotation2d.fromDegrees(0)), //G
-        new Pose2d(5.96, 4.19, Rotation2d.fromDegrees(0)), //H
-        new Pose2d(5.36, 5.21, Rotation2d.fromDegrees(60)), //I
-        new Pose2d(5.08, 5.37, Rotation2d.fromDegrees(60)), //J
-        new Pose2d(3.90, 5.37, Rotation2d.fromDegrees(120)), //K
-        new Pose2d(3.62, 5.21, Rotation2d.fromDegrees(120)) //L
+        new Pose2d(3.02, 4.19, Rotation2d.fromDegrees(270)), //A
+        new Pose2d(3.02, 3.87, Rotation2d.fromDegrees(270)), //B
+        new Pose2d(3.62, 2.84, Rotation2d.fromDegrees(330)), //C
+        new Pose2d(3.90, 2.68, Rotation2d.fromDegrees(330)), //D
+        new Pose2d(5.08, 2.68, Rotation2d.fromDegrees(30)),  //E
+        new Pose2d(5.36, 2.84, Rotation2d.fromDegrees(30)),  //F
+        new Pose2d(5.96, 3.87, Rotation2d.fromDegrees(90)),  //G
+        new Pose2d(5.96, 4.19, Rotation2d.fromDegrees(90)),  //H
+        new Pose2d(5.36, 5.21, Rotation2d.fromDegrees(150)), //I
+        new Pose2d(5.08, 5.37, Rotation2d.fromDegrees(150)), //J
+        new Pose2d(3.90, 5.37, Rotation2d.fromDegrees(210)), //K
+        new Pose2d(3.62, 5.21, Rotation2d.fromDegrees(210))  //L
     };
     public enum ReefSide {
         R1(FACES[0], "left"),

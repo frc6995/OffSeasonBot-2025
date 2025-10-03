@@ -103,7 +103,7 @@ public class YAMSIntakePivot extends SubsystemBase {
 
   
   // Telemetry name and verbosity for the arm.
-  .withTelemetry("Arm", TelemetryVerbosity.HIGH)
+  .withTelemetry("Intake", TelemetryVerbosity.HIGH)
   .withMechanismPositionConfig(robotToMechanism);
 
 
@@ -167,5 +167,9 @@ public class YAMSIntakePivot extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
     arm.simIterate();
+  }
+
+  public Angle getAngle() {
+    return arm.getAngle();
   }
 }
