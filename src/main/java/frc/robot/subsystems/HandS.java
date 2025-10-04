@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.IntakeRollerS.IntakeRollersConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HandS extends SubsystemBase {
@@ -40,13 +39,13 @@ public class HandS extends SubsystemBase {
 
     // voltage commands:
     public Command handRollersStart() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
+        return setHandRollerVoltage(HandConstants.HAND_ROLLER_IN_VOLTAGE)
                 .withTimeout(0.15);
 
     }
 
     public Command handRollersUntilStop() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_IN_VOLTAGE)
+        return setHandRollerVoltage(HandConstants.HAND_ROLLER_IN_VOLTAGE)
                 .until(() -> HandRollersMotor.getStatorCurrent().getValueAsDouble() > 50);
     }
 
@@ -55,7 +54,7 @@ public class HandS extends SubsystemBase {
     }
 
     public Command handOutTakeRollers() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
+        return setHandRollerVoltage(HandConstants.HAND_ROLLER_OUT_VOLTAGE);
     }
 
     public Command handStopRollers() {
@@ -63,7 +62,7 @@ public class HandS extends SubsystemBase {
     }
 
     public Command handjectL1Coral() {
-        return setHandRollerVoltage(IntakeRollersConstants.INTAKE_ROLLER_OUT_VOLTAGE);
+        return setHandRollerVoltage(HandConstants.HAND_ROLLER_OUT_VOLTAGE);
     }
 
     @Override

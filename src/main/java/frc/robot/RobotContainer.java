@@ -49,7 +49,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    //public final IntakePivotS intakePivot = new IntakePivotS();
+    // public final IntakePivotS intakePivot = new IntakePivotS();
 
     // public final IntakeRollerS intakeRoller = new IntakeRollerS();
     public final YAMSIntakeRollerS intakeRoller = new YAMSIntakeRollerS();
@@ -65,7 +65,7 @@ public class RobotContainer {
     private Mechanism2d VISUALIZER;
 
     public RobotContainer() {
-        VISUALIZER = logger.MECH_VISUALIZER; 
+        VISUALIZER = logger.MECH_VISUALIZER;
 
         configureBindings();
         SmartDashboard.putData("Visualizer", VISUALIZER);
@@ -90,64 +90,67 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
                 drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
+        // set button bindings
+        // joystick.a().onTrue(intakeCoral());
+        // joystick.b().onTrue(Handoff());
+        // joystick.x().onTrue(Stow());
+        // joystick.y().whileTrue(L1Score());
+        // joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(70)));
+        // joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
 
-                //set button bindings
-                joystick.a().onTrue(intakeCoral());
-                joystick.b().onTrue(Handoff());
-               joystick.x().onTrue(Stow());
-                joystick.y().whileTrue(L1Score());
-                joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(70)));
-                joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
+        joystick.a().whileTrue(Arm.setAngle(Degrees.of(180)));
+        joystick.b().whileTrue(Arm.setAngle(Degrees.of(25)));
 
-        
-                drivetrain.registerTelemetry(logger::telemeterize);
+        drivetrain.registerTelemetry(logger::telemeterize);
 
-            }
-        
-            public Command getAutonomousCommand() {
-                return Commands.print("No autonomous command configured");
-        
-            }
-            
+    }
 
-            //Commands combining multiple subsystem functions
-            public Command intakeCoral() {
-                return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake());
-            }
-        
-            public Command Stow() {
-                return yIntakePivot.setAngle(yIntakePivot.L1_ANGLE);
-            }
-            public Command L1Score() {
-                return intakeRoller.outTakeRollers();
-            }
-        
-            public Command Handoff() {
-                return yIntakePivot.setAngle(yIntakePivot.HANDOFF_ANGLE);
-            }
-            /* 
-            public Command Arm_L2scoring(){
-                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
-            }
-            public Command Arm_L3Scoring(){
-                return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L3);
-            }
-            public Command Arm_L4Scoring(){
-                return Arm.setAngle(Arm.SCORE_ANGLE_L4);
-            }
-            public Command Arm_Hand_Off_Angle(){
-                return Arm.setAngle(Arm.HANDOFF_ANGLE);
-                /* */
-            
-            public Command Hand_Voltage_Scoring(){
-                return handRoller.setHandRollerVoltage(HandConstants.HAND_ROLLER_OUT_VOLTAGE);
-            }
-            public Command Hand_Rollers_In(){
-                return handRoller.HandCoralIntake();
-            }
-            public Command Arm_Scoring_postion(){
-                return Arm.setAngle(Arm.SOME_ANGLE);
-            }
-                
-        }
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
 
+    }
+
+    // Commands combining multiple subsystem functions
+    public Command intakeCoral() {
+        return Commands.race(yIntakePivot.setAngle(yIntakePivot.DOWN_ANGLE), intakeRoller.coralIntake());
+    }
+
+    public Command Stow() {
+        return yIntakePivot.setAngle(yIntakePivot.L1_ANGLE);
+    }
+
+    public Command L1Score() {
+        return intakeRoller.outTakeRollers();
+    }
+
+    public Command Handoff() {
+        return yIntakePivot.setAngle(yIntakePivot.HANDOFF_ANGLE);
+    }
+    /*
+     * public Command Arm_L2scoring(){
+     * return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L2);
+     * }
+     * public Command Arm_L3Scoring(){
+     * return Arm.moveToAngle(PivotConstants.SCORE_ANGLE_L3);
+     * }
+     * public Command Arm_L4Scoring(){
+     * return Arm.setAngle(Arm.SCORE_ANGLE_L4);
+     * }
+     * public Command Arm_Hand_Off_Angle(){
+     * return Arm.setAngle(Arm.HANDOFF_ANGLE);
+     * /*
+     */
+
+    public Command Hand_Voltage_Scoring() {
+        return handRoller.setHandRollerVoltage(HandConstants.HAND_ROLLER_OUT_VOLTAGE);
+    }
+
+    public Command Hand_Rollers_In() {
+        return handRoller.HandCoralIntake();
+    }
+
+    public Command Arm_Scoring_postion() {
+        return Arm.setAngle(Arm.SOME_ANGLE);
+    }
+
+}
