@@ -41,7 +41,7 @@ import frc.robot.generated.TunerConstants;
 import yams.mechanisms.SmartMechanism;
 import yams.motorcontrollers.remote.TalonFXWrapper;
 
-import frc.robot.KrakenX44;
+
 
 public class YAMSIntakePivot extends SubsystemBase {
 
