@@ -51,7 +51,7 @@ public class ArmS extends SubsystemBase {
 
   public static class ArmConstants {
     public static final int CAN_ID = 60;
-    
+
     public static final Distance ARM_LENGTH_INCHES = Inches.of(26);
     public static final Mass ARM_WEIGHT = Pounds.of(3);
     public static final Mass HAND_WEIGHT = Pounds.of(0);
@@ -70,19 +70,22 @@ public class ArmS extends SubsystemBase {
       // Feedback Constants (PID Constants)
       .withClosedLoopController(2, 0, 0.2, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
 
-      .withSimClosedLoopController(2, 0, 0, DegreesPerSecond.of(458), DegreesPerSecondPerSecond.of(688))
+      .withSimClosedLoopController(2, 0, 0, DegreesPerSecond.of(200), DegreesPerSecondPerSecond.of(200))
       // Feedforward Constants
       .withFeedforward(new ArmFeedforward(0, 1.2, 0))
-      .withSimFeedforward(new ArmFeedforward(0.0, 1.2, 0))
+      .withSimFeedforward(new ArmFeedforward(0.0, 0.25, 0, 0))
       // Telemetry name and verbosity level
       .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
       // Gearing from the motor rotor to final shaft.
       // In this example gearbox(3,4) is the same as gearbox("3:1","4:1") which
       // corresponds to the gearbox attached to your motor.
-      .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(12.5, 1)))
+      .withGearing(SmartMechanism.gearing(SmartMechanism.gearbox(50/12, 50/18, 60/10)))
       // Motor properties to prevent over currenting.
       .withMotorInverted(false)
       .withIdleMode(MotorMode.BRAKE)
+
+      // TODO: continuous wrapping is currently messed up somehow, but I'm not sure why
+      //.withContinuousWrapping(Degrees.of(-180), Degrees.of(180))
 
       // .withExternalEncoder(encoder)
       // .withExternalGearing(SmartMechanism.gearing(SmartMechanism.gearbox(1)))
@@ -107,16 +110,14 @@ public class ArmS extends SubsystemBase {
   private ArmConfig armCfg = new ArmConfig(mainArmSMC)
       // Soft limit is applied to the SmartMotorControllers PID
 
-      .withHardLimit(Degrees.of(0), Degrees.of(720))
+      .withHardLimit(Degrees.of(-90), Degrees.of(160))
       // Starting position is where your arm starts
-      .withStartingPosition(Degrees.of(0))
+      .withStartingPosition(Degrees.of(-90))
 
       // Length and mass of your arm for sim.
       .withLength(ArmConstants.ARM_LENGTH_INCHES)
 
       .withMOI(ArmConstants.ARM_MOI)
-
-      // .withWrapping(Rotations.of(-0.5), Rotations.of(0.5))
 
       // Telemetry name and verbosity for the arm.
       .withTelemetry("MainArm", TelemetryVerbosity.HIGH)

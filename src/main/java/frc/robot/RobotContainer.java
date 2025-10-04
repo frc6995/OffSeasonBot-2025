@@ -98,8 +98,8 @@ public class RobotContainer {
         // joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(70)));
         // joystick.rightBumper().whileTrue(elevator.setHeight(Inches.of(12)));
 
-        joystick.a().whileTrue(Arm.setAngle(Degrees.of(180)));
-        joystick.b().whileTrue(Arm.setAngle(Degrees.of(25)));
+        joystick.a().whileTrue(Arm.setAngle(Degrees.of(150)));
+        joystick.b().whileTrue(Arm.setAngle(Degrees.of(-20)));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
