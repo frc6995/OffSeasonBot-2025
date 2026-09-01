@@ -43,10 +43,12 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 
 
-public class ArmS extends SubsystemBase {
+public class YAMSIntakePivot extends SubsystemBase {
 
   public static final Angle SOME_ANGLE = Degrees.of(20);
-
+  public static final Angle DOWN_ANGLE =  Degrees.of(-35);
+  public static final Angle L1_ANGLE =  Degrees.of(65);
+  public static final Angle HANDOFF_ANGLE = Degrees.of(135);
 
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
@@ -77,16 +79,16 @@ public class ArmS extends SubsystemBase {
   }
 
   // Vendor motor controller object
-  private TalonFX Motor40 = new TalonFX(60, TunerConstants.kCANBus2);
+  private TalonFX Motor40 = new TalonFX(40, TunerConstants.kCANBus2);
 
   // Create our SmartMotorController from our Spark and config with the NEO.
-  private SmartMotorController mainArmSMC = new TalonFXWrapper(Motor40, DCMotor.getFalcon500(1), smcConfig);
+  private SmartMotorController IntakeSMC = new TalonFXWrapper(Motor40, DCMotor.getFalcon500(1), smcConfig);
 
   private final MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
       .withRelativePosition(new Translation3d(Meters.of(0.1), Meters.of(0), Meters.of(0.15)));
 
 
-  private ArmConfig armCfg = new ArmConfig(mainArmSMC)
+  private ArmConfig armCfg = new ArmConfig(IntakeSMC)
   // Soft limit is applied to the SmartMotorControllers PID
 
   .withHardLimit(Degrees.of(-25), Degrees.of(141))
@@ -101,7 +103,7 @@ public class ArmS extends SubsystemBase {
 
   
   // Telemetry name and verbosity for the arm.
-  .withTelemetry("MainArm", TelemetryVerbosity.HIGH)
+  .withTelemetry("Arm", TelemetryVerbosity.HIGH)
   .withMechanismPositionConfig(robotToMechanism);
 
 
